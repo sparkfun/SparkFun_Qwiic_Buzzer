@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
@@ -41,7 +41,7 @@
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="yes"/>
@@ -201,16 +201,33 @@
 <wire x1="25.4" y1="25.4" x2="0" y2="25.4" width="0.2032" layer="20"/>
 <wire x1="0" y1="25.4" x2="0" y2="0" width="0.2032" layer="20"/>
 <text x="1.27" y="12.7" size="1.27" layer="16" font="vector" ratio="15" rot="SMR90" align="center">v10</text>
-<text x="11.43" y="-8.89" size="1.778" layer="51" font="vector">Pete Lewis</text>
-<text x="-7.62" y="-11.43" size="1.778" layer="51" font="vector">Based on designed by Fisher M. and Andy England</text>
-<dimension x1="25.4" y1="25.4" x2="0" y2="25.4" x3="12.7" y3="27.94" textsize="1.778" layer="47" unit="inch"/>
-<dimension x1="25.4" y1="0" x2="25.4" y2="25.4" x3="29.21" y3="12.7" textsize="1.778" layer="47" unit="inch"/>
-<text x="5.207" y="26.162" size="1.27" layer="47" font="vector">Units in Inches</text>
+<text x="12.7" y="-22.86" size="1.778" layer="51" font="vector">Pete Lewis</text>
+<text x="-6.35" y="-25.4" size="1.778" layer="51" font="vector">Based on designed by Fisher M. and Andy England</text>
+<dimension x1="25.4" y1="25.4" x2="0" y2="25.4" x3="12.7" y3="41.91" textsize="1.27" layer="47" unit="inch"/>
+<dimension x1="25.4" y1="0" x2="25.4" y2="25.4" x3="38.1" y3="12.7" textsize="1.27" layer="47" unit="inch"/>
+<text x="6.477" y="49.022" size="1.27" layer="47" font="vector">Units in Inches</text>
 <text x="58.928" y="42.037" size="2.032" layer="51" font="vector" align="top-left">Thickness: 1.6mm
 Layers: 2
 Solder Mask Color: Red
 Silkscreen: White
 Finish: Lead-Free HASL</text>
+<dimension x1="0" y1="0" x2="2.54" y2="2.54" x3="-7.62" y3="1.27" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="0" x2="5.08" y2="12.7" x3="-11.43" y3="6.35" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="0" x2="0" y2="25.4" x3="-15.24" y3="12.7" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="25.4" x2="2.54" y2="22.86" x3="-7.62" y3="24.13" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="0" x2="2.54" y2="2.54" x3="1.27" y3="-6.35" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="0" y1="25.4" x2="7.62" y2="24.13" x3="3.81" y3="36.83" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="25.4" y1="25.4" x2="22.86" y2="22.86" x3="24.13" y3="27.94" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="25.4" y1="25.4" x2="15.24" y2="24.13" x3="20.32" y3="36.83" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="15.24" y1="24.13" x2="12.7" y2="24.13" x3="13.97" y3="33.02" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="0" y1="0" x2="7.62" y2="1.27" x3="3.81" y3="-11.43" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="25.4" y1="0" x2="17.78" y2="1.27" x3="21.59" y3="-11.43" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="17.78" y1="1.27" x2="15.24" y2="1.27" x3="16.51" y3="-3.81" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="0" y1="0" x2="4.7625" y2="7.0485" x3="-2.54" y3="3.52425" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="25.4" x2="4.7625" y2="18.4785" x3="-11.05661875" y3="21.93925" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="0" y1="25.4" x2="4.7625" y2="18.4785" x3="2.38125" y3="27.94" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
+<dimension x1="25.4" y1="0" x2="12.7" y2="15.24" x3="33.02" y3="7.62" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
+<dimension x1="25.4" y1="25.4" x2="12.7" y2="15.24" x3="19.05" y3="39.37" textsize="1.27" layer="47" dtype="horizontal" unit="inch"/>
 </plain>
 <libraries>
 <library name="SparkFun-Capacitors">
@@ -5436,9 +5453,9 @@ These rules have been curated by SparkFuns DFM commitee. After doing much resear
 </pass>
 </autorouter>
 <elements>
-<element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="-19.05" y="-8.89" smashed="yes">
-<attribute name="DESIGNER" value="" x="-19.05" y="-8.89" size="1.778" layer="27" display="off"/>
-<attribute name="REV" value="" x="-19.05" y="-8.89" size="1.778" layer="27" display="off"/>
+<element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="-17.78" y="-22.86" smashed="yes">
+<attribute name="DESIGNER" value="" x="-17.78" y="-22.86" size="1.778" layer="27" display="off"/>
+<attribute name="REV" value="" x="-17.78" y="-22.86" size="1.778" layer="27" display="off"/>
 </element>
 <element name="J2" library="SparkFun-Connectors" package="JST04_1MM_RA" value="QWIIC_RA" x="20.32" y="12.7" smashed="yes" rot="R90">
 <attribute name="NAME" x="22.479" y="11.303" size="0.6096" layer="25" font="vector" ratio="20" rot="R90"/>
