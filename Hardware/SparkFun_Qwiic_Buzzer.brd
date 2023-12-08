@@ -210,7 +210,9 @@
 Layers: 2
 Solder Mask Color: Red
 Silkscreen: White
-Finish: Lead-Free HASL</text>
+Finish: Lead-Free HASL
+Material: TG135-140
+Copper Plating: 1OZ</text>
 <dimension x1="0" y1="0" x2="2.54" y2="2.54" x3="-7.62" y3="1.27" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
 <dimension x1="0" y1="0" x2="5.08" y2="12.7" x3="-11.43" y3="6.35" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
 <dimension x1="0" y1="0" x2="0" y2="25.4" x3="-15.24" y3="12.7" textsize="1.27" layer="47" dtype="vertical" unit="inch"/>
