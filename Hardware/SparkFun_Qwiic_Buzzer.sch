@@ -26415,7 +26415,7 @@ disconnect LED.</text>
 <wire x1="25.4" y1="139.7" x2="25.4" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="MISO" class="0">
+<net name="POCI" class="0">
 <segment>
 <pinref part="U4" gate="U1" pin="(TX/\SDO/A5)~5"/>
 <wire x1="86.36" y1="124.46" x2="88.9" y2="124.46" width="0.1524" layer="91"/>
