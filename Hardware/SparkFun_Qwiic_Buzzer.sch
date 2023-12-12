@@ -26374,14 +26374,15 @@ Diode with low voltage drop</description>
 <text x="114.3" y="149.86" size="1.27" layer="97" font="vector">Cut jumper to disconnect
 the I2C pullup resistors.</text>
 <text x="104.013" y="161.671" size="1.778" layer="97" font="vector">I2C Pull Ups</text>
-<text x="190.754" y="82.804" size="1.778" layer="97" font="vector">Clear INT to remove pull-up</text>
+<text x="190.754" y="82.804" size="1.27" layer="97" font="vector">Cut jumper to
+remove pull-up</text>
 <text x="197.104" y="6.096" size="1.27" layer="94" font="vector">Fisher M.</text>
 <text x="208.28" y="6.096" size="1.27" layer="94" font="vector">Andy England</text>
 <text x="2.54" y="180.34" size="2.54" layer="94" font="vector">ATTINY-84</text>
 <wire x1="147.32" y1="99.06" x2="147.32" y2="35.56" width="0.1524" layer="97" style="longdash"/>
 <wire x1="147.32" y1="99.06" x2="0" y2="99.06" width="0.1524" layer="97" style="longdash"/>
 <text x="5.08" y="91.44" size="2.54" layer="94" font="vector">Buzzer</text>
-<text x="2.54" y="177.8" size="1.27" layer="97" font="vector">VIN: 1.8-5.5V</text>
+<text x="2.54" y="177.8" size="1.27" layer="97" font="vector">VCC: 1.8-5.5V (Typically 3.3V from QWIIC)</text>
 <text x="148.844" y="6.096" size="2.54" layer="94" font="vector">Based on designed by:</text>
 <text x="166.116" y="11.176" size="2.54" layer="94" font="vector">Pete Lewis</text>
 <text x="53.34" y="53.34" size="1.778" layer="97" font="vector" ratio="5">Software Controlled Volume</text>
@@ -26389,7 +26390,8 @@ the I2C pullup resistors.</text>
 <wire x1="22.86" y1="58.42" x2="22.86" y2="2.54" width="0.1524" layer="97" style="shortdash"/>
 <wire x1="22.86" y1="2.54" x2="124.46" y2="2.54" width="0.1524" layer="97" style="shortdash"/>
 <wire x1="124.46" y1="2.54" x2="124.46" y2="58.42" width="0.1524" layer="97" style="shortdash"/>
-<text x="25.4" y="165.1" size="1.27" layer="97" font="vector">Cut jumper to disconnect LED.</text>
+<text x="39.37" y="163.068" size="1.27" layer="97" font="vector">Cut jumper to 
+disconnect LED.</text>
 <text x="2.54" y="17.78" size="1.27" layer="97" font="vector">Cut jumper to 
 disconnect LED.</text>
 <wire x1="7.62" y1="35.56" x2="5.08" y2="22.86" width="0.1524" layer="97" style="shortdash"/>
@@ -26399,6 +26401,7 @@ disconnect R15,
 and soley use USER 
 Resistor.</text>
 <wire x1="113.03" y1="71.374" x2="102.108" y2="49.53" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="38.1" y1="163.322" x2="24.892" y2="150.622" width="0.1524" layer="97" style="shortdash"/>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes"/>
@@ -26480,16 +26483,16 @@ Resistor.</text>
 <instance part="I2C" gate="G$1" x="111.76" y="147.32" smashed="yes" rot="R270">
 <attribute name="NAME" x="109.728" y="143.383" size="1.778" layer="95" font="vector"/>
 </instance>
-<instance part="R4" gate="G$1" x="22.86" y="152.4" smashed="yes" rot="R90">
-<attribute name="NAME" x="21.336" y="152.4" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
-<attribute name="VALUE" x="24.384" y="152.4" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
+<instance part="R4" gate="G$1" x="22.86" y="137.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="21.336" y="137.16" size="1.778" layer="95" font="vector" rot="R90" align="bottom-center"/>
+<attribute name="VALUE" x="24.384" y="137.16" size="1.778" layer="96" font="vector" rot="R90" align="top-center"/>
 </instance>
-<instance part="POWER" gate="G$1" x="22.86" y="142.24" smashed="yes">
-<attribute name="NAME" x="19.177" y="136.398" size="1.778" layer="95" font="vector" rot="R90"/>
-<attribute name="VALUE" x="24.765" y="137.668" size="1.778" layer="96" font="vector" rot="R90" align="top-left"/>
+<instance part="POWER" gate="G$1" x="22.86" y="127" smashed="yes">
+<attribute name="NAME" x="19.177" y="121.158" size="1.778" layer="95" font="vector" rot="R90"/>
+<attribute name="VALUE" x="24.765" y="122.428" size="1.778" layer="96" font="vector" rot="R90" align="top-left"/>
 </instance>
-<instance part="GND10" gate="1" x="22.86" y="132.08" smashed="yes">
-<attribute name="VALUE" x="20.32" y="129.54" size="1.778" layer="96" font="vector"/>
+<instance part="GND10" gate="1" x="22.86" y="116.84" smashed="yes">
+<attribute name="VALUE" x="20.32" y="114.3" size="1.778" layer="96" font="vector"/>
 </instance>
 <instance part="J5" gate="J1" x="177.8" y="63.5" smashed="yes" rot="MR180">
 <attribute name="VALUE" x="175.26" y="68.326" size="1.778" layer="96" font="vector" rot="MR180"/>
@@ -26516,11 +26519,11 @@ Resistor.</text>
 <attribute name="NAME" x="37.084" y="30.48" size="1.778" layer="95" font="vector" rot="R270" align="bottom-center"/>
 <attribute name="VALUE" x="34.036" y="30.48" size="1.778" layer="96" font="vector" rot="R270" align="top-center"/>
 </instance>
-<instance part="PWR_LED" gate="G$1" x="22.86" y="165.1" smashed="yes" rot="R90">
-<attribute name="NAME" x="20.32" y="159.512" size="1.778" layer="95" font="vector" rot="R90"/>
+<instance part="PWR_LED" gate="G$1" x="22.86" y="149.86" smashed="yes" rot="R90">
+<attribute name="NAME" x="20.32" y="144.272" size="1.778" layer="95" font="vector" rot="R90"/>
 </instance>
-<instance part="SUPPLY3" gate="G$1" x="22.86" y="172.72" smashed="yes">
-<attribute name="VALUE" x="22.86" y="175.514" size="1.778" layer="96" font="vector" align="bottom-center"/>
+<instance part="SUPPLY3" gate="G$1" x="22.86" y="157.48" smashed="yes">
+<attribute name="VALUE" x="22.86" y="160.274" size="1.778" layer="96" font="vector" align="bottom-center"/>
 </instance>
 <instance part="GND9" gate="1" x="43.18" y="7.62" smashed="yes" rot="MR0">
 <attribute name="VALUE" x="45.72" y="5.08" size="1.778" layer="96" font="vector" rot="MR0"/>
@@ -26657,7 +26660,7 @@ Resistor.</text>
 <segment>
 <pinref part="POWER" gate="G$1" pin="C"/>
 <pinref part="GND10" gate="1" pin="GND"/>
-<wire x1="22.86" y1="134.62" x2="22.86" y2="137.16" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="119.38" x2="22.86" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND9" gate="1" pin="GND"/>
@@ -26795,7 +26798,7 @@ Resistor.</text>
 <wire x1="187.96" y1="91.44" x2="187.96" y2="88.9" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="22.86" y1="170.18" x2="22.86" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="154.94" x2="22.86" y2="157.48" width="0.1524" layer="91"/>
 <pinref part="SUPPLY3" gate="G$1" pin="3.3V"/>
 <pinref part="PWR_LED" gate="G$1" pin="2"/>
 </segment>
@@ -26857,7 +26860,7 @@ Resistor.</text>
 <segment>
 <pinref part="R4" gate="G$1" pin="1"/>
 <pinref part="POWER" gate="G$1" pin="A"/>
-<wire x1="22.86" y1="144.78" x2="22.86" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="129.54" x2="22.86" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="POCI" class="0">
@@ -26907,7 +26910,7 @@ Resistor.</text>
 <segment>
 <pinref part="R4" gate="G$1" pin="2"/>
 <pinref part="PWR_LED" gate="G$1" pin="1"/>
-<wire x1="22.86" y1="160.02" x2="22.86" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="144.78" x2="22.86" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$4" class="0">
