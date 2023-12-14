@@ -48,8 +48,8 @@ struct LEDconfig {
       pulseGranularity = map->ledPulseGranularity;
       pulseCycleTime = map->ledPulseCycleTime;
       pulseOffTime = map->ledPulseOffTime;
-      calculatePulseValues();
-      resetPulseValues();
+      //calculatePulseValues();
+      //resetPulseValues();
     }
   }
   
@@ -75,10 +75,17 @@ struct LEDconfig {
     //At each discrete adjustment the LED will spend X amount of time at a brightness level
     //Time spent at this level is calc'd by taking total time (1000 ms) / number of adjustments / up/down (2) = 12ms per step
 
-    if (pulseCycleTime == 0) { //Just set the LED to a static value if cycle time is zero
-      analogWrite(ledPin, brightness);
+    // if (pulseCycleTime == 0) { //Just set the LED to a static value if cycle time is zero
+      //analogWrite(ledPin, brightness);
+      tone(ledPin, pulseCycleTime);
+      if(brightness > 0)
+      {
+        digitalWrite(8, HIGH);
+      } else {
+        digitalWrite(8, LOW);
+      }
       return;
-    }
+    // }
 
     if (pulseCycleTime > 0) { //Otherwise run in cyclic mode
       if (millis() - pulseStartTime <= pulseCycleTime){
@@ -95,14 +102,14 @@ struct LEDconfig {
           if (pulseLedBrightness < 0) pulseLedBrightness = 0;
           if (pulseLedBrightness > 255) pulseLedBrightness = 255;
 
-          analogWrite(ledPin, pulseLedBrightness);
+          //analogWrite(ledPin, pulseLedBrightness);
           adjustmentStartTime = millis();
         }
       }
 
       else if (millis() - pulseStartTime <= pulseCycleTime + pulseOffTime) {
         //LED off
-        analogWrite(ledPin, 0);
+        //analogWrite(ledPin, 0);
       }
 
       else {

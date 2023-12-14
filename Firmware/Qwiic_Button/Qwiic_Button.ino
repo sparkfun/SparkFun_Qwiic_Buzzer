@@ -89,6 +89,7 @@ const uint8_t ledPin = 7; //PWM
 const uint8_t statusLedPin = 3;
 const uint8_t switchPin = 8;
 const uint8_t interruptPin = 0; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
+const uint8_t buzzerPin = 5; // PWM is created with Timer1 on a compare/match/toggle setup.
 #endif
 
 //Global variables
@@ -152,6 +153,20 @@ volatile unsigned long lastClickTime = 0; //Used for debouncing
 
 LEDconfig onboardLED; //init the onboard LED
 
+#include "pitches.h"
+
+// notes in the melody:
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+
+// note durations: 4 = quarter note, 8 = eighth note, etc.:
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+
+
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 void setup(void)
@@ -162,17 +177,49 @@ void setup(void)
   pinMode(addressPin3, INPUT_PULLUP);
 
   pinMode(ledPin, OUTPUT); //PWM
-  analogWrite(ledPin, 0);
+  //analogWrite(ledPin, 0);
+
+  pinMode(buzzerPin, OUTPUT); //PWM
 
   pinMode(statusLedPin, OUTPUT); //No PWM
   digitalWrite(statusLedPin, 0);
 
   pinMode(switchPin, INPUT_PULLUP); //GPIO with internal pullup, goes low when button is pushed
+  pinMode(8, OUTPUT); // used to control GND connection on buzzer, we can use tone to give this a "50% pwm"
 #if defined(__AVR_ATmega328P__)
   pinMode(interruptPin, INPUT_PULLUP);     //High-impedance input until we have an int and then we output low. Pulled high with 10k with cuttable jumper.
 #else
   pinMode(interruptPin, INPUT);     //High-impedance input until we have an int and then we output low. Pulled high with 10k with cuttable jumper.
 #endif
+
+	// /*
+  //  * Timer1 Setup for Frequency generation on pin 5
+	//  * WGM10, WGM12: Fast PWM, 8-bit TOP=255
+  //  * WGM12 = (WGM13:10) = 0100 = CTC (Clear Timer on Compare), TOP = 0x00FF
+	//  * CS10: No prescaler
+	//  * COM1A1: Pin 6 to LOW on match with OCR1A and to HIGH on TOP
+  //  * COM1A0: Pin 6 toggle on match with OCR1A (good for creating square wave frequencies)
+  //  * COM1B0: Pin 5 toggle on match with OCR1A (good for creating square wave frequencies)
+	//  */
+	// TCCR1A = _BV(COM1B0);
+	// TCCR1B = _BV(CS10) | _BV(WGM12);
+	// /*
+	//  * 50% duty cycle
+	//  * MAX 32 kHz with 8MHz CPU clock
+	//  * OCR1A = 16384; // 254.5 Hz
+	//  * OCR1A = 8192; // 508.5 Hz
+	//  * OCR1A = 4096; // 1.02KHz
+	//  * OCR1A = 2048; // 2.03KHz
+	//  * OCR1A = 1024; // 4.07KHz
+	//  * OCR1A = 512; // 8.25KHz
+	//  * OCR1A = 256; // 16.08KHz
+	//  * OCR1A = 127; // 32.3KHz
+	//  */
+	// OCR1A = 512;
+
+  //tone(5,20000);
+
+  // while(1);
 
   //Disable ADC
   ADCSRA = 0;
@@ -219,6 +266,10 @@ void setup(void)
 
 
   digitalWrite(statusLedPin, HIGH); //turn on the status LED to notify that we've setup everything properly
+
+  //play_melody();
+
+
 }
 
 void loop(void)
@@ -383,7 +434,8 @@ void readSystemSettings(memoryMap *map)
   else
   { //Pulsing disabled
     //Turn on LED to setting
-    analogWrite(ledPin, map->ledBrightness);
+    //analogWrite(ledPin, map->ledBrightness);
+    tone(ledPin, map->ledBrightness);
   }
 }
 
@@ -419,4 +471,23 @@ void recordSystemSettings(memoryMap *map)
   EEPROM.put(LOCATION_LED_PULSECYCLETIME, map->ledPulseCycleTime);
   EEPROM.put(LOCATION_LED_PULSEOFFTIME, map->ledPulseOffTime);
   EEPROM.put(LOCATION_BUTTON_DEBOUNCE_TIME, map->buttonDebounceTime);
+}
+
+void play_melody()
+{
+    // iterate over the notes of the melody:
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+
+    // to calculate the note duration, take one second divided by the note type.
+    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+    int noteDuration = 1000 / noteDurations[thisNote];
+    tone(7, melody[thisNote], noteDuration);
+
+    // to distinguish the notes, set a minimum time between them.
+    // the note's duration + 30% seems to work well:
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    // stop the tone playing:
+    noTone(7);
+  }
 }
