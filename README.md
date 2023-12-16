@@ -18,8 +18,8 @@ Documentation
 --------------
 
 * **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
-* **Library](GitHub library URL)** - <LANGUAGE> library for the <PRODUCT NAME>.
-* **Hookup Guide](https://docs.sparkfun.com/** - Basic hookup guide for the <PRODUCT NAME>.
+* **Library](https://github.com/sparkfun/SparkFun_Qwiic_Buzzer_Arduino_Library)** - Arduino library for the Qwiic Buzzer.
+* **[Hookup Guide](https://docs.sparkfun.com/SparkFun_Qwiic_Buzzer)** - Basic hookup guide for the  Qwiic Buzzer.
 
 Product Versions
 ----------------
