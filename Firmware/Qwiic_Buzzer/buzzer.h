@@ -68,7 +68,7 @@ struct BUZZERconfig {
     pulseLedBrightness = 0;
   }
 
-  void pulse(uint8_t ledPin) {
+  void pulse(uint8_t buzzerPin) {
     //Pulse LED on/off based on settings
     //Brightness will increase with each cycle based on granularity value (5)
     //To get to max brightness (207) we will need ceil(207/5*2) LED adjustments = 83
@@ -76,8 +76,8 @@ struct BUZZERconfig {
     //Time spent at this level is calc'd by taking total time (1000 ms) / number of adjustments / up/down (2) = 12ms per step
 
     // if (toneFrequency == 0) { //Just set the LED to a static value if cycle time is zero
-      //analogWrite(ledPin, brightness);
-      tone(ledPin, toneFrequency);
+      //analogWrite(buzzerPin, brightness);
+      tone(buzzerPin, toneFrequency);
       if(volume > 0)
       {
         digitalWrite(8, HIGH);
@@ -102,14 +102,14 @@ struct BUZZERconfig {
           if (pulseLedBrightness < 0) pulseLedBrightness = 0;
           if (pulseLedBrightness > 255) pulseLedBrightness = 255;
 
-          //analogWrite(ledPin, pulseLedBrightness);
+          //analogWrite(buzzerPin, pulseLedBrightness);
           adjustmentStartTime = millis();
         }
       }
 
       else if (millis() - pulseStartTime <= toneFrequency + pulseOffTime) {
         //LED off
-        //analogWrite(ledPin, 0);
+        //analogWrite(buzzerPin, 0);
       }
 
       else {

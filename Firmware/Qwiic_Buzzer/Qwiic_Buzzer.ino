@@ -75,7 +75,7 @@ const uint8_t addressPin0 = 3;
 const uint8_t addressPin1 = 4;
 const uint8_t addressPin2 = 5;
 const uint8_t addressPin3 = 6;
-const uint8_t ledPin = 9; //PWM
+const uint8_t buzzerPin = 9; //PWM
 const uint8_t statusLedPin = 8;
 const uint8_t switchPin = 2;
 const uint8_t interruptPin = 7; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
@@ -85,11 +85,10 @@ const uint8_t addressPin0 = 9;
 const uint8_t addressPin1 = 10;
 const uint8_t addressPin2 = 1;
 const uint8_t addressPin3 = 2;
-const uint8_t ledPin = 7; //PWM
+const uint8_t buzzerPin = 7; // for use with tone()
 const uint8_t statusLedPin = 3;
 const uint8_t switchPin = 8;
 const uint8_t interruptPin = 0; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
-const uint8_t buzzerPin = 5; // PWM is created with Timer1 on a compare/match/toggle setup.
 #endif
 
 //Global variables
@@ -178,10 +177,7 @@ void setup(void)
   pinMode(addressPin2, INPUT_PULLUP);
   pinMode(addressPin3, INPUT_PULLUP);
 
-  pinMode(ledPin, OUTPUT); //PWM
-  //analogWrite(ledPin, 0);
-
-  pinMode(buzzerPin, OUTPUT); //PWM
+  pinMode(buzzerPin, OUTPUT);
 
   pinMode(statusLedPin, OUTPUT); //No PWM
   digitalWrite(statusLedPin, 0);
@@ -316,7 +312,7 @@ void loop(void)
   }
   
   sleep_mode();             //Stop everything and go to sleep. Wake up if I2C event occurs.
-  onboardLED.pulse(ledPin); //update the brightness of the LED
+  onboardLED.pulse(buzzerPin); //update the brightness of the LED
 }
 
 //Update slave I2C address to what's configured with registerMap.i2cAddress and/or the address jumpers.
@@ -431,12 +427,12 @@ void readSystemSettings(memoryMap *map)
   if (map->buzzerToneFrequency > 0)
   {
     //Don't turn on LED, we'll pulse it in main loop
-    analogWrite(ledPin, 0);
+    //analogWrite(buzzerPin, 0);
   }
   else
   { //Pulsing disabled
     //Turn on LED to setting
-    //analogWrite(ledPin, map->buzzerVolume);
+    //analogWrite(buzzerPin, map->buzzerVolume);
   }
 }
 
