@@ -152,7 +152,7 @@ volatile Queue ButtonPressed, ButtonClicked; //Init FIFO buffer for storing time
 
 volatile unsigned long lastClickTime = 0; //Used for debouncing
 
-BUZZERconfig onboardLED; //init the onboard LED
+BUZZERconfig onboardBUZZER; //init the onboard LED
 
 #include "pitches.h"
 
@@ -257,7 +257,7 @@ void setup(void)
   registerMap.ledPulseOffTime = 500;   //Off time between pulses
 #endif
 
-  onboardLED.update(&registerMap); //update LED variables, get ready for pulsing
+  onboardBUZZER.update(&registerMap); //update LED variables, get ready for pulsing
   setupInterrupts();               //Enable pin change interrupts for I2C, switch, etc
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
   oldAddress = registerMap.i2cAddress;
@@ -306,13 +306,13 @@ void loop(void)
     recordSystemSettings(&registerMap);
 
     //Calculate LED values based on pulse settings if anything has changed
-    onboardLED.update(&registerMap);
+    onboardBUZZER.update(&registerMap);
 
     updateFlag = false; //clear flag
   }
   
   sleep_mode();             //Stop everything and go to sleep. Wake up if I2C event occurs.
-  onboardLED.pulse(buzzerPin); //update the brightness of the LED
+  onboardBUZZER.pulse(buzzerPin); //update the brightness of the LED
 }
 
 //Update slave I2C address to what's configured with registerMap.i2cAddress and/or the address jumpers.
