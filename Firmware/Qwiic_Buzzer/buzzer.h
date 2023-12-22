@@ -83,6 +83,7 @@ struct BUZZERconfig {
         digitalWrite(8, HIGH);
       } else {
         digitalWrite(8, LOW);
+        noTone(buzzerPin);
       }
       return;
     // }
