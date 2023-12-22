@@ -72,7 +72,7 @@ typedef struct memoryMap {
   //LED Configuration
   uint8_t ledBrightness;                                  // 0x19
   uint8_t ledPulseGranularity;                            // 0x1A
-  uint16_t ledPulseCycleTime;                             // 0x1B
+  uint16_t buzzerToneFrequency;                             // 0x1B
   uint16_t ledPulseOffTime;                               // 0x1D
 
   //Device Configuration

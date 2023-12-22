@@ -112,7 +112,7 @@ volatile memoryMap registerMap {
   0x00000000,          //clickedQueueBack
   0x00,                //ledBrightness
   0x01,                //ledPulseGranularity
-  0x0000,              //ledPulseCycleTime
+  0x0000,              //buzzerToneFrequency
   0x0000,              //ledPulseOffTime
   DEFAULT_I2C_ADDRESS, //i2cAddress
 };
@@ -133,7 +133,7 @@ memoryMap protectionMap = {
   0x00000000, //clickedQueueBack
   0xFF,       //ledBrightness
   0xFF,       //ledPulseGranularity
-  0xFFFF,     //ledPulseCycleTime
+  0xFFFF,     //buzzerToneFrequency
   0xFFFF,     //ledPulseOffTime
   0xFF,       //i2cAddress
 
@@ -255,7 +255,7 @@ void setup(void)
   registerMap.ledBrightness = 255;     //Max brightness
   registerMap.ledPulseGranularity = 1; //Amount to change LED at each step
 
-  registerMap.ledPulseCycleTime = 500; //Total amount of cycle, does not include off time. LED pulse disabled if zero.
+  registerMap.buzzerToneFrequency = 500; //Total amount of cycle, does not include off time. LED pulse disabled if zero.
   registerMap.ledPulseOffTime = 500;   //Off time between pulses
 #endif
 
@@ -403,18 +403,18 @@ void readSystemSettings(memoryMap *map)
     EEPROM.put(LOCATION_LED_PULSEGRANULARITY, map->ledPulseGranularity);
   }
 
-  EEPROM.get(LOCATION_LED_PULSECYCLETIME, map->ledPulseCycleTime);
-  if (map->ledPulseCycleTime == 0xFFFF)
+  EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
+  if (map->buzzerToneFrequency == 0xFFFF)
   {
-    map->ledPulseCycleTime = 0; //Default to none
-    EEPROM.put(LOCATION_LED_PULSECYCLETIME, map->ledPulseCycleTime);
+    map->buzzerToneFrequency = 0; //Default to none
+    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
   }
 
   EEPROM.get(LOCATION_LED_PULSEOFFTIME, map->ledPulseOffTime);
   if (map->ledPulseOffTime == 0xFFFF)
   {
     map->ledPulseOffTime = 0; //Default to none
-    EEPROM.put(LOCATION_LED_PULSECYCLETIME, map->ledPulseOffTime);
+    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->ledPulseOffTime);
   }
 
   EEPROM.get(LOCATION_BUTTON_DEBOUNCE_TIME, map->buttonDebounceTime);
@@ -426,7 +426,7 @@ void readSystemSettings(memoryMap *map)
 
   //Read the starting value for the LED
   EEPROM.get(LOCATION_LED_BRIGHTNESS, map->ledBrightness);
-  if (map->ledPulseCycleTime > 0)
+  if (map->buzzerToneFrequency > 0)
   {
     //Don't turn on LED, we'll pulse it in main loop
     analogWrite(ledPin, 0);
@@ -468,7 +468,7 @@ void recordSystemSettings(memoryMap *map)
   EEPROM.put(LOCATION_INTERRUPTS, map->interruptConfigure.byteWrapped);
   EEPROM.put(LOCATION_LED_BRIGHTNESS, map->ledBrightness);
   EEPROM.put(LOCATION_LED_PULSEGRANULARITY, map->ledPulseGranularity);
-  EEPROM.put(LOCATION_LED_PULSECYCLETIME, map->ledPulseCycleTime);
+  EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
   EEPROM.put(LOCATION_LED_PULSEOFFTIME, map->ledPulseOffTime);
   EEPROM.put(LOCATION_BUTTON_DEBOUNCE_TIME, map->buttonDebounceTime);
 }
