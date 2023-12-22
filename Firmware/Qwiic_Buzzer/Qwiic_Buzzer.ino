@@ -101,6 +101,7 @@ volatile memoryMap registerMap {
   DEVICE_ID,           //id
   FIRMWARE_MINOR,      //firmwareMinor
   FIRMWARE_MAJOR,      //firmwareMajor
+  0x0000,              //buzzerToneFrequency
   {0, 0, 0},           //buttonStatus {eventAvailable, hasBeenClicked, isPressed}
   {1, 1},              //interruptConfig {clickedEnable, pressedEnable}
   0x000A,              //buttonDebounceTime
@@ -112,7 +113,7 @@ volatile memoryMap registerMap {
   0x00000000,          //clickedQueueBack
   0x00,                //ledBrightness
   0x01,                //ledPulseGranularity
-  0x0000,              //buzzerToneFrequency
+
   0x0000,              //ledPulseOffTime
   DEFAULT_I2C_ADDRESS, //i2cAddress
 };
@@ -122,6 +123,7 @@ memoryMap protectionMap = {
   0x00,       //id
   0x00,       //firmwareMinor
   0x00,       //firmwareMajor
+  0xFFFF,     //buzzerToneFrequency
   {1, 1, 1},  //buttonStatus {eventAvailable, hasBeenClicked, isPressed}
   {1, 1},     //interruptConfig {clickedEnable, pressedEnable}
   0xFFFF,     //buttonDebounceTime
@@ -133,7 +135,7 @@ memoryMap protectionMap = {
   0x00000000, //clickedQueueBack
   0xFF,       //ledBrightness
   0xFF,       //ledPulseGranularity
-  0xFFFF,     //buzzerToneFrequency
+
   0xFFFF,     //ledPulseOffTime
   0xFF,       //i2cAddress
 
