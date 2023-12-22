@@ -45,7 +45,7 @@
 #include "nvm.h"
 #include "queue.h"
 #include "registers.h"
-#include "led.h"
+#include "buzzer.h"
 
 #include "PinChangeInterrupt.h" //Nico Hood's library: https://github.com/NicoHood/PinChangeInterrupt/
 //Used for pin change interrupts on ATtinys (encoder button causes interrupt)
