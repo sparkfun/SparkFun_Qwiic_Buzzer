@@ -72,7 +72,7 @@ typedef struct memoryMap {
   unsigned long clickedQueueBack;                         // 0x17
 
   //LED Configuration
-  uint8_t ledBrightness;                                  // 0x1B
+  uint8_t buzzerVolume;                                  // 0x1B
   uint8_t ledPulseGranularity;                            // 0x1C
   
   uint16_t ledPulseOffTime;                               // 0x1D

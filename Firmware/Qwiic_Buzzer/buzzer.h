@@ -37,14 +37,14 @@ struct BUZZERconfig {
   void update(struct memoryMap* map) {
     //check if any of the values are different
     bool different = false;
-    if(map->ledBrightness != brightness) different = true; 
+    if(map->buzzerVolume != brightness) different = true; 
     if(map->ledPulseGranularity != pulseGranularity) different = true; 
     if(map->buzzerToneFrequency != toneFrequency) different = true; 
     if(map->ledPulseOffTime != pulseOffTime) different = true; 
     
     //if they are different, calculate new values and then reset everything
     if(different) {
-      brightness = map->ledBrightness;
+      brightness = map->buzzerVolume;
       pulseGranularity = map->ledPulseGranularity;
       toneFrequency = map->buzzerToneFrequency;
       pulseOffTime = map->ledPulseOffTime;

@@ -111,7 +111,7 @@ volatile memoryMap registerMap {
   {0, 1, 0},           //clickedQueueStatus {popRequest, isEmpty, isFull}
   0x00000000,          //clickedQueueFront
   0x00000000,          //clickedQueueBack
-  0x00,                //ledBrightness
+  0x00,                //buzzerVolume
   0x01,                //ledPulseGranularity
 
   0x0000,              //ledPulseOffTime
@@ -133,7 +133,7 @@ memoryMap protectionMap = {
   {1, 0, 0},  //clickedQueueStatus {popRequest, isEmpty, isFull}
   0x00000000, //clickedQueueFront
   0x00000000, //clickedQueueBack
-  0xFF,       //ledBrightness
+  0xFF,       //buzzerVolume
   0xFF,       //ledPulseGranularity
 
   0xFFFF,     //ledPulseOffTime
@@ -254,7 +254,7 @@ void setup(void)
 
 #if defined(__AVR_ATmega328P__)
   //Debug values
-  registerMap.ledBrightness = 255;     //Max brightness
+  registerMap.buzzerVolume = 255;     //Max brightness
   registerMap.ledPulseGranularity = 1; //Amount to change LED at each step
 
   registerMap.buzzerToneFrequency = 500; //Total amount of cycle, does not include off time. LED pulse disabled if zero.
@@ -427,7 +427,7 @@ void readSystemSettings(memoryMap *map)
   }
 
   //Read the starting value for the LED
-  EEPROM.get(LOCATION_LED_BRIGHTNESS, map->ledBrightness);
+  EEPROM.get(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
   if (map->buzzerToneFrequency > 0)
   {
     //Don't turn on LED, we'll pulse it in main loop
@@ -436,7 +436,7 @@ void readSystemSettings(memoryMap *map)
   else
   { //Pulsing disabled
     //Turn on LED to setting
-    //analogWrite(ledPin, map->ledBrightness);
+    //analogWrite(ledPin, map->buzzerVolume);
   }
 }
 
@@ -467,7 +467,7 @@ void recordSystemSettings(memoryMap *map)
 
 
   EEPROM.put(LOCATION_INTERRUPTS, map->interruptConfigure.byteWrapped);
-  EEPROM.put(LOCATION_LED_BRIGHTNESS, map->ledBrightness);
+  EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
   EEPROM.put(LOCATION_LED_PULSEGRANULARITY, map->ledPulseGranularity);
   EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
   EEPROM.put(LOCATION_LED_PULSEOFFTIME, map->ledPulseOffTime);
