@@ -55,24 +55,25 @@ typedef struct memoryMap {
   uint8_t firmwareMajor;                                  // 0x02
 
   uint16_t buzzerToneFrequency;                           // 0x03
+  uint8_t buzzerVolume;                                   // 0x05
 
-  statusRegisterBitField buttonStatus;                    // 0x05
+  statusRegisterBitField buttonStatus;                    // 0x06
 
   //Interrupt Configuration
-  interruptConfigBitField interruptConfigure;              // 0x06
-  uint16_t buttonDebounceTime;                            // 0x07
+  interruptConfigBitField interruptConfigure;              // 0x07
+  uint16_t buttonDebounceTime;                            // 0x08
 
   //ButtonPressed queue manipulation and status functions
-  queueStatusBitField pressedQueueStatus;                 // 0x09
-  unsigned long pressedQueueFront;                        // 0x0A
-  unsigned long pressedQueueBack;                         // 0x0E
+  queueStatusBitField pressedQueueStatus;                 // 0x0A
+  unsigned long pressedQueueFront;                        // 0x0B
+  unsigned long pressedQueueBack;                         // 0x0F
 
-  queueStatusBitField clickedQueueStatus;                 // 0x12
-  unsigned long clickedQueueFront;                        // 0x13
-  unsigned long clickedQueueBack;                         // 0x17
+  queueStatusBitField clickedQueueStatus;                 // 0x13
+  unsigned long clickedQueueFront;                        // 0x14
+  unsigned long clickedQueueBack;                         // 0x18
 
   //LED Configuration
-  uint8_t buzzerVolume;                                  // 0x1B
+
   uint8_t ledPulseGranularity;                            // 0x1C
   
   uint16_t ledPulseOffTime;                               // 0x1D
