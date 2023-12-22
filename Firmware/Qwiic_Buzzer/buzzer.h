@@ -20,7 +20,7 @@ Distributed as-is; no warranty is given.
 struct BUZZERconfig {
 
   //variables imported from registerMap
-  uint8_t brightness = 0;  //Brightness of LED. If pulse cycle enabled, this is the max brightness of the pulse.
+  uint8_t volume = 0;  //Volume of buzzer
   uint8_t pulseGranularity = 0;  //Number of steps to take to get to ledBrightness. 1 is best for most applications.
   uint16_t toneFrequency = 0; //Total pulse cycle in ms, does not include off time. LED pulse disabled if zero.
   uint16_t pulseOffTime = 0; //Off time between pulses, in ms
@@ -37,14 +37,14 @@ struct BUZZERconfig {
   void update(struct memoryMap* map) {
     //check if any of the values are different
     bool different = false;
-    if(map->buzzerVolume != brightness) different = true; 
+    if(map->buzzerVolume != volume) different = true; 
     if(map->ledPulseGranularity != pulseGranularity) different = true; 
     if(map->buzzerToneFrequency != toneFrequency) different = true; 
     if(map->ledPulseOffTime != pulseOffTime) different = true; 
     
     //if they are different, calculate new values and then reset everything
     if(different) {
-      brightness = map->buzzerVolume;
+      volume = map->buzzerVolume;
       pulseGranularity = map->ledPulseGranularity;
       toneFrequency = map->buzzerToneFrequency;
       pulseOffTime = map->ledPulseOffTime;
@@ -55,7 +55,7 @@ struct BUZZERconfig {
   
   //Calculate LED values based on pulse settings
   void calculatePulseValues() {
-    pulseLedAdjustments = ceil((float)brightness / pulseGranularity * 2.0);
+    pulseLedAdjustments = ceil((float)volume / pulseGranularity * 2.0);
     timePerAdjustment = round((float)toneFrequency / pulseLedAdjustments);
     brightnessStep = pulseGranularity;
   }
@@ -78,7 +78,7 @@ struct BUZZERconfig {
     // if (toneFrequency == 0) { //Just set the LED to a static value if cycle time is zero
       //analogWrite(ledPin, brightness);
       tone(ledPin, toneFrequency);
-      if(brightness > 0)
+      if(volume > 0)
       {
         digitalWrite(8, HIGH);
       } else {
@@ -95,7 +95,7 @@ struct BUZZERconfig {
           pulseLedBrightness += brightnessStep;
 
           //If we've reached a max brightness, reverse step direction
-          if (pulseLedBrightness > (brightness - pulseGranularity)) {
+          if (pulseLedBrightness > (volume - pulseGranularity)) {
             brightnessStep *= -1;
           }
 
