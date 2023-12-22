@@ -3,7 +3,7 @@ led.h
 Fischer Moseley @ SparkFun Electronics
 Original Creation Date: July 31, 2019
 
-This file defines the LEDconfig struct, which provides an easy interface for
+This file defines the BUZZERconfig struct, which provides an easy interface for
 handling how the LED behaves, in addition to storing configuration variables.
 
 On the Qwiic Button, this LED is built into the button itself! 
@@ -17,7 +17,7 @@ Distributed as-is; no warranty is given.
 ******************************************************************************/
 
 //manages LED operations, stores configuration variables internally and provides an easy interface to updating the LED's status and blinking it
-struct LEDconfig {
+struct BUZZERconfig {
 
   //variables imported from registerMap
   uint8_t brightness = 0;  //Brightness of LED. If pulse cycle enabled, this is the max brightness of the pulse.

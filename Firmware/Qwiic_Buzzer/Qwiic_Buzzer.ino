@@ -153,7 +153,7 @@ volatile Queue ButtonPressed, ButtonClicked; //Init FIFO buffer for storing time
 
 volatile unsigned long lastClickTime = 0; //Used for debouncing
 
-LEDconfig onboardLED; //init the onboard LED
+BUZZERconfig onboardLED; //init the onboard LED
 
 #include "pitches.h"
 
