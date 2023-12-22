@@ -437,7 +437,6 @@ void readSystemSettings(memoryMap *map)
   { //Pulsing disabled
     //Turn on LED to setting
     //analogWrite(ledPin, map->ledBrightness);
-    tone(ledPin, map->ledBrightness);
   }
 }
 
