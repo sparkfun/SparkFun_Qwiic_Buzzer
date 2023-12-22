@@ -60,7 +60,7 @@
 #define FIRMWARE_MAJOR 0x01 //Firmware Version. Helpful for tech support.
 #define FIRMWARE_MINOR 0x03
 
-#define DEFAULT_I2C_ADDRESS 0x6F
+#define DEFAULT_I2C_ADDRESS 0x34
 
 #define SOFTWARE_ADDRESS true
 #define HARDWARE_ADDRESS false
