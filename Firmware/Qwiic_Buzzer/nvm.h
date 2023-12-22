@@ -15,11 +15,6 @@ Distributed as-is; no warranty is given.
 //Location in EEPROM for each thing we want to store between power cycles
 enum eepromLocations {
   LOCATION_I2C_ADDRESS = 0x00, //Device's address
-  LOCATION_INTERRUPTS = 0x01,
-  LOCATION_BUZZER_VOLUME = 0x02,
-  LOCATION_LED_PULSEGRANULARITY = 0x03,
-  LOCATION_BUZZER_TONE_FREQUENCY = 0x04,
-  LOCATION_LED_PULSEOFFTIME = 0x06,
-  LOCATION_BUTTON_DEBOUNCE_TIME = 0x08,
-  LOCATION_ADDRESS_TYPE = 0x0A,
+  LOCATION_BUZZER_TONE_FREQUENCY = 0x01,
+  LOCATION_BUZZER_VOLUME = 0x03,
 };

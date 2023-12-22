@@ -36,36 +36,6 @@ void receiveEvent(int numberOfBytesReceived) {
       *(registerPointer + registerNumber + x) |= temp & *(protectionPointer + registerNumber + x); //Or in the user's request (clensed against protection bits)
     }
   }
-
-  //Update the ButtonPressed and ButtonClicked queues.
-  //If the user has requested to pop the oldest event off the stack then do so!
-  if (registerMap.pressedQueueStatus.popRequest) {
-    //Update the register with the next-oldest timestamp
-    ButtonPressed.pop();
-    registerMap.pressedQueueBack = ButtonPressed.back();
-
-    //Update the status register with the state of the ButtonPressed buffer
-    registerMap.pressedQueueStatus.isFull = ButtonPressed.isFull();
-    registerMap.pressedQueueStatus.isEmpty = ButtonPressed.isEmpty();
-
-    //Clear the popRequest bit so we know the popping is done
-    registerMap.pressedQueueStatus.popRequest = false;
-  }
-
-  //If the user has requested to pop the oldest event off the stack then do so!
-  if (registerMap.clickedQueueStatus.popRequest) {
-    //Update the register with the next-oldest timestamp
-    ButtonClicked.pop();
-    registerMap.clickedQueueBack = ButtonClicked.back();
-
-    //Update the status register with the state of the ButtonClicked buffer
-    registerMap.clickedQueueStatus.isFull = ButtonClicked.isFull();
-    registerMap.clickedQueueStatus.isEmpty = ButtonClicked.isEmpty();
-
-    //Clear the popRequest bit so we know the popping is done
-    registerMap.clickedQueueStatus.popRequest = false;
-  }
-
   updateFlag = true; //Update things like LED brightnesses in the main loop
 }
 
@@ -74,15 +44,6 @@ void receiveEvent(int numberOfBytesReceived) {
 //The interrupt will respond with bytes starting from the last byte the user sent to us
 //While we are sending bytes we may have to do some calculations
 void requestEvent() {
-  registerMap.buttonStatus.isPressed = !digitalRead(switchPin); //have to take the inverse of the switch pin because the switch is pulled up, not pulled down
-
-  //Calculate time stamps before we start sending bytes via I2C
-  registerMap.pressedQueueBack = millis() - ButtonPressed.back();
-  registerMap.pressedQueueFront = millis() - ButtonPressed.front();
-
-  registerMap.clickedQueueBack = millis() - ButtonClicked.back();
-  registerMap.clickedQueueFront = millis() - ButtonClicked.front();
-
   //This will write the entire contents of the register map struct starting from
   //the register the user requested, and when it reaches the end the master
   //will read 0xFFs.
@@ -93,26 +54,26 @@ void requestEvent() {
 //Called any time the pin changes state
 void buttonInterrupt() {
 
-  //Debounce
-  if (millis() - lastClickTime < registerMap.buttonDebounceTime)
-    return;
-  lastClickTime = millis();
+  // //Debounce
+  // if (millis() - lastClickTime < registerMap.buttonDebounceTime)
+  //   return;
+  // lastClickTime = millis();
 
-  registerMap.buttonStatus.eventAvailable = true;
+  // registerMap.buttonStatus.eventAvailable = true;
 
-  //Update the ButtonPressed queue and registerMap
-  registerMap.buttonStatus.isPressed = !digitalRead(switchPin); //Take the inverse of the switch pin because the switch is pulled up
-  ButtonPressed.push(millis() - registerMap.buttonDebounceTime);
-  registerMap.pressedQueueStatus.isEmpty = ButtonPressed.isEmpty();
-  registerMap.pressedQueueStatus.isFull = ButtonPressed.isFull();
+  // //Update the ButtonPressed queue and registerMap
+  // registerMap.buttonStatus.isPressed = !digitalRead(switchPin); //Take the inverse of the switch pin because the switch is pulled up
+  // ButtonPressed.push(millis() - registerMap.buttonDebounceTime);
+  // registerMap.pressedQueueStatus.isEmpty = ButtonPressed.isEmpty();
+  // registerMap.pressedQueueStatus.isFull = ButtonPressed.isFull();
 
-  //Update the ButtonClicked queue and registerMap if necessary
-  if (digitalRead(switchPin) == HIGH) { //User has released the button, we have completed a click cycle
-    //update the ButtonClicked queue and then registerMap
-    registerMap.buttonStatus.hasBeenClicked = true;
-    ButtonClicked.push(millis() - registerMap.buttonDebounceTime);
-    registerMap.clickedQueueStatus.isEmpty = ButtonClicked.isEmpty();
-    registerMap.clickedQueueStatus.isFull = ButtonClicked.isFull();
-  }
+  // //Update the ButtonClicked queue and registerMap if necessary
+  // if (digitalRead(switchPin) == HIGH) { //User has released the button, we have completed a click cycle
+  //   //update the ButtonClicked queue and then registerMap
+  //   registerMap.buttonStatus.hasBeenClicked = true;
+  //   ButtonClicked.push(millis() - registerMap.buttonDebounceTime);
+  //   registerMap.clickedQueueStatus.isEmpty = ButtonClicked.isEmpty();
+  //   registerMap.clickedQueueStatus.isFull = ButtonClicked.isFull();
+  // }
 
 }
