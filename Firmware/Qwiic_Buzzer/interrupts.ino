@@ -35,6 +35,15 @@ void receiveEvent(int numberOfBytesReceived) {
       *(registerPointer + registerNumber + x) &= ~*(protectionPointer + registerNumber + x); //Clear this register if needed
       *(registerPointer + registerNumber + x) |= temp & *(protectionPointer + registerNumber + x); //Or in the user's request (clensed against protection bits)
     }
+
+    // if(registerMap.buzzerActive == 0x01)
+    // {
+    //   buzzerActiveFlag = true;
+    // }
+    // else
+    // {
+    //   buzzerActiveFlag = false;
+    // }
   }
   updateFlag = true; //Update things like LED brightnesses in the main loop
 }

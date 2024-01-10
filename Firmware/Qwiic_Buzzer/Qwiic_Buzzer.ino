@@ -95,23 +95,33 @@ const uint8_t interruptPin = 0; //pin is active-low, high-impedance when not tri
 //These are the defaults for all settings
 
 //Variables used in the I2C interrupt.ino file so we use volatile
-volatile memoryMap registerMap {
-  DEVICE_ID,           //id
-  FIRMWARE_MINOR,      //firmwareMinor
-  FIRMWARE_MAJOR,      //firmwareMajor
-  0x0000,              //buzzerToneFrequency
-  0x00,                //buzzerVolume  
-  DEFAULT_I2C_ADDRESS, //i2cAddress
+memoryMap registerMap {
+  DEVICE_ID,           // id
+  FIRMWARE_MINOR,      // firmwareMinor
+  FIRMWARE_MAJOR,      // firmwareMajor
+  0x00,                // buzzerToneFrequencyMSB
+  0x00,                // buzzerToneFrequencyLSB
+  0x00,                // buzzerVolume  
+  0x00,                // buzzerDurationMSB  
+  0x00,                // buzzerDurationLSB  
+  0x00,                // buzzerActive  
+  0x00,                // saveSettings
+  DEFAULT_I2C_ADDRESS, // i2cAddress
 };
 
 //This defines which of the registers are read-only (0) vs read-write (1)
 memoryMap protectionMap = {
-  0x00,       //id
-  0x00,       //firmwareMinor
-  0x00,       //firmwareMajor
-  0xFFFF,     //buzzerToneFrequency
-  0xFF,       //buzzerVolume  
-  0xFF,       //i2cAddress
+  0x00,       // id
+  0x00,       // firmwareMinor
+  0x00,       // firmwareMajor
+  0xFF,       // buzzerToneFrequencyMSB
+  0xFF,       // buzzerToneFrequencyLSB
+  0xFF,       // buzzerVolume  
+  0xFF,       // buzzerDurationMSB  
+  0xFF,       // buzzerDurationLSB 
+  0xFF,       // buzzerActive  
+  0xFF,       // saveSettings
+  0xFF,       // i2cAddress
 };
 
 //Cast 32bit address of the object registerMap with uint8_t so we can increment the pointer
@@ -121,6 +131,9 @@ uint8_t *protectionPointer = (uint8_t *)&protectionMap;
 volatile uint8_t registerNumber; //Gets set when user writes an address. We then serve the spot the user requested.
 
 volatile boolean updateFlag = true; //Goes true when we receive new bytes from user. Causes LEDs and things to update in main loop.
+
+volatile boolean buzzerActiveFlag = false; //Goes true when registerMap.buzzerActive is set to 0x01 by user
+                          // Causes buzzer to turn on/off during main loop.
 
 BUZZERconfig onboardBUZZER; //init the onboard LED
 
@@ -136,7 +149,7 @@ int noteDurations[] = {
   4, 8, 8, 4, 4, 4, 4, 4
 };
 
-
+bool silentStartupStatus = true; // used to know this is the first power up, stay silent
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -198,7 +211,7 @@ void setup(void)
   registerMap.ledPulseOffTime = 500;   //Off time between pulses
 #endif
 
-  onboardBUZZER.update(&registerMap); //update LED variables, get ready for pulsing
+  onboardBUZZER.updateMap(&registerMap); //update LED variables, get ready for pulsing
   setupInterrupts();               //Enable pin change interrupts for I2C, switch, etc
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
   oldAddress = registerMap.i2cAddress;
@@ -213,30 +226,33 @@ void setup(void)
 
 void loop(void)
 {
-  //Check to see if the I2C Address has been updated by software, set the appropriate address type flag
+  // Check to see if the I2C Address has been updated by software, set the appropriate address type flag
   if (oldAddress != registerMap.i2cAddress)
   {
     oldAddress = registerMap.i2cAddress;
   }
   
+  // if(buzzerActiveFlag)
+  // {
+  //   if(buzzerDuration != 0)
+  // }
+
   if (updateFlag == true)
   {
-
-
-
-
-    //Record anything new to EEPROM (like new LED values)
-    //It can take ~3.4ms to write a byte to EEPROM so we do that here instead of in an interrupt
+    // Record anything new to EEPROM (for example, new I2C address)
+    // Note, to save other settings, like frequency,duration or volume, the
+    // user must also set the "saveSettings" register bit.
+    // It can take ~3.4ms to write a byte to EEPROM so we do that here instead of in an interrupt
     recordSystemSettings(&registerMap);
 
-    //Calculate LED values based on pulse settings if anything has changed
-    onboardBUZZER.update(&registerMap);
+    // Update settings to register map
+    onboardBUZZER.updateMap(&registerMap);
 
-    updateFlag = false; //clear flag
+    updateFlag = false; // clear flag
   }
   
-  sleep_mode();             //Stop everything and go to sleep. Wake up if I2C event occurs.
-  onboardBUZZER.pulse(buzzerPin); //update the brightness of the LED
+  sleep_mode();             // Stop everything and go to sleep. Wake up if I2C event occurs.
+  onboardBUZZER.updateBuzzer(buzzerPin); //update according to duration
 }
 
 //Update slave I2C address to what's configured with registerMap.i2cAddress and/or the address jumpers.
@@ -287,24 +303,33 @@ void readSystemSettings(memoryMap *map)
     EEPROM.put(LOCATION_I2C_ADDRESS, map->i2cAddress);
   }
 
-  EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
-  if (map->buzzerToneFrequency == 0xFFFF)
+  uint16_t mapToneFrequency  = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
+  mapToneFrequency &= map->buzzerToneFrequencyLSB;
+  mapToneFrequency &= (map->buzzerToneFrequencyMSB << 8);
+
+  EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
+  if (mapToneFrequency == 0xFFFF)
   {
-    map->buzzerToneFrequency = 0; //Default to none
-    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
+    mapToneFrequency = 0; //Default to none
+    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
   }
 
-  //Read the starting value for the LED
-  EEPROM.get(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
-  if (map->buzzerToneFrequency > 0)
+  uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
+  mapDuration &= map->buzzerDurationLSB;
+  mapDuration &= (map->buzzerDurationMSB << 8);
+
+  EEPROM.get(LOCATION_BUZZER_DURATION, mapDuration);
+  if (mapDuration == 0xFFFF)
   {
-    //Don't turn on LED, we'll pulse it in main loop
-    //analogWrite(buzzerPin, 0);
-  }
-  else
-  { //Pulsing disabled
-    //Turn on LED to setting
-    //analogWrite(buzzerPin, map->buzzerVolume);
+    mapDuration = 0; //Default to none
+    EEPROM.put(LOCATION_BUZZER_DURATION, mapDuration);
+  }  
+
+  EEPROM.get(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
+  if (map->buzzerVolume == 0xFF)
+  {
+    map->buzzerVolume = 0; //Default to none
+    EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
   }
 }
 
@@ -330,11 +355,27 @@ void recordSystemSettings(memoryMap *map)
   else
   {
     EEPROM.get(LOCATION_I2C_ADDRESS, i2cAddr);
-    map->i2cAddress == i2cAddr; //Return to original address
+    map->i2cAddress = i2cAddr; //Return to original address
   }
 
-  EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
-  EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, map->buzzerToneFrequency);
+  // if user has set the ""saveSettings" bit, then record settings to EEPROM.
+  if(map->saveSettings == 0x01)
+  {
+    uint16_t mapToneFrequency = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
+    mapToneFrequency |= map->buzzerToneFrequencyLSB;
+    mapToneFrequency |= (map->buzzerToneFrequencyMSB << 8);
+    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
+
+    uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
+    mapDuration &= map->buzzerDurationLSB;
+    mapDuration &= (map->buzzerDurationMSB << 8);
+    EEPROM.put(LOCATION_BUZZER_DURATION, mapDuration);
+
+    EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
+
+    // clear "saveSettings" bit, so it only happens once
+    map->saveSettings = 0x00;
+  }
 }
 
 void play_melody()
