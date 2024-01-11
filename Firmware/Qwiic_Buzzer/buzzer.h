@@ -16,7 +16,7 @@ struct BUZZERconfig {
 
   //variables imported from registerMap
   uint8_t volume = 0;  //Volume of buzzer
-  uint16_t toneFrequency = 0; //Total pulse cycle in ms, does not include off time. LED pulse disabled if zero.
+  uint16_t toneFrequency = 2730; //Total pulse cycle in ms, does not include off time. LED pulse disabled if zero.
   uint16_t duration = 0; // Miliseconds the note will continue to buzz, zero = forever
   unsigned long buzzerStartTime = 0; // Start time of a new buzz, only useful if duration is used
   boolean buzzerActiveFlag = false; // actual local status of buzzer
@@ -153,6 +153,19 @@ struct BUZZERconfig {
       pinMode(statusLedPin, INPUT);
       buzzerActiveFlag = false; // update the global buzzerActiveFlag to false
     }
+  }
+
+  void reset(struct memoryMap* map, uint8_t buzzerPin)
+  {
+      noTone(buzzerPin);        // stop the tone - although this has already been stopped by its own duration feature
+      digitalWrite(volumePin0, LOW);     // disable GND side connections
+      digitalWrite(volumePin1, LOW);
+      digitalWrite(volumePin2, LOW);
+      digitalWrite(volumePin3, LOW);
+      map->buzzerActive = 0x00; // clear the map->buzzerActive register
+      digitalWrite(statusLedPin, LOW);
+      pinMode(statusLedPin, INPUT);
+      buzzerActiveFlag = false; // update the global buzzerActiveFlag to false    
   }
 };
 

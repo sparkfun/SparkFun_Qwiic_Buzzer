@@ -4,8 +4,8 @@
   Original Creation Date: July 31, 2019
 
   This file contains the interrupt routines that are triggered upon an I2C write from
-  master (receiveEvent), an I2C read (requestEvent), or a buzzer trigger pin state change
-  (triggerInterrupt). These ISRs modify the registerMap state variable, and sometimes
+  master (receiveEvent), or an I2C read (requestEvent). 
+  These ISRs modify the registerMap state variable, and sometimes
   set a flag (updateFlag) that updates things in the main loop.
 
   This code is beerware; if you see me (or any other SparkFun employee) at the
@@ -13,12 +13,6 @@
 
   Distributed as-is; no warranty is given.
 ******************************************************************************/
-
-//Turn on interrupts for the various pins
-void setupInterrupts() {
-  //Attach interrupt to trigger header pin
-  attachPCINT(digitalPinToPCINT(switchPin), triggerInterrupt, CHANGE);
-}
 
 //When Qwiic Buzzer receives data bytes from Master, this function is called as an interrupt
 void receiveEvent(int numberOfBytesReceived) {
@@ -49,31 +43,4 @@ void requestEvent() {
   //will read 0xFFs.
 
   Wire.write((registerPointer + registerNumber), sizeof(memoryMap) - registerNumber);
-}
-
-//Called any time the pin changes state
-void triggerInterrupt() {
-
-  // //Debounce
-  // if (millis() - lastClickTime < registerMap.buttonDebounceTime)
-  //   return;
-  // lastClickTime = millis();
-
-  // registerMap.buttonStatus.eventAvailable = true;
-
-  // //Update the ButtonPressed queue and registerMap
-  // registerMap.buttonStatus.isPressed = !digitalRead(switchPin); //Take the inverse of the switch pin because the switch is pulled up
-  // ButtonPressed.push(millis() - registerMap.buttonDebounceTime);
-  // registerMap.pressedQueueStatus.isEmpty = ButtonPressed.isEmpty();
-  // registerMap.pressedQueueStatus.isFull = ButtonPressed.isFull();
-
-  // //Update the ButtonClicked queue and registerMap if necessary
-  // if (digitalRead(switchPin) == HIGH) { //User has released the button, we have completed a click cycle
-  //   //update the ButtonClicked queue and then registerMap
-  //   registerMap.buttonStatus.hasBeenClicked = true;
-  //   ButtonClicked.push(millis() - registerMap.buttonDebounceTime);
-  //   registerMap.clickedQueueStatus.isEmpty = ButtonClicked.isEmpty();
-  //   registerMap.clickedQueueStatus.isFull = ButtonClicked.isFull();
-  // }
-
 }

@@ -76,8 +76,7 @@ const uint8_t volumePin2 = 5;
 const uint8_t volumePin3 = 6;
 const uint8_t buzzerPin = 9; //PWM
 const uint8_t statusLedPin = 8;
-const uint8_t switchPin = 2;
-const uint8_t interruptPin = 7; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
+const uint8_t triggerPin = 2;
 
 #elif defined(__AVR_ATtiny84__)
 const uint8_t volumePin0 = 9;
@@ -85,9 +84,8 @@ const uint8_t volumePin1 = 10;
 const uint8_t volumePin2 = 1;
 const uint8_t volumePin3 = 2;
 const uint8_t buzzerPin = 7; // for use with tone()
-const uint8_t statusLedPin = 3;
-const uint8_t switchPin = 8;
-const uint8_t interruptPin = 0; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
+const uint8_t statusLedPin = 0;
+const uint8_t triggerPin = 5;
 #endif
 
 //Global variables
@@ -99,8 +97,8 @@ memoryMap registerMap {
   DEVICE_ID,           // id
   FIRMWARE_MINOR,      // firmwareMinor
   FIRMWARE_MAJOR,      // firmwareMajor
-  0x00,                // buzzerToneFrequencyMSB
-  0x00,                // buzzerToneFrequencyLSB
+  0x0A,                // buzzerToneFrequencyMSB
+  0xAA,                // buzzerToneFrequencyLSB
   0x00,                // buzzerVolume  
   0x00,                // buzzerDurationMSB  
   0x00,                // buzzerDurationLSB  
@@ -130,7 +128,7 @@ uint8_t *protectionPointer = (uint8_t *)&protectionMap;
 
 volatile uint8_t registerNumber; //Gets set when user writes an address. We then serve the spot the user requested.
 
-volatile boolean updateFlag = true; //Goes true when we receive new bytes from user. Causes LEDs and things to update in main loop.
+volatile boolean updateFlag = true; //Goes true when we receive new bytes from user. Causes things to update in main loop.
 
 BUZZERconfig onboardBUZZER; //init the onboard LED
 
@@ -155,16 +153,7 @@ void setup(void)
 
   pinMode(buzzerPin, OUTPUT);
 
-  pinMode(statusLedPin, OUTPUT); //No PWM
-  digitalWrite(statusLedPin, 0);
-
-  pinMode(switchPin, INPUT_PULLUP); //GPIO with internal pullup, goes low when button is pushed
-
-#if defined(__AVR_ATmega328P__)
-  pinMode(interruptPin, INPUT_PULLUP);     //High-impedance input until we have an int and then we output low. Pulled high with 10k with cuttable jumper.
-#else
-  pinMode(interruptPin, INPUT);     //High-impedance input until we have an int and then we output low. Pulled high with 10k with cuttable jumper.
-#endif
+  pinMode(triggerPin, INPUT_PULLUP); //GPIO with internal pullup, goes low when user connects to GND
 
   //Disable ADC
   ADCSRA = 0;
@@ -195,22 +184,10 @@ void setup(void)
 
   readSystemSettings(&registerMap); //Load all system settings from EEPROM
 
-#if defined(__AVR_ATmega328P__)
-  //Debug values
-  registerMap.buzzerVolume = 255;     //Max brightness
-  registerMap.ledPulseGranularity = 1; //Amount to change LED at each step
-
-  registerMap.buzzerToneFrequency = 500; //Total amount of cycle, does not include off time. LED pulse disabled if zero.
-  registerMap.ledPulseOffTime = 500;   //Off time between pulses
-#endif
-
   onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update LED variables, get ready for pulsing
-  setupInterrupts();               //Enable pin change interrupts for I2C, switch, etc
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
   oldAddress = registerMap.i2cAddress;
-
-  digitalWrite(statusLedPin, HIGH); //turn on the status LED to notify that we've setup everything properly
-
+  digitalWrite(statusLedPin, LOW); //turn off stat LED - this only comes on when we buzz
 }
 
 void loop(void)
@@ -240,6 +217,25 @@ void loop(void)
 
     updateFlag = false; // clear flag
   }
+
+  if (digitalRead(triggerPin) == LOW)
+  {
+    onboardBUZZER.reset(&registerMap, buzzerPin);
+    onboardBUZZER.updateFromMap(&registerMap, buzzerPin);
+    tone(buzzerPin, onboardBUZZER.toneFrequency);
+    digitalWrite(volumePin0, HIGH);
+    pinMode(onboardBUZZER.statusLedPin, OUTPUT);
+    digitalWrite(onboardBUZZER.statusLedPin, HIGH);
+
+    while(digitalRead(triggerPin) == LOW) 
+    {
+      delay(10);
+    }
+    onboardBUZZER.reset(&registerMap, buzzerPin);
+  }
+
+
+
   sleep_mode();             // Stop everything and go to sleep. Wake up if I2C event occurs.
 }
 
@@ -292,19 +288,19 @@ void readSystemSettings(memoryMap *map)
   }
 
   uint16_t mapToneFrequency  = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
-  mapToneFrequency &= map->buzzerToneFrequencyLSB;
-  mapToneFrequency &= (map->buzzerToneFrequencyMSB << 8);
+  mapToneFrequency |= map->buzzerToneFrequencyLSB;
+  mapToneFrequency |= (map->buzzerToneFrequencyMSB << 8);
 
   EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
   if (mapToneFrequency == 0xFFFF)
   {
-    mapToneFrequency = 0; //Default to none
+    mapToneFrequency = 2730; //Default to resonant frequency
     EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
   }
 
   uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
-  mapDuration &= map->buzzerDurationLSB;
-  mapDuration &= (map->buzzerDurationMSB << 8);
+  mapDuration |= map->buzzerDurationLSB;
+  mapDuration |= (map->buzzerDurationMSB << 8);
 
   EEPROM.get(LOCATION_BUZZER_DURATION, mapDuration);
   if (mapDuration == 0xFFFF)
@@ -355,8 +351,8 @@ void recordSystemSettings(memoryMap *map)
     EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
 
     uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
-    mapDuration &= map->buzzerDurationLSB;
-    mapDuration &= (map->buzzerDurationMSB << 8);
+    mapDuration |= map->buzzerDurationLSB;
+    mapDuration |= (map->buzzerDurationMSB << 8);
     EEPROM.put(LOCATION_BUZZER_DURATION, mapDuration);
 
     EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
