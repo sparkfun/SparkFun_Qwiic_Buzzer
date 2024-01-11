@@ -20,6 +20,28 @@ struct BUZZERconfig {
   uint16_t duration = 0; // Miliseconds the note will continue to buzz, zero = forever
   unsigned long buzzerStartTime = 0; // Start time of a new buzz, only useful if duration is used
   boolean buzzerActiveFlag = false; // actual local status of buzzer
+  uint8_t volumePin0 = 0;
+  uint8_t volumePin1 = 0;
+  uint8_t volumePin2 = 0;
+  uint8_t volumePin3 = 0;
+
+  void setupVolumePins(uint8_t pin0, uint8_t pin1, uint8_t pin2, uint8_t pin3)
+  {
+    volumePin0 = pin0;
+    volumePin1 = pin1;
+    volumePin2 = pin2;
+    volumePin3 = pin3;
+
+    // all volume settings output low - OFF
+    pinMode(volumePin0, OUTPUT);
+    pinMode(volumePin1, OUTPUT);
+    pinMode(volumePin2, OUTPUT);
+    pinMode(volumePin3, OUTPUT);
+    digitalWrite(volumePin0, LOW);
+    digitalWrite(volumePin1, LOW);
+    digitalWrite(volumePin2, LOW);
+    digitalWrite(volumePin3, LOW);
+  }
 
   //updates all the LED variables, and resets the pulseValues if necessary
   void updateFromMap(struct memoryMap* map, uint8_t buzzerPin) 
@@ -65,13 +87,40 @@ struct BUZZERconfig {
       {
         tone(buzzerPin,toneFrequency);
       }
-      digitalWrite(8, HIGH);
+
+      // volume control
+      // first, turn off all volumes, then turn on the only desired setting
+      digitalWrite(volumePin0, LOW);
+      digitalWrite(volumePin1, LOW);
+      digitalWrite(volumePin2, LOW);
+      digitalWrite(volumePin3, LOW);
+      switch(volume) {
+        case 0: // off
+          // do nothing, they are already turned off above
+          break;
+        case 1: // setting 1 - aka "quietest" or "user"
+          digitalWrite(volumePin3, HIGH);
+          break;
+        case 2: // setting 2 - aka "mid-low"
+          digitalWrite(volumePin2, HIGH);
+          break;
+        case 3: // setting 3 - aka "mid-high"
+          digitalWrite(volumePin1, HIGH);
+          break;
+        case 4: // setting 4 - aka "loudest"
+          digitalWrite(volumePin0, HIGH);
+          break;                              
+      }
+      //digitalWrite(volumePin0, HIGH);
       buzzerActiveFlag = true;
     }
     else if ( (mapBuzzerActive == 0x00) && (buzzerActiveFlag == true) ) // this means we are currently on, and the user wants to turn it off
     {
       noTone(buzzerPin);
-      digitalWrite(8, LOW);
+      digitalWrite(volumePin0, LOW);
+      digitalWrite(volumePin1, LOW);
+      digitalWrite(volumePin2, LOW);
+      digitalWrite(volumePin3, LOW);
       buzzerActiveFlag = false;
     }
   }
@@ -80,7 +129,7 @@ struct BUZZERconfig {
   // This checks to see if there is any duration left
   // When duration runs out, this will do four things:
   // 1. call noTone()
-  // 2. disable GND connection side bjts
+  // 2. disable all GND connection side bjts
   // 3. clear the map->buzzerActive register
   // 4. update the buzzerActiveFlag to false
 
@@ -90,8 +139,11 @@ struct BUZZERconfig {
   {
     if (millis() - buzzerStartTime > duration) // we've surpassed duration, time to turn off
     {
-      noTone(buzzerPin);        // stop the tone - although this has already most likely been stopped by its own duration feature
-      digitalWrite(8, LOW);     // disable GND side connections
+      noTone(buzzerPin);        // stop the tone - although this has already been stopped by its own duration feature
+      digitalWrite(volumePin0, LOW);     // disable GND side connections
+      digitalWrite(volumePin1, LOW);
+      digitalWrite(volumePin2, LOW);
+      digitalWrite(volumePin3, LOW);
       map->buzzerActive = 0x00; // clear the map->buzzerActive register
       buzzerActiveFlag = false; // update the global buzzerActiveFlag to false
     }

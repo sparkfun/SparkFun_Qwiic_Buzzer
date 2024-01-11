@@ -70,20 +70,20 @@ uint8_t oldAddress;
 //Hardware connections
 #if defined(__AVR_ATmega328P__)
 //For developement on an Uno
-const uint8_t addressPin0 = 3;
-const uint8_t addressPin1 = 4;
-const uint8_t addressPin2 = 5;
-const uint8_t addressPin3 = 6;
+const uint8_t volumePin0 = 3;
+const uint8_t volumePin1 = 4;
+const uint8_t volumePin2 = 5;
+const uint8_t volumePin3 = 6;
 const uint8_t buzzerPin = 9; //PWM
 const uint8_t statusLedPin = 8;
 const uint8_t switchPin = 2;
 const uint8_t interruptPin = 7; //pin is active-low, high-impedance when not triggered, goes low-impedance to ground when triggered
 
 #elif defined(__AVR_ATtiny84__)
-const uint8_t addressPin0 = 9;
-const uint8_t addressPin1 = 10;
-const uint8_t addressPin2 = 1;
-const uint8_t addressPin3 = 2;
+const uint8_t volumePin0 = 9;
+const uint8_t volumePin1 = 10;
+const uint8_t volumePin2 = 1;
+const uint8_t volumePin3 = 2;
 const uint8_t buzzerPin = 7; // for use with tone()
 const uint8_t statusLedPin = 3;
 const uint8_t switchPin = 8;
@@ -150,10 +150,8 @@ int noteDurations[] = {
 
 void setup(void)
 {
-  pinMode(addressPin0, INPUT_PULLUP); //Internally pull up address pins
-  pinMode(addressPin1, INPUT_PULLUP);
-  pinMode(addressPin2, INPUT_PULLUP);
-  pinMode(addressPin3, INPUT_PULLUP);
+  // setup volume pins in buzzer config struct
+  onboardBUZZER.setupVolumePins(volumePin0, volumePin1, volumePin2, volumePin3);
 
   pinMode(buzzerPin, OUTPUT);
 
