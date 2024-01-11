@@ -132,9 +132,6 @@ volatile uint8_t registerNumber; //Gets set when user writes an address. We then
 
 volatile boolean updateFlag = true; //Goes true when we receive new bytes from user. Causes LEDs and things to update in main loop.
 
-volatile boolean buzzerActiveFlag = false; //Goes true when registerMap.buzzerActive is set to 0x01 by user
-                          // Causes buzzer to turn on/off during main loop.
-
 BUZZERconfig onboardBUZZER; //init the onboard LED
 
 #include "pitches.h"
@@ -148,8 +145,6 @@ int melody[] = {
 int noteDurations[] = {
   4, 8, 8, 4, 4, 4, 4, 4
 };
-
-bool silentStartupStatus = true; // used to know this is the first power up, stay silent
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -211,16 +206,12 @@ void setup(void)
   registerMap.ledPulseOffTime = 500;   //Off time between pulses
 #endif
 
-  onboardBUZZER.updateMap(&registerMap); //update LED variables, get ready for pulsing
+  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update LED variables, get ready for pulsing
   setupInterrupts();               //Enable pin change interrupts for I2C, switch, etc
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
   oldAddress = registerMap.i2cAddress;
 
-
   digitalWrite(statusLedPin, HIGH); //turn on the status LED to notify that we've setup everything properly
-
-  //play_melody();
-
 
 }
 
@@ -232,27 +223,26 @@ void loop(void)
     oldAddress = registerMap.i2cAddress;
   }
   
-  // if(buzzerActiveFlag)
-  // {
-  //   if(buzzerDuration != 0)
-  // }
+  // if buzzer is active and there is duration set
+  if ((onboardBUZZER.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+  {
+    onboardBUZZER.checkDuration(&registerMap, buzzerPin);
+  }
 
   if (updateFlag == true)
   {
     // Record anything new to EEPROM (for example, new I2C address)
-    // Note, to save other settings, like frequency,duration or volume, the
+    // Note, to save other settings (like frequency, duration or volume) the
     // user must also set the "saveSettings" register bit.
     // It can take ~3.4ms to write a byte to EEPROM so we do that here instead of in an interrupt
     recordSystemSettings(&registerMap);
 
-    // Update settings to register map
-    onboardBUZZER.updateMap(&registerMap);
+    // Update settings from register map to actively used local variables
+    onboardBUZZER.updateFromMap(&registerMap, buzzerPin);
 
     updateFlag = false; // clear flag
   }
-  
   sleep_mode();             // Stop everything and go to sleep. Wake up if I2C event occurs.
-  onboardBUZZER.updateBuzzer(buzzerPin); //update according to duration
 }
 
 //Update slave I2C address to what's configured with registerMap.i2cAddress and/or the address jumpers.
