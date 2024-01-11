@@ -1,19 +1,21 @@
 /*
-  An I2C based Button
-  By: Nathan Seidle and Fischer Moseley and Priyanka Makin
+  An I2C based Buzzer
+  By Pete Lewis @SparkFun Electronics
+  Jan 2024
+
+  Based on original code by the following:
+  Nathan Seidle and Fischer Moseley and Priyanka Makin
   SparkFun Electronics
   Date: July 31st, 2019
+
   License: This code is public domain but you buy me a beer if you use this and
   we meet someday (Beerware license).
 
-  Qwiic Button is an I2C based button that records any button presses to a queue.
-
-  Qwiic Button maintains a queue of events. To remove events from the queue write
-  the appropriate register (timeSinceLastButtonClicked or timeSinceLastButtonPressed)
-  to zero. The register will then be filled with the next available event time.
+  Qwiic Buzzer is an I2C based buzzer that accepts commands to turn on/off the buzzer.
+  It also can set it's frequency, duration and volume.
 
   There is also an accompanying Arduino Library located here:
-  https://github.com/sparkfun/SparkFun_Qwiic_Button_Arduino_Library
+  https://github.com/sparkfun/SparkFun_Qwiic_Buzzer_Arduino_Library
 
   Feel like supporting our work? Buy a board from SparkFun!
   https://www.sparkfun.com/products/14641
@@ -30,10 +32,8 @@
   Wire.h        Used for interfacing with the I2C hardware for responding to I2C events.
   EEPROM.h      Used for interfacing with the onboard EEPROM for storing and retrieving settings.
   nvm.h         Used for defining the storage locations in non-volatile memory (EEPROM) to store and retrieve settings from.
-  queue.h       Used for defining a FIFO-queue that contains the timestamps associated with pressing and clicking the button.
   registers.h   Used for defining a memoryMap object that serves as the register map for the device.
-  led.h         Used for configuring the behavior of the onboard LED (in the case of the Qwiic Button)
-                  or the offboard LED (in the case of the Qwiic Switch)
+  buzzer.h      Used for configuring the behavior of the onboard BUZZER
 
   PinChangeInterrupt.h    Nico Hoo's library for triggering an interrupt on a pin state change (either low->high or high->low)
   avr/sleep.h             Needed for sleep_mode which saves power on the ATTiny
@@ -47,7 +47,7 @@
 #include "buzzer.h"
 
 #include "PinChangeInterrupt.h" //Nico Hood's library: https://github.com/NicoHood/PinChangeInterrupt/
-//Used for pin change interrupts on ATtinys (encoder button causes interrupt)
+//Used for pin change interrupts on ATtinys (encoder buzzer causes interrupt)
   /*** NOTE, PinChangeInterrupt library NEEDS a modification to work with this code.
   *** you MUST comment out this line: 
   *** https://github.com/NicoHood/PinChangeInterrupt/blob/master/src/PinChangeInterruptSettings.h#L228
@@ -187,7 +187,7 @@ void setup(void)
   }
 
   Serial.begin(115200);
-  Serial.println("Qwiic Button");
+  Serial.println("Qwiic Buzzer");
   Serial.print("Address: 0x");
   Serial.println(registerMap.i2cAddress, HEX);
   Serial.print("Device ID: 0x");

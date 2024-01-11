@@ -4,11 +4,7 @@ Fischer Moseley @ SparkFun Electronics
 Original Creation Date: July 31, 2019
 
 This file defines the BUZZERconfig struct, which provides an easy interface for
-handling how the LED behaves, in addition to storing configuration variables.
-
-On the Qwiic Button, this LED is built into the button itself! 
-On the Qwiic Switch, a pin for an external LED is provided on the 0.1" header
-located on the bottom of the switch.
+handling how the BUZZER behaves, in addition to storing configuration variables.
 
 This code is beerware; if you see me (or any other SparkFun employee) at the
 local, and you've found our code helpful, please buy us a round!
@@ -16,7 +12,6 @@ local, and you've found our code helpful, please buy us a round!
 Distributed as-is; no warranty is given.
 ******************************************************************************/
 
-//manages LED operations, stores configuration variables internally and provides an easy interface to updating the LED's status and blinking it
 struct BUZZERconfig {
 
   //variables imported from registerMap
@@ -87,7 +82,7 @@ struct BUZZERconfig {
   // 1. call noTone()
   // 2. disable GND connection side bjts
   // 3. clear the map->buzzerActive register
-  // 4. update the global buzzerActiveFlag to false
+  // 4. update the buzzerActiveFlag to false
 
   // Note, this is only ever called in from the main loop if the buzzer is currently active and duration is non-zero.
 
