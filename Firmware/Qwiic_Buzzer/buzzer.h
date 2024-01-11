@@ -24,6 +24,7 @@ struct BUZZERconfig {
   uint8_t volumePin1 = 0;
   uint8_t volumePin2 = 0;
   uint8_t volumePin3 = 0;
+  const uint8_t statusLedPin = 0;
 
   void setupVolumePins(uint8_t pin0, uint8_t pin1, uint8_t pin2, uint8_t pin3)
   {
@@ -111,7 +112,8 @@ struct BUZZERconfig {
           digitalWrite(volumePin0, HIGH);
           break;                              
       }
-      //digitalWrite(volumePin0, HIGH);
+      pinMode(statusLedPin, OUTPUT);
+      digitalWrite(statusLedPin, HIGH);
       buzzerActiveFlag = true;
     }
     else if ( (mapBuzzerActive == 0x00) && (buzzerActiveFlag == true) ) // this means we are currently on, and the user wants to turn it off
@@ -121,6 +123,8 @@ struct BUZZERconfig {
       digitalWrite(volumePin1, LOW);
       digitalWrite(volumePin2, LOW);
       digitalWrite(volumePin3, LOW);
+      digitalWrite(statusLedPin, LOW);
+      pinMode(statusLedPin, INPUT);
       buzzerActiveFlag = false;
     }
   }
@@ -145,6 +149,8 @@ struct BUZZERconfig {
       digitalWrite(volumePin2, LOW);
       digitalWrite(volumePin3, LOW);
       map->buzzerActive = 0x00; // clear the map->buzzerActive register
+      digitalWrite(statusLedPin, LOW);
+      pinMode(statusLedPin, INPUT);
       buzzerActiveFlag = false; // update the global buzzerActiveFlag to false
     }
   }

@@ -159,7 +159,7 @@ void setup(void)
   digitalWrite(statusLedPin, 0);
 
   pinMode(switchPin, INPUT_PULLUP); //GPIO with internal pullup, goes low when button is pushed
-  pinMode(8, OUTPUT); // used to control GND connection on buzzer, we can use tone to give this a "50% pwm"
+
 #if defined(__AVR_ATmega328P__)
   pinMode(interruptPin, INPUT_PULLUP);     //High-impedance input until we have an int and then we output low. Pulled high with 10k with cuttable jumper.
 #else
