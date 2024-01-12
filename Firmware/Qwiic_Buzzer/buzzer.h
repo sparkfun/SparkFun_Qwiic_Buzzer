@@ -81,36 +81,45 @@ struct BUZZERconfig {
     {
       if(duration > 0)
       {
-        tone(buzzerPin,toneFrequency, duration);
+        if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+        {
+          tone(buzzerPin,toneFrequency, duration); 
+        }
         buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
       }
       else
       {
-        tone(buzzerPin,toneFrequency);
+        if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+        {
+          tone(buzzerPin,toneFrequency); 
+        }
       }
 
       // volume control
-      // first, turn off all volumes, then turn on the only desired setting
-      digitalWrite(volumePin0, LOW);
-      digitalWrite(volumePin1, LOW);
-      digitalWrite(volumePin2, LOW);
-      digitalWrite(volumePin3, LOW);
-      switch(volume) {
-        case 0: // off
-          // do nothing, they are already turned off above
-          break;
-        case 1: // setting 1 - aka "quietest" or "user"
-          digitalWrite(volumePin3, HIGH);
-          break;
-        case 2: // setting 2 - aka "mid-low"
-          digitalWrite(volumePin2, HIGH);
-          break;
-        case 3: // setting 3 - aka "mid-high"
-          digitalWrite(volumePin1, HIGH);
-          break;
-        case 4: // setting 4 - aka "loudest"
-          digitalWrite(volumePin0, HIGH);
-          break;                              
+      if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+      {
+        // first, turn off all volumes, then turn on the only desired setting
+        digitalWrite(volumePin0, LOW);
+        digitalWrite(volumePin1, LOW);
+        digitalWrite(volumePin2, LOW);
+        digitalWrite(volumePin3, LOW);
+        switch(volume) {
+          case 0: // off
+            // do nothing, they are already turned off above
+            break;
+          case 1: // setting 1 - aka "quietest" or "user"
+            digitalWrite(volumePin3, HIGH);
+            break;
+          case 2: // setting 2 - aka "mid-low"
+            digitalWrite(volumePin2, HIGH);
+            break;
+          case 3: // setting 3 - aka "mid-high"
+            digitalWrite(volumePin1, HIGH);
+            break;
+          case 4: // setting 4 - aka "loudest"
+            digitalWrite(volumePin0, HIGH);
+            break;                              
+        }
       }
       pinMode(statusLedPin, OUTPUT);
       digitalWrite(statusLedPin, HIGH);
