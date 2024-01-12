@@ -221,15 +221,17 @@ void loop(void)
   if (digitalRead(triggerPin) == LOW)
   {
     onboardBUZZER.reset(&registerMap, buzzerPin);
+    registerMap.buzzerActive = 0x01; // set the map->buzzerActive register
     onboardBUZZER.updateFromMap(&registerMap, buzzerPin);
-    tone(buzzerPin, onboardBUZZER.toneFrequency);
-    digitalWrite(volumePin0, HIGH);
-    pinMode(onboardBUZZER.statusLedPin, OUTPUT);
-    digitalWrite(onboardBUZZER.statusLedPin, HIGH);
 
     while(digitalRead(triggerPin) == LOW) 
     {
-      delay(10);
+      // if buzzer is active and there is duration set
+      if ((onboardBUZZER.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+      {
+        onboardBUZZER.checkDuration(&registerMap, buzzerPin);
+      }
+      delay(1);
     }
     onboardBUZZER.reset(&registerMap, buzzerPin);
   }
@@ -287,9 +289,7 @@ void readSystemSettings(memoryMap *map)
     EEPROM.put(LOCATION_I2C_ADDRESS, map->i2cAddress);
   }
 
-  uint16_t mapToneFrequency  = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
-  mapToneFrequency |= map->buzzerToneFrequencyLSB;
-  mapToneFrequency |= (map->buzzerToneFrequencyMSB << 8);
+  uint16_t mapToneFrequency  = 0; //used to store temp complete uint16_t from maps high/low bytes.
 
   EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
   if (mapToneFrequency == 0xFFFF)
@@ -297,6 +297,12 @@ void readSystemSettings(memoryMap *map)
     mapToneFrequency = 2730; //Default to resonant frequency
     EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
   }
+  // extract MSB and LSB from complete uint16_t
+  // put it into the registerMap for use everywhere
+  uint8_t toneFrequencyMSB = ((mapToneFrequency & 0xFF00) >> 8 );
+  uint8_t toneFrequencyLSB = (mapToneFrequency & 0x00FF);
+  map->buzzerToneFrequencyMSB = toneFrequencyMSB;
+  map->buzzerToneFrequencyLSB = toneFrequencyLSB;
 
   uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
   mapDuration |= map->buzzerDurationLSB;
@@ -346,8 +352,10 @@ void recordSystemSettings(memoryMap *map)
   if(map->saveSettings == 0x01)
   {
     uint16_t mapToneFrequency = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
-    mapToneFrequency |= map->buzzerToneFrequencyLSB;
-    mapToneFrequency |= (map->buzzerToneFrequencyMSB << 8);
+    uint8_t freqMSB = map->buzzerToneFrequencyMSB; // get MSB from map
+    uint8_t freqLSB = map->buzzerToneFrequencyLSB; // get MLB from map
+    mapToneFrequency |= freqLSB; // combine MSB/LSM into temp complete
+    mapToneFrequency |= (freqMSB << 8); // combine MSB/LSM into temp complete
     EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
 
     uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.

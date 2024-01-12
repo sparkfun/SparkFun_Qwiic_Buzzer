@@ -15,7 +15,7 @@ Distributed as-is; no warranty is given.
 struct BUZZERconfig {
 
   //variables imported from registerMap
-  uint8_t volume = 0;  //Volume of buzzer
+  uint8_t volume = 3;  //Volume of buzzer
   uint16_t toneFrequency = 2730; //Total pulse cycle in ms, does not include off time. LED pulse disabled if zero.
   uint16_t duration = 0; // Miliseconds the note will continue to buzz, zero = forever
   unsigned long buzzerStartTime = 0; // Start time of a new buzz, only useful if duration is used
@@ -44,7 +44,7 @@ struct BUZZERconfig {
     digitalWrite(volumePin3, LOW);
   }
 
-  //updates all the LED variables, and resets the pulseValues if necessary
+  //updates all the BUZZER variables, and resets the pulseValues if necessary
   void updateFromMap(struct memoryMap* map, uint8_t buzzerPin) 
   {
     //check if any of the values are different
