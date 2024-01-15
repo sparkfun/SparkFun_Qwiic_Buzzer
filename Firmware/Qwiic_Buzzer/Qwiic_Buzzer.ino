@@ -259,11 +259,11 @@ void startI2C(memoryMap *map)
 void readSystemSettings(memoryMap *map)
 {
   //Read what I2C address we should use
-  EEPROM.get(LOCATION_I2C_ADDRESS, map->i2cAddress);
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   if (map->i2cAddress == 255)
   {
     map->i2cAddress = DEFAULT_I2C_ADDRESS; //By default, we listen for DEFAULT_I2C_ADDRESS
-    EEPROM.put(LOCATION_I2C_ADDRESS, map->i2cAddress);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
   //Error check I2C address we read from EEPROM
@@ -272,16 +272,16 @@ void readSystemSettings(memoryMap *map)
     //User has set the address out of range
     //Go back to defaults
     map->i2cAddress = DEFAULT_I2C_ADDRESS;
-    EEPROM.put(LOCATION_I2C_ADDRESS, map->i2cAddress);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
   uint16_t mapToneFrequency  = 0; //used to store temp complete uint16_t from maps high/low bytes.
 
-  EEPROM.get(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
   if (mapToneFrequency == 0xFFFF)
   {
     mapToneFrequency = 2730; //Default to resonant frequency
-    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
   }
   // extract MSB and LSB from complete uint16_t
   // put it into the registerMap for use everywhere
@@ -294,18 +294,18 @@ void readSystemSettings(memoryMap *map)
   mapDuration |= map->buzzerDurationLSB;
   mapDuration |= (map->buzzerDurationMSB << 8);
 
-  EEPROM.get(LOCATION_BUZZER_DURATION, mapDuration);
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
   if (mapDuration == 0xFFFF)
   {
     mapDuration = 0; //Default to none
-    EEPROM.put(LOCATION_BUZZER_DURATION, mapDuration);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
   }  
 
-  EEPROM.get(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   if (map->buzzerVolume == 0xFF)
   {
     map->buzzerVolume = 0; //Default to none
-    EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   }
 }
 
@@ -321,16 +321,16 @@ void recordSystemSettings(memoryMap *map)
     //Address is valid
 
     //Read the value currently in EEPROM. If it's different from the memory map then record the memory map value to EEPROM.
-    EEPROM.get(LOCATION_I2C_ADDRESS, i2cAddr);
+    EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, i2cAddr);
     if (i2cAddr != map->i2cAddress)
     {
-      EEPROM.put(LOCATION_I2C_ADDRESS, (byte)map->i2cAddress);
+      EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, (byte)map->i2cAddress);
       startI2C(map); //Determine the I2C address we should be using and begin listening on I2C bus
     }
   }
   else
   {
-    EEPROM.get(LOCATION_I2C_ADDRESS, i2cAddr);
+    EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, i2cAddr);
     map->i2cAddress = i2cAddr; //Return to original address
   }
 
@@ -342,14 +342,14 @@ void recordSystemSettings(memoryMap *map)
     uint8_t freqLSB = map->buzzerToneFrequencyLSB; // get MLB from map
     mapToneFrequency |= freqLSB; // combine MSB/LSM into temp complete
     mapToneFrequency |= (freqMSB << 8); // combine MSB/LSM into temp complete
-    EEPROM.put(LOCATION_BUZZER_TONE_FREQUENCY, mapToneFrequency);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
 
     uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
     mapDuration |= map->buzzerDurationLSB;
     mapDuration |= (map->buzzerDurationMSB << 8);
-    EEPROM.put(LOCATION_BUZZER_DURATION, mapDuration);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
 
-    EEPROM.put(LOCATION_BUZZER_VOLUME, map->buzzerVolume);
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
 
     // clear "saveSettings" bit, so it only happens once
     map->saveSettings = 0x00;
