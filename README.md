@@ -1,9 +1,9 @@
 SparkFun Qwiic Buzzer
 ========================================
 
-[![SparkFun Qwiic Buzzer](URL for picture of part)](https://www.sparkfun.com/products/24474)
+[![SparkFun Qwiic Buzzer](https://cdn.sparkfun.com/r/600-600/assets/parts/2/4/8/3/2/BOB-24474-Qwiic-Buzzer-Feature.jpg)](https://www.sparkfun.com/products/24474)
 
-[*SparkFun Qwiic Buzzer (BOB-24474)*]([URL for product on Sparkfun.com](https://www.sparkfun.com/products/24474))
+[*SparkFun Qwiic Buzzer (BOB-24474)*](https://www.sparkfun.com/products/24474)
 
 An I2C-controlled QWIIC device that provides solderless plug-and-play buzzer sounds!
 
