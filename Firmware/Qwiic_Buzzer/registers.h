@@ -19,6 +19,8 @@
   Distributed as-is; no warranty is given.
 ******************************************************************************/
 
+#pragma once
+
 struct memoryMap {
   //Buzzer Status/Configuration                       Register Address
   uint8_t id;                                             // 0x00
