@@ -8,8 +8,9 @@
   SparkFun Electronics
   Date: July 31st, 2019
 
-  License: This code is public domain but you buy me a beer if you use this and
-  we meet someday (Beerware license).
+  SPDX-License-Identifier: MIT
+
+  Copyright (c) 2023 SparkFun Electronics
 
   Qwiic Buzzer is an I2C based buzzer that accepts commands to turn on/off the buzzer.
   It also can set it's frequency, duration and volume.
@@ -35,37 +36,24 @@
   registers.h   Used for defining a memoryMap object that serves as the register map for the device.
   buzzer.h      Used for configuring the behavior of the onboard BUZZER
 
-  PinChangeInterrupt.h    Nico Hoo's library for triggering an interrupt on a pin state change (either low->high or high->low)
   avr/sleep.h             Needed for sleep_mode which saves power on the ATTiny
   avr/power.hardware      Needed for powering down peripherals such as the ADC/TWI and Timers on the ATTiny
 */
 
 #include <Wire.h>
 #include <EEPROM.h>
-#include "nvm.h"
-#include "registers.h"
 #include "buzzer.h"
-
-#include "PinChangeInterrupt.h" //Nico Hood's library: https://github.com/NicoHood/PinChangeInterrupt/
-//Used for pin change interrupts on ATtinys (encoder buzzer causes interrupt)
-  /*** NOTE, PinChangeInterrupt library NEEDS a modification to work with this code.
-  *** you MUST comment out this line: 
-  *** https://github.com/NicoHood/PinChangeInterrupt/blob/master/src/PinChangeInterruptSettings.h#L228
-  */
 
 #include <avr/sleep.h> //Needed for sleep_mode
 #include <avr/power.h> //Needed for powering down perihperals such as the ADC/TWI and Timers
 
-#define DEVICE_ID 0x5D
-#define FIRMWARE_MAJOR 0x01 //Firmware Version. Helpful for tech support.
-#define FIRMWARE_MINOR 0x03
+#define kSfeQwiicBuzzerDeviceID 0x5D
+#define kSfeQwiicBuzzerFirmwareVersionMajor 0x01 //Firmware Version. Helpful for tech support.
+#define kSfeQwiicBuzzerFirmwareVersionMinor 0x03
 
-#define DEFAULT_I2C_ADDRESS 0x34
+#define kSfeQwiicBuzzerDefaultI2cAddress 0x34
 
-#define SOFTWARE_ADDRESS true
-#define HARDWARE_ADDRESS false
-
-uint8_t oldAddress;
+uint8_t sfeQwiicBuzzerOldI2cAddress;
 
 //Hardware connections
 #if defined(__AVR_ATmega328P__)
@@ -88,15 +76,11 @@ const uint8_t statusLedPin = 0;
 const uint8_t triggerPin = 5;
 #endif
 
-//Global variables
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//These are the defaults for all settings
-
-//Variables used in the I2C interrupt.ino file so we use volatile
+/// @brief Initialize the Qwiic Buzzer register map with default values
 memoryMap registerMap {
-  DEVICE_ID,           // id
-  FIRMWARE_MINOR,      // firmwareMinor
-  FIRMWARE_MAJOR,      // firmwareMajor
+  kSfeQwiicBuzzerDeviceID,           // id
+  kSfeQwiicBuzzerFirmwareVersionMinor,      // firmwareMinor
+  kSfeQwiicBuzzerFirmwareVersionMajor,      // firmwareMajor
   0x0A,                // buzzerToneFrequencyMSB
   0xAA,                // buzzerToneFrequencyLSB
   0x00,                // buzzerVolume  
@@ -104,10 +88,10 @@ memoryMap registerMap {
   0x00,                // buzzerDurationLSB  
   0x00,                // buzzerActive  
   0x00,                // saveSettings
-  DEFAULT_I2C_ADDRESS, // i2cAddress
+  kSfeQwiicBuzzerDefaultI2cAddress, // i2cAddress
 };
 
-//This defines which of the registers are read-only (0) vs read-write (1)
+/// @brief Set permissions on each register member (0=read-only, 1=read-write)
 memoryMap protectionMap = {
   0x00,       // id
   0x00,       // firmwareMinor
@@ -126,11 +110,14 @@ memoryMap protectionMap = {
 uint8_t *registerPointer = (uint8_t *)&registerMap;
 uint8_t *protectionPointer = (uint8_t *)&protectionMap;
 
-volatile uint8_t registerNumber; //Gets set when user writes an address. We then serve the spot the user requested.
+/// @brief Gets set when user writes an address. We then serve the spot the user requested.
+volatile uint8_t registerNumber;
 
-volatile boolean updateFlag = true; //Goes true when we receive new bytes from user. Causes things to update in main loop.
+/// @brief Goes true when we receive new bytes from user. Causes things to update in main loop.
+volatile boolean updateFlag = true;
 
-BUZZERconfig onboardBUZZER; //init the onboard LED
+/// @brief Initialize the onboard Buzzer
+BUZZERconfig onboardBUZZER;
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -172,18 +159,18 @@ void setup(void)
 
   readSystemSettings(&registerMap); //Load all system settings from EEPROM
 
-  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update LED variables, get ready for pulsing
+  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update BUZZER variables, get ready for pulsing
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
-  oldAddress = registerMap.i2cAddress;
+  sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
   digitalWrite(statusLedPin, LOW); //turn off stat LED - this only comes on when we buzz
 }
 
 void loop(void)
 {
   // Check to see if the I2C Address has been updated by software, set the appropriate address type flag
-  if (oldAddress != registerMap.i2cAddress)
+  if (sfeQwiicBuzzerOldI2cAddress != registerMap.i2cAddress)
   {
-    oldAddress = registerMap.i2cAddress;
+    sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
   }
   
   // if buzzer is active and there is duration set
@@ -239,7 +226,7 @@ void startI2C(memoryMap *map)
 
     //if the value is illegal, default to the default I2C address for our platform
     else
-      address = DEFAULT_I2C_ADDRESS;
+      address = kSfeQwiicBuzzerDefaultI2cAddress;
   
 
   //save new address to the register map
@@ -262,7 +249,7 @@ void readSystemSettings(memoryMap *map)
   EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   if (map->i2cAddress == 255)
   {
-    map->i2cAddress = DEFAULT_I2C_ADDRESS; //By default, we listen for DEFAULT_I2C_ADDRESS
+    map->i2cAddress = kSfeQwiicBuzzerDefaultI2cAddress; //By default, we listen for kSfeQwiicBuzzerDefaultI2cAddress
     EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
@@ -271,7 +258,7 @@ void readSystemSettings(memoryMap *map)
   {
     //User has set the address out of range
     //Go back to defaults
-    map->i2cAddress = DEFAULT_I2C_ADDRESS;
+    map->i2cAddress = kSfeQwiicBuzzerDefaultI2cAddress;
     EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
@@ -354,4 +341,35 @@ void recordSystemSettings(memoryMap *map)
     // clear "saveSettings" bit, so it only happens once
     map->saveSettings = 0x00;
   }
+}
+
+//When Qwiic Buzzer receives data bytes from Master, this function is called as an interrupt
+void receiveEvent(int numberOfBytesReceived) {
+  registerNumber = Wire.read(); //Get the memory map offset from the user
+
+  //Begin recording the following incoming bytes to the temp memory map
+  //starting at the registerNumber (the first byte received)
+  for (uint8_t x = 0 ; x < numberOfBytesReceived - 1 ; x++) {
+    uint8_t temp = Wire.read(); //We might record it, we might throw it away
+
+    if ( (x + registerNumber) < sizeof(memoryMap)) {
+      //Clense the incoming byte against the read only protected bits
+      //Store the result into the register map
+      *(registerPointer + registerNumber + x) &= ~*(protectionPointer + registerNumber + x); //Clear this register if needed
+      *(registerPointer + registerNumber + x) |= temp & *(protectionPointer + registerNumber + x); //Or in the user's request (clensed against protection bits)
+    }
+  }
+  updateFlag = true; //Update in the main loop
+}
+
+//Respond to GET commands
+//When Qwiic Buzzer gets a request for data from the user, this function is called as an interrupt
+//The interrupt will respond with bytes starting from the last byte the user sent to us
+//While we are sending bytes we may have to do some calculations
+void requestEvent() {
+  //This will write the entire contents of the register map struct starting from
+  //the register the user requested, and when it reaches the end the master
+  //will read 0xFFs.
+
+  Wire.write((registerPointer + registerNumber), sizeof(memoryMap) - registerNumber);
 }

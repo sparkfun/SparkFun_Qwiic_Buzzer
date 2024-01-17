@@ -1,7 +1,13 @@
 /******************************************************************************
   registers.h
-  Fischer Moseley @ SparkFun Electronics
-  Original Creation Date: July 31, 2019
+  
+  By Pete Lewis @SparkFun Electronics
+  Jan 2024
+
+  Based on original code by the following:
+  Nathan Seidle and Fischer Moseley and Priyanka Makin
+  SparkFun Electronics
+  Date: July 31st, 2019
 
   This file defines the memoryMap struct, which acts as the pseudo register map
   of the Qwiic Buzzer. It also serves as an easy way to access variables
@@ -13,8 +19,9 @@
   to 0x03, they will be addressing the 4th uint8_t sized object in this struct.
   In this case, that would be the buzzerToneFrequencyMSB register!
 
-  This code is beerware; if you see me (or any other SparkFun employee) at the
-  local, and you've found our code helpful, please buy us a round!
+  SPDX-License-Identifier: MIT
+
+  Copyright (c) 2023 SparkFun Electronics
 
   Distributed as-is; no warranty is given.
 ******************************************************************************/

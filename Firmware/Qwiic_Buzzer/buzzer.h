@@ -1,24 +1,35 @@
 /******************************************************************************
-led.h
-Fischer Moseley @ SparkFun Electronics
-Original Creation Date: July 31, 2019
+  buzzer.h
 
-This file defines the BUZZERconfig struct, which provides an easy interface for
-handling how the BUZZER behaves, in addition to storing configuration variables.
+  By Pete Lewis @SparkFun Electronics
+  Jan 2024
 
-This code is beerware; if you see me (or any other SparkFun employee) at the
-local, and you've found our code helpful, please buy us a round!
+  Based on original code by the following:
+  Nathan Seidle and Fischer Moseley and Priyanka Makin
+  SparkFun Electronics
+  Date: July 31st, 2019
 
-Distributed as-is; no warranty is given.
+  This file defines the BUZZERconfig struct, which provides an easy interface for
+  handling how the BUZZER behaves, in addition to storing configuration variables.
+
+  SPDX-License-Identifier: MIT
+
+  Copyright (c) 2023 SparkFun Electronics
+
+  Distributed as-is; no warranty is given.
 ******************************************************************************/
 
 #pragma once
+
+#include <Arduino.h>
+#include "nvm.h"
+#include "registers.h"
 
 struct BUZZERconfig {
 
   //variables imported from registerMap
   uint8_t volume = 3;  //Volume of buzzer
-  uint16_t toneFrequency = 2730; //Total pulse cycle in ms, does not include off time. LED pulse disabled if zero.
+  uint16_t toneFrequency = 2730; //Frequency of the buzzer
   uint16_t duration = 0; // Miliseconds the note will continue to buzz, zero = forever
   unsigned long buzzerStartTime = 0; // Start time of a new buzz, only useful if duration is used
   boolean buzzerActiveFlag = false; // actual local status of buzzer
@@ -46,7 +57,7 @@ struct BUZZERconfig {
     digitalWrite(volumePin3, LOW);
   }
 
-  //updates all the BUZZER variables, and resets the pulseValues if necessary
+  //updates all the BUZZER variables, and resets if necessary
   void updateFromMap(struct memoryMap* map, uint8_t buzzerPin) 
   {
     //check if any of the values are different

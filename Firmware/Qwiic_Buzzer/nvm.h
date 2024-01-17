@@ -1,15 +1,22 @@
 /******************************************************************************
-nvm.h
-Fischer Moseley @ SparkFun Electronics
-Original Creation Date: July 31, 2019
+  nvm.h
+  
+  By Pete Lewis @SparkFun Electronics
+  Jan 2024
 
-This file defines the locations in EEPROM where the configuration data is to
-be stored.
+  Based on original code by the following:
+  Nathan Seidle and Fischer Moseley and Priyanka Makin
+  SparkFun Electronics
+  Date: July 31st, 2019
 
-This code is beerware; if you see me (or any other SparkFun employee) at the
-local, and you've found our code helpful, please buy us a round!
+  This file defines the locations in EEPROM where the configuration data is to
+  be stored.
 
-Distributed as-is; no warranty is given.
+  SPDX-License-Identifier: MIT
+
+  Copyright (c) 2023 SparkFun Electronics
+
+  Distributed as-is; no warranty is given.
 ******************************************************************************/
 
 #pragma once
