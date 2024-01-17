@@ -291,7 +291,7 @@ void readSystemSettings(memoryMap *map)
   EEPROM.get(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   if (map->buzzerVolume == 0xFF)
   {
-    map->buzzerVolume = 0; //Default to none
+    map->buzzerVolume = 4; //Default to full
     EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   }
 }
