@@ -78,32 +78,32 @@ const uint8_t triggerPin = 5;
 
 /// @brief Initialize the Qwiic Buzzer register map with default values
 memoryMap registerMap {
-  kSfeQwiicBuzzerDeviceID,           // id
+  kSfeQwiicBuzzerDeviceID,                  // id
   kSfeQwiicBuzzerFirmwareVersionMinor,      // firmwareMinor
   kSfeQwiicBuzzerFirmwareVersionMajor,      // firmwareMajor
-  0x0A,                // buzzerToneFrequencyMSB
-  0xAA,                // buzzerToneFrequencyLSB
-  0x00,                // buzzerVolume  
-  0x00,                // buzzerDurationMSB  
-  0x00,                // buzzerDurationLSB  
-  0x00,                // buzzerActive  
-  0x00,                // saveSettings
-  kSfeQwiicBuzzerDefaultI2cAddress, // i2cAddress
+  0x0A,                                     // buzzerToneFrequencyMSB
+  0xAA,                                     // buzzerToneFrequencyLSB
+  0x00,                                     // buzzerVolume  
+  0x00,                                     // buzzerDurationMSB  
+  0x00,                                     // buzzerDurationLSB  
+  0x00,                                     // buzzerActive  
+  0x00,                                     // saveSettings
+  kSfeQwiicBuzzerDefaultI2cAddress,         // i2cAddress
 };
 
 /// @brief Set permissions on each register member (0=read-only, 1=read-write)
 memoryMap protectionMap = {
-  0x00,       // id
-  0x00,       // firmwareMinor
-  0x00,       // firmwareMajor
-  0xFF,       // buzzerToneFrequencyMSB
-  0xFF,       // buzzerToneFrequencyLSB
-  0xFF,       // buzzerVolume  
-  0xFF,       // buzzerDurationMSB  
-  0xFF,       // buzzerDurationLSB 
-  0xFF,       // buzzerActive  
-  0xFF,       // saveSettings
-  0xFF,       // i2cAddress
+  0x00,                                     // id
+  0x00,                                     // firmwareMinor
+  0x00,                                     // firmwareMajor
+  0xFF,                                     // buzzerToneFrequencyMSB
+  0xFF,                                     // buzzerToneFrequencyLSB
+  0xFF,                                     // buzzerVolume  
+  0xFF,                                     // buzzerDurationMSB  
+  0xFF,                                     // buzzerDurationLSB 
+  0xFF,                                     // buzzerActive  
+  0xFF,                                     // saveSettings
+  0xFF,                                     // i2cAddress
 };
 
 //Cast 32bit address of the object registerMap with uint8_t so we can increment the pointer
@@ -159,7 +159,7 @@ void setup(void)
 
   readSystemSettings(&registerMap); //Load all system settings from EEPROM
 
-  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update BUZZER variables, get ready for pulsing
+  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update BUZZER variables
   startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
   sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
   digitalWrite(statusLedPin, LOW); //turn off stat LED - this only comes on when we buzz
