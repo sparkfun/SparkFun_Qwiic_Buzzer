@@ -29,19 +29,19 @@
 #pragma once
 
 struct memoryMap {
-  //Buzzer Status/Configuration                       Register Address
-  uint8_t id;                                             // 0x00
-  uint8_t firmwareMinor;                                  // 0x01
-  uint8_t firmwareMajor;                                  // 0x02
+    //Buzzer Status/Configuration                       Register Address
+    uint8_t id;                                             // 0x00
+    uint8_t firmwareMinor;                                  // 0x01
+    uint8_t firmwareMajor;                                  // 0x02
 
-  uint8_t buzzerToneFrequencyMSB;                         // 0x03
-  uint8_t buzzerToneFrequencyLSB;                         // 0x04
-  uint8_t buzzerVolume;                                   // 0x05
-  uint8_t buzzerDurationMSB;                              // 0x06
-  uint8_t buzzerDurationLSB;                              // 0x07
-  uint8_t buzzerActive;                                   // 0x08
-  uint8_t saveSettings;                                   // 0x09
+    uint8_t buzzerToneFrequencyMSB;                         // 0x03
+    uint8_t buzzerToneFrequencyLSB;                         // 0x04
+    uint8_t buzzerVolume;                                   // 0x05
+    uint8_t buzzerDurationMSB;                              // 0x06
+    uint8_t buzzerDurationLSB;                              // 0x07
+    uint8_t buzzerActive;                                   // 0x08
+    uint8_t saveSettings;                                   // 0x09
 
-  //Device Configuration
-  uint8_t i2cAddress;                                     // 0x0A
+    //Device Configuration
+    uint8_t i2cAddress;                                     // 0x0A
 };

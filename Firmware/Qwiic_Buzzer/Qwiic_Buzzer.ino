@@ -49,7 +49,7 @@
 
 #define kSfeQwiicBuzzerDeviceID 0x5D
 #define kSfeQwiicBuzzerFirmwareVersionMajor 0x01 //Firmware Version. Helpful for tech support.
-#define kSfeQwiicBuzzerFirmwareVersionMinor 0x03
+#define kSfeQwiicBuzzerFirmwareVersionMinor 0x00
 
 #define kSfeQwiicBuzzerDefaultI2cAddress 0x34
 
@@ -117,28 +117,29 @@ volatile uint8_t registerNumber;
 volatile boolean updateFlag = true;
 
 /// @brief Initialize the onboard Buzzer
-BUZZERconfig onboardBUZZER;
+QwiicBuzzer buzzer;
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 void setup(void)
 {
-  // setup volume pins in buzzer config struct
-  onboardBUZZER.setupVolumePins(volumePin0, volumePin1, volumePin2, volumePin3);
+  // Setup volume pins in buzzer config struct
+  buzzer.setupVolumePins(volumePin0, volumePin1, volumePin2, volumePin3);
 
   pinMode(buzzerPin, OUTPUT);
 
-  pinMode(triggerPin, INPUT_PULLUP); //GPIO with internal pullup, goes low when user connects to GND
+  // GPIO with internal pullup, goes low when user connects to GND
+  pinMode(triggerPin, INPUT_PULLUP); 
 
-  //Disable ADC
+  // Disable ADC
   ADCSRA = 0;
 
-  //Disable Brown-Out Detect
+  // Disable Brown-Out Detect
   MCUCR = bit(BODS) | bit(BODSE);
   MCUCR = bit(BODS);
 
-  //Power down various bits of hardware to lower power usage
-  //set_sleep_mode(SLEEP_MODE_PWR_DOWN); //May turn off millis
+  // Power down various bits of hardware to lower power usage
+  // set_sleep_mode(SLEEP_MODE_PWR_DOWN); //May turn off millis
   set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();
 
@@ -147,7 +148,6 @@ void setup(void)
   for (int x = 0; x < 100; x++) {
     EEPROM.put(x, 0xFF);
   }
-
   Serial.begin(115200);
   Serial.println("Qwiic Buzzer");
   Serial.print("Address: 0x");
@@ -157,12 +157,18 @@ void setup(void)
 
 #endif
 
-  readSystemSettings(&registerMap); //Load all system settings from EEPROM
+  // Load all system settings from EEPROM
+  readSystemSettings(&registerMap); 
 
-  onboardBUZZER.updateFromMap(&registerMap, buzzerPin); //update BUZZER variables
-  startI2C(&registerMap);          //Determine the I2C address we should be using and begin listening on I2C bus
+  // Update Buzzer variables
+  buzzer.updateFromMap(&registerMap, buzzerPin); 
+
+  // Determine the I2C address we should be using 
+  // and begin listening on I2C bus
+  startI2C(&registerMap);
+
+  // Set old I2C address, so we can keep track for later, during a change.
   sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
-  digitalWrite(statusLedPin, LOW); //turn off stat LED - this only comes on when we buzz
 }
 
 void loop(void)
@@ -173,12 +179,15 @@ void loop(void)
     sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
   }
   
-  // if buzzer is active and there is duration set
-  if ((onboardBUZZER.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+  // If buzzer is active and there is duration set, checkDuration
+  // This will keep the buzzer buzzing until duration has been completed
+  if ((buzzer.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
   {
-    onboardBUZZER.checkDuration(&registerMap, buzzerPin);
+    buzzer.checkDuration(&registerMap, buzzerPin);
   }
 
+  // Check for updateFlag.
+  // This is set inside interrupts (quickly, in order to keep the ISR zippy)
   if (updateFlag == true)
   {
     // Record anything new to EEPROM (for example, new I2C address)
@@ -188,37 +197,53 @@ void loop(void)
     recordSystemSettings(&registerMap);
 
     // Update settings from register map to actively used local variables
-    onboardBUZZER.updateFromMap(&registerMap, buzzerPin);
+    buzzer.updateFromMap(&registerMap, buzzerPin);
 
-    updateFlag = false; // clear flag
+    // clear flag
+    updateFlag = false; 
   }
 
+  // Check if user has connected Trigger pin to GND, and buzz!
   if (digitalRead(triggerPin) == LOW)
   {
-    onboardBUZZER.reset(&registerMap, buzzerPin);
-    registerMap.buzzerActive = 0x01; // set the map->buzzerActive register
-    onboardBUZZER.updateFromMap(&registerMap, buzzerPin);
+    // Reset everything, the trigger pin has power over any I2C software 
+    // sent from the user's micro
+    buzzer.reset(&registerMap, buzzerPin);
 
+    // set the map->buzzerActive register
+    // This will be "caught" in updateFromMap and actually turn on the buzzer
+    registerMap.buzzerActive = 0x01; 
+
+    // Update the buzzer variables and engage
+    buzzer.updateFromMap(&registerMap, buzzerPin);
+
+    // While the user continues to hold down the Trigger GPIO to GND, we can
+    // also check duration and if it is set, then the Trigger button acts like a 
+    // one-shot. If no duration, then it is more like a "momentary button/buzzer".
     while(digitalRead(triggerPin) == LOW) 
     {
-      // if buzzer is active and there is duration set
-      if ((onboardBUZZER.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+      // Ff buzzer is already active and there is duration set
+      if ((buzzer.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
       {
-        onboardBUZZER.checkDuration(&registerMap, buzzerPin);
+        buzzer.checkDuration(&registerMap, buzzerPin);
       }
       delay(1);
     }
-    onboardBUZZER.reset(&registerMap, buzzerPin);
+
+    // User has release the Trigger GPIO
+    // All done here, let's reset everything!
+    buzzer.reset(&registerMap, buzzerPin);
   }
   
-  sleep_mode();             // Stop everything and go to sleep. Wake up if I2C event occurs.
+  // Stop everything and go to sleep. Wake up if I2C event occurs.
+  sleep_mode();             
 }
 
-//Update slave I2C address to what's configured with registerMap.i2cAddress and/or the address jumpers.
+/// @brief Update slave I2C address to what's configured with registerMap.i2cAddress
+/// @param map memoryMap struct containing all qwiic buzzer register data
 void startI2C(memoryMap *map)
 {
   uint8_t address;
-
 
     //if the value is legal, then set it
     if (map->i2cAddress > 0x07 && map->i2cAddress < 0x78)
@@ -241,8 +266,9 @@ void startI2C(memoryMap *map)
   Wire.onRequest(requestEvent);
 }
 
-//Reads the current system settings from EEPROM
-//If anything looks weird, reset setting to default value
+/// @brief Reads the current system settings from EEPROM
+/// If anything looks weird, reset setting to default value
+/// @param map memoryMap struct containing all qwiic buzzer register data
 void readSystemSettings(memoryMap *map)
 {
   //Read what I2C address we should use
@@ -296,7 +322,8 @@ void readSystemSettings(memoryMap *map)
   }
 }
 
-//If the current setting is different from that in EEPROM, update EEPROM
+/// @brief Record current settings in registerMap to EEPROM (only if different)
+/// @param map memoryMap struct containing all qwiic buzzer register data
 void recordSystemSettings(memoryMap *map)
 {
   //I2C address is byte
@@ -343,14 +370,19 @@ void recordSystemSettings(memoryMap *map)
   }
 }
 
-//When Qwiic Buzzer receives data bytes from Master, this function is called as an interrupt
-void receiveEvent(int numberOfBytesReceived) {
-  registerNumber = Wire.read(); //Get the memory map offset from the user
+/// @brief I2C interrupt, called when data has been received from an I2C controller
+/// @param numberOfBytesReceived The number of bytes that a I2C controller has sent
+void receiveEvent(int numberOfBytesReceived) 
+{
+  //Get the memory map offset from the user
+  registerNumber = Wire.read(); 
 
   //Begin recording the following incoming bytes to the temp memory map
   //starting at the registerNumber (the first byte received)
-  for (uint8_t x = 0 ; x < numberOfBytesReceived - 1 ; x++) {
-    uint8_t temp = Wire.read(); //We might record it, we might throw it away
+  for (uint8_t x = 0 ; x < numberOfBytesReceived - 1 ; x++) 
+  {
+    //We might record it, we might throw it away
+    uint8_t temp = Wire.read(); 
 
     if ( (x + registerNumber) < sizeof(memoryMap)) {
       //Clense the incoming byte against the read only protected bits
@@ -362,14 +394,13 @@ void receiveEvent(int numberOfBytesReceived) {
   updateFlag = true; //Update in the main loop
 }
 
-//Respond to GET commands
-//When Qwiic Buzzer gets a request for data from the user, this function is called as an interrupt
-//The interrupt will respond with bytes starting from the last byte the user sent to us
-//While we are sending bytes we may have to do some calculations
-void requestEvent() {
-  //This will write the entire contents of the register map struct starting from
-  //the register the user requested, and when it reaches the end the master
-  //will read 0xFFs.
-
+/// @brief I2C interrupt, called when data has been requested by an I2C controller
+/// The interrupt will respond with bytes starting from the last byte the user sent to us
+/// This will write the entire contents of the register map struct starting from
+/// the register the user requested, and when it reaches the end the I2C-controller
+/// will read 0xFFs.
+/// @param numberOfBytesReceived The number of bytes that a I2C controller has sent
+void requestEvent() 
+{
   Wire.write((registerPointer + registerNumber), sizeof(memoryMap) - registerNumber);
 }
