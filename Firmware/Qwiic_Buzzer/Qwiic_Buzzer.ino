@@ -183,7 +183,10 @@ void loop(void)
   // This will keep the buzzer buzzing until duration has been completed
   if ((buzzer.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
   {
-    buzzer.checkDuration(&registerMap, buzzerPin);
+    if (buzzer.checkDuration() == false)
+    {
+      buzzer.reset(&registerMap, buzzerPin);
+    }
   }
 
   // Check for updateFlag.
@@ -217,20 +220,23 @@ void loop(void)
     // Update the buzzer variables and engage
     buzzer.updateFromMap(&registerMap, buzzerPin);
 
-    // While the user continues to hold down the Trigger GPIO to GND, we can
-    // also check duration and if it is set, then the Trigger button acts like a 
-    // one-shot. If no duration, then it is more like a "momentary button/buzzer".
-    while(digitalRead(triggerPin) == LOW) 
+    // If duration is set to non-zero, then we want to play that out
+    if(registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB)
     {
-      // Ff buzzer is already active and there is duration set
-      if ((buzzer.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+      while(buzzer.checkDuration() == true)
       {
-        buzzer.checkDuration(&registerMap, buzzerPin);
+        delay(1);
       }
-      delay(1);
+    }
+    else // duration is zero (forever), this means we are in "momentary" trigger mode
+    {
+      while(digitalRead(triggerPin) == LOW)
+      {
+        delay(1);
+      }
     }
 
-    // User has release the Trigger GPIO
+    // User has released the Trigger GPIO, or duration has played out
     // All done here, let's reset everything!
     buzzer.reset(&registerMap, buzzerPin);
   }
@@ -288,32 +294,40 @@ void readSystemSettings(memoryMap *map)
     EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
-  uint16_t mapToneFrequency  = 0; //used to store temp complete uint16_t from maps high/low bytes.
+  // Tone Frequency
+  uint16_t toneFrequency  = 0; //used to store temp complete uint16_t from maps high/low bytes.
 
-  EEPROM.get(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
-  if (mapToneFrequency == 0xFFFF)
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
+  if (toneFrequency == 0xFFFF)
   {
-    mapToneFrequency = 2730; //Default to resonant frequency
-    EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
+    toneFrequency = 2730; //Default to resonant frequency
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
   }
   // extract MSB and LSB from complete uint16_t
   // put it into the registerMap for use everywhere
-  uint8_t toneFrequencyMSB = ((mapToneFrequency & 0xFF00) >> 8 );
-  uint8_t toneFrequencyLSB = (mapToneFrequency & 0x00FF);
+  uint8_t toneFrequencyMSB = ((toneFrequency & 0xFF00) >> 8 );
+  uint8_t toneFrequencyLSB = (toneFrequency & 0x00FF);
   map->buzzerToneFrequencyMSB = toneFrequencyMSB;
   map->buzzerToneFrequencyLSB = toneFrequencyLSB;
 
-  uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
-  mapDuration |= map->buzzerDurationLSB;
-  mapDuration |= (map->buzzerDurationMSB << 8);
 
-  EEPROM.get(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
-  if (mapDuration == 0xFFFF)
+  // Duration
+  uint16_t toneDuration = 0; //used to store temp complete uint16_t from maps high/low bytes.
+
+  EEPROM.get(kSfeQwiicBuzzerEepromLocationDuration, toneDuration);
+  if (toneDuration == 0xFFFF)
   {
-    mapDuration = 0; //Default to none
-    EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
-  }  
+    toneDuration = 0; //Default to zero (forever)
+    EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, toneDuration);
+  }
+  // extract MSB and LSB from complete uint16_t
+  // put it into the registerMap for use everywhere
+  uint8_t toneDurationMSB = ((toneDuration & 0xFF00) >> 8 );
+  uint8_t toneDurationLSB = (toneDuration & 0x00FF);
+  map->buzzerDurationMSB = toneDurationMSB;
+  map->buzzerDurationLSB = toneDurationLSB;  
 
+  // Volume
   EEPROM.get(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   if (map->buzzerVolume == 0xFF)
   {
@@ -359,8 +373,10 @@ void recordSystemSettings(memoryMap *map)
     EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
 
     uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
-    mapDuration |= map->buzzerDurationLSB;
-    mapDuration |= (map->buzzerDurationMSB << 8);
+    uint8_t durationMSB = map->buzzerDurationMSB; // get MSB from map
+    uint8_t durationLSB = map->buzzerDurationLSB; // get MLB from map
+    mapDuration |= durationLSB;
+    mapDuration |= (durationMSB << 8);
     EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, mapDuration);
 
     EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);

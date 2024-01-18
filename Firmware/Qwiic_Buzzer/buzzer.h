@@ -155,21 +155,14 @@ class QwiicBuzzer
         }
         
         /// @brief Checks it there is any more duration to continue buzzing through
-        /// When duration runs out, this will do four things:
-        /// 1. call noTone()
-        /// 2. disable all GND connection side bjts
-        /// 3. clear the map->buzzerActive register
-        /// 4. update the buzzerActiveFlag to false
-        /// Note, this is only ever called in from the main loop if the buzzer
-        /// is currently active and duration is non-zero.
-        /// @param map memoryMap struct containing all qwiic buzzer register data
-        /// @param buzzerPin GPIO pin used to activate the on-board physical buzzer 
-        void checkDuration(struct memoryMap* map, uint8_t buzzerPin)
+        /// @return True if there still is duration left, false if we are done
+        bool checkDuration()
         {
             if (millis() - buzzerStartTime > duration) // we've surpassed duration, time to turn off
             {
-                reset(map, buzzerPin);
+                return false;
             }
+            return true;
         }
 
         /// @brief Resets everything to an "off" state
