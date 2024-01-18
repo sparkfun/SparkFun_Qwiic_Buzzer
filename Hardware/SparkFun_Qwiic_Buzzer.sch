@@ -30692,18 +30692,18 @@ Diode with low voltage drop</description>
 <part name="H2" library="SparkFun-Hardware" deviceset="STAND-OFF" device=""/>
 <part name="LOGO4" library="SparkFun-Aesthetics" deviceset="SFE_LOGO_FLAME" device=".1_INCH"/>
 <part name="LS1" library="SparkFun-Electromechanical" deviceset="BUZZER" device="-SMD" value="BUZZER"/>
-<part name="R5" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
+<part name="R5" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
 <part name="PWR_LED" library="SparkFun-Jumpers" deviceset="JUMPER-SMT_2_NC_TRACE" device="_SILK" package3d_urn="urn:adsk.eagle:package:39281/1" value="PWR_LED"/>
 <part name="SUPPLY3" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="GND9" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
 <part name="Q2" library="SparkFun-DiscreteSemi" deviceset="TRANS_NPN_DUAL" device="-MBT3904DW1T1"/>
 <part name="Q3" library="SparkFun-DiscreteSemi" deviceset="TRANS_PNP" device="-PMBT3906|MMBT3906L" value="200mA/40V"/>
-<part name="R7" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
+<part name="R7" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
 <part name="Q1" library="SparkFun-DiscreteSemi" deviceset="TRANS_NPN_DUAL" device="-MBT3904DW1T1"/>
 <part name="SUPPLY4" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
-<part name="R8" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
-<part name="R12" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
-<part name="R13" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
+<part name="R8" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
+<part name="R12" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
+<part name="R13" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
 <part name="R17" library="SparkFun-Resistors" deviceset="100OHM" device="-0402-TIGHT-1/16W-1%" value="100"/>
 <part name="R14" library="SparkFun-Resistors" deviceset="330OHM" device="-0402T-1/16W-5%" value="330"/>
 <part name="R15" library="SparkFun-Resistors" deviceset="2.2KOHM" device="-0402T-1/16W-1%" value="2.2k"/>
