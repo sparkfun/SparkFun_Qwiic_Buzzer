@@ -99,7 +99,7 @@ class QwiicBuzzer
             // and then turn on the buzzer (but only once).
             uint8_t mapBuzzerActive = map->buzzerActive;
 
-            if ( (mapBuzzerActive == 0x01) && (buzzerActiveFlag == false) ) // this means we were off, and now the user wants to turn it on.
+            if ( (mapBuzzerActive == 0x01) && ( (buzzerActiveFlag == false) || (different == true) ) ) // this means we were off, and now the user wants to turn it on.
             {
                 if(duration > 0)
                 {
