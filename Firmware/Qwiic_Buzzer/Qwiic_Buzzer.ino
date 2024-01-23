@@ -100,11 +100,11 @@ memoryMap protectionMap = {
   0x00,                                     // firmwareMajor
   0xFF,                                     // buzzerToneFrequencyMSB
   0xFF,                                     // buzzerToneFrequencyLSB
-  0xFF,                                     // buzzerVolume  
+  0x07,                                     // buzzerVolume  
   0xFF,                                     // buzzerDurationMSB  
   0xFF,                                     // buzzerDurationLSB 
-  0xFF,                                     // buzzerActive  
-  0xFF,                                     // saveSettings
+  0x01,                                     // buzzerActive  
+  0x01,                                     // saveSettings
   0xFF,                                     // i2cAddress
 };
 
@@ -361,8 +361,8 @@ void recordSystemSettings(memoryMap *map)
     map->i2cAddress = i2cAddr; //Return to original address
   }
 
-  // if user has set the ""saveSettings" bit, then record settings to EEPROM.
-  if(map->saveSettings == 0x01)
+  // if user has set bit 0 in the ""saveSettings" register, then record settings to EEPROM.
+  if(map->saveSettings == 1)
   {
     uint16_t mapToneFrequency = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
     uint8_t freqMSB = map->buzzerToneFrequencyMSB; // get MSB from map
@@ -371,7 +371,7 @@ void recordSystemSettings(memoryMap *map)
     mapToneFrequency |= (freqMSB << 8); // combine MSB/LSM into temp complete
     EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
 
-    uint16_t mapDuration; //used to store temp complete uint16_t from maps high/low bytes.
+    uint16_t mapDuration = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
     uint8_t durationMSB = map->buzzerDurationMSB; // get MSB from map
     uint8_t durationLSB = map->buzzerDurationLSB; // get MLB from map
     mapDuration |= durationLSB;
