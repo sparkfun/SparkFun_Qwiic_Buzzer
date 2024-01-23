@@ -139,7 +139,6 @@ void setup(void)
   MCUCR = bit(BODS);
 
   // Power down various bits of hardware to lower power usage
-  // set_sleep_mode(SLEEP_MODE_PWR_DOWN); //May turn off millis
   set_sleep_mode(SLEEP_MODE_IDLE);
   sleep_enable();
 
