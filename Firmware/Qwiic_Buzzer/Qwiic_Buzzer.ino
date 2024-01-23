@@ -125,10 +125,8 @@ QwiicBuzzer buzzer;
 
 void setup(void)
 {
-  // Setup volume pins in buzzer config struct
-  buzzer.setupVolumePins(volumePin0, volumePin1, volumePin2, volumePin3);
-
-  pinMode(buzzerPin, OUTPUT);
+  // Setup GPIO pins in the class
+  buzzer.setupPins(volumePin0, volumePin1, volumePin2, volumePin3, statusLedPin, buzzerPin);
 
   // GPIO with internal pullup, goes low when user connects to GND
   pinMode(triggerPin, INPUT_PULLUP); 
@@ -163,7 +161,7 @@ void setup(void)
   readSystemSettings(&registerMap); 
 
   // Update Buzzer variables
-  buzzer.updateFromMap(&registerMap, buzzerPin); 
+  buzzer.updateFromMap(&registerMap); 
 
   // Determine the I2C address we should be using 
   // and begin listening on I2C bus
@@ -187,7 +185,7 @@ void loop(void)
   {
     if (buzzer.checkDuration() == false)
     {
-      buzzer.reset(&registerMap, buzzerPin);
+      buzzer.reset(&registerMap);
     }
   }
 
@@ -202,7 +200,7 @@ void loop(void)
     recordSystemSettings(&registerMap);
 
     // Update settings from register map to actively used local variables
-    buzzer.updateFromMap(&registerMap, buzzerPin);
+    buzzer.updateFromMap(&registerMap);
 
     // clear flag
     updateFlag = false; 
@@ -213,14 +211,14 @@ void loop(void)
   {
     // Reset everything, the trigger pin has power over any I2C software 
     // sent from the user's micro
-    buzzer.reset(&registerMap, buzzerPin);
+    buzzer.reset(&registerMap);
 
     // set the map->buzzerActive register
     // This will be "caught" in updateFromMap and actually turn on the buzzer
     registerMap.buzzerActive = 0x01; 
 
     // Update the buzzer variables and engage
-    buzzer.updateFromMap(&registerMap, buzzerPin);
+    buzzer.updateFromMap(&registerMap);
 
     // If duration is set to non-zero, then we want to play that out
     if(registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB)
@@ -240,7 +238,7 @@ void loop(void)
 
     // User has released the Trigger GPIO, or duration has played out
     // All done here, let's reset everything!
-    buzzer.reset(&registerMap, buzzerPin);
+    buzzer.reset(&registerMap);
   }
   
   // Stop everything and go to sleep. Wake up if I2C event occurs.

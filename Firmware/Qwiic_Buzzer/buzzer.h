@@ -38,19 +38,24 @@ class QwiicBuzzer
         uint8_t _volumePin1;
         uint8_t _volumePin2;
         uint8_t _volumePin3;
-        const uint8_t _statusLedPin = 0;
+        uint8_t _statusLedPin;
+        uint8_t _buzzerPin;
 
         /// @brief Set the GPIO pins used to control volume BJTs
-        /// @param pin0 GPIO pin used to control BJT for lowest volume setting
-        /// @param pin1 GPIO pin used to control BJT for mid-high volume setting
-        /// @param pin2 GPIO pin used to control BJT for mid-low volume setting
-        /// @param pin3 GPIO pin used to control BJT for highest volume setting
-        void setupVolumePins(uint8_t pin0, uint8_t pin1, uint8_t pin2, uint8_t pin3)
+        /// @param volPin0 GPIO pin used to control BJT for lowest volume setting
+        /// @param volPin1 GPIO pin used to control BJT for mid-high volume setting
+        /// @param volPin2 GPIO pin used to control BJT for mid-low volume setting
+        /// @param volPin3 GPIO pin used to control BJT for highest volume setting
+        /// @param statPin GPIO pin used to control the Status LED
+        /// @param buzzPin GPIO pin used to control the Buzzer (high side BJT)
+        void setupPins(uint8_t volPin0, uint8_t volPin1, uint8_t volPin2, uint8_t volPin3, uint8_t statPin, uint8_t buzzPin)
         {
-            _volumePin0 = pin0;
-            _volumePin1 = pin1;
-            _volumePin2 = pin2;
-            _volumePin3 = pin3;
+            _volumePin0 = volPin0;
+            _volumePin1 = volPin1;
+            _volumePin2 = volPin2;
+            _volumePin3 = volPin3;
+            _statusLedPin = statPin;
+            _buzzerPin = buzzPin;            
 
             // all volume settings output low - OFF
             pinMode(_volumePin0, OUTPUT);
@@ -61,12 +66,17 @@ class QwiicBuzzer
             digitalWrite(_volumePin1, LOW);
             digitalWrite(_volumePin2, LOW);
             digitalWrite(_volumePin3, LOW);
+
+            pinMode(_statusLedPin, OUTPUT);
+            digitalWrite(_statusLedPin, LOW);
+
+            pinMode(_buzzerPin, OUTPUT);
+            digitalWrite(_buzzerPin, LOW);
         }
 
         /// @brief Updates all the QwiicBuzzer class variables, and resets if necessary
-        /// @param map memoryMap struct containing all qwiic buzzer register data
-        /// @param buzzerPin GPIO pin used to activate the on-board physical buzzer        
-        void updateFromMap(struct memoryMap* map, uint8_t buzzerPin) 
+        /// @param map memoryMap struct containing all qwiic buzzer register data       
+        void updateFromMap(struct memoryMap* map)
         {
             //check if any of the values are different, and update class variables
             bool different = false;
@@ -109,7 +119,7 @@ class QwiicBuzzer
                 {
                     if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                     {
-                        tone(buzzerPin,_toneFrequency, _duration); 
+                        tone(_buzzerPin,_toneFrequency, _duration); 
                     }
                     _buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
                 }
@@ -117,7 +127,7 @@ class QwiicBuzzer
                 {
                     if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                     {
-                        tone(buzzerPin,_toneFrequency); 
+                        tone(_buzzerPin,_toneFrequency); 
                     }
                 }
 
@@ -148,13 +158,12 @@ class QwiicBuzzer
                             break;                              
                     }
                 }
-                pinMode(_statusLedPin, OUTPUT);
                 digitalWrite(_statusLedPin, HIGH);
                 _buzzerActiveFlag = true;
             }
             else if ( (mapBuzzerActive == 0x00) && (_buzzerActiveFlag == true) ) // this means we are currently on, and the user wants to turn it off
             {
-                reset(map, buzzerPin);
+                reset(map);
             }
         }
         
@@ -167,12 +176,11 @@ class QwiicBuzzer
 
         /// @brief Resets everything to an "off" state
         /// @param map memoryMap struct containing all qwiic buzzer register data
-        /// @param buzzerPin GPIO pin used to activate the on-board physical buzzer 
-        void reset(struct memoryMap* map, uint8_t buzzerPin)
+        void reset(struct memoryMap* map)
         {
             // Stop the tone.
             // Note, this could have already been stopped by tone's duration
-            noTone(buzzerPin);        
+            noTone(_buzzerPin);        
 
             // Disable GND side connections
             digitalWrite(_volumePin0, LOW);     
