@@ -162,11 +162,7 @@ class QwiicBuzzer
         /// @return True if there still is duration left, false if we are done
         bool checkDuration()
         {
-            if (millis() - buzzerStartTime > duration) // we've surpassed duration, time to turn off
-            {
-                return false;
-            }
-            return true;
+            return (millis() - buzzerStartTime > duration); // we've surpassed duration, time to turn off
         }
 
         /// @brief Resets everything to an "off" state
