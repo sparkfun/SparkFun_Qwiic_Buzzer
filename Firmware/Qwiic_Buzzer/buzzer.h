@@ -193,7 +193,6 @@ class QwiicBuzzer
 
             // Turn off the status LED
             digitalWrite(_statusLedPin, LOW);
-            pinMode(_statusLedPin, INPUT);
 
             // Update class variable of _buzzerActiveFlag to reflect reality
             _buzzerActiveFlag = false;
