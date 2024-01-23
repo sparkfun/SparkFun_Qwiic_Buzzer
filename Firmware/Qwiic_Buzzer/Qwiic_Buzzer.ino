@@ -405,16 +405,16 @@ void receiveEvent(int numberOfBytesReceived)
 
   //Begin recording the following incoming bytes to the temp memory map
   //starting at the registerNumber (the first byte received)
-  for (uint8_t x = 0 ; x < numberOfBytesReceived - 1 ; x++) 
+  for (uint8_t registerOffset = 0 ; registerOffset < numberOfBytesReceived - 1 ; registerOffset++) 
   {
     //We might record it, we might throw it away
     uint8_t temp = Wire.read(); 
 
-    if ( (x + registerNumber) < sizeof(memoryMap)) {
+    if ( (registerOffset + registerNumber) < sizeof(memoryMap)) {
       //Clense the incoming byte against the read only protected bits
       //Store the result into the register map
-      *(registerPointer + registerNumber + x) &= ~*(protectionPointer + registerNumber + x); //Clear this register if needed
-      *(registerPointer + registerNumber + x) |= temp & *(protectionPointer + registerNumber + x); //Or in the user's request (clensed against protection bits)
+      *(registerPointer + registerNumber + registerOffset) &= ~*(protectionPointer + registerNumber + registerOffset); //Clear this register if needed
+      *(registerPointer + registerNumber + registerOffset) |= temp & *(protectionPointer + registerNumber + registerOffset); //Or in the user's request (clensed against protection bits)
     }
   }
 
