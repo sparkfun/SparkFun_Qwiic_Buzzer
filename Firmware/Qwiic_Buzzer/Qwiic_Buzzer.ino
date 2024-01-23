@@ -218,8 +218,7 @@ void loop(void)
 
     if(triggerPinLowCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
     {
-      // Reset everything, the trigger pin has power over any I2C software 
-      // sent from the user's micro
+      // Reset everything
       buzzer.reset(&registerMap);
 
       // set the map->buzzerActive register
@@ -242,8 +241,7 @@ void loop(void)
       // Otherwise, duration will play out and stop the buzzer for us.
       if(buzzer._duration == 0)
         {
-          // Reset everything, the trigger pin has power over any I2C software 
-          // sent from the user's micro
+          // Reset everything
           buzzer.reset(&registerMap);
 
           updateFlag = true; // this will cause an update in main loop
