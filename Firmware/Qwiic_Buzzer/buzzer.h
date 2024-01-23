@@ -141,9 +141,6 @@ class QwiicBuzzer
                     digitalWrite(_volumePin3, LOW);
                     switch(_volume) 
                     {
-                        case 0: // off
-                            // do nothing, they are already turned off above
-                            break;
                         case 1: // setting 1 - aka "quietest" or "user"
                             digitalWrite(_volumePin3, HIGH);
                             break;
@@ -155,7 +152,10 @@ class QwiicBuzzer
                             break;
                         case 4: // setting 4 - aka "loudest"
                             digitalWrite(_volumePin0, HIGH);
-                            break;                              
+                            break;          
+                        default: // off
+                            // do nothing, they are already turned off above
+                            break;                    
                     }
                 }
                 digitalWrite(_statusLedPin, HIGH);
