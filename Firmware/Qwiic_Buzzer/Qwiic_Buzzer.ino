@@ -83,14 +83,14 @@ memoryMap registerMap {
   kSfeQwiicBuzzerDeviceID,                  // id
   kSfeQwiicBuzzerFirmwareVersionMinor,      // firmwareMinor
   kSfeQwiicBuzzerFirmwareVersionMajor,      // firmwareMajor
-  0x0A,                                     // buzzerToneFrequencyMSB
-  0xAA,                                     // buzzerToneFrequencyLSB
+  0x00,                                     // buzzerToneFrequencyMSB
+  0x00,                                     // buzzerToneFrequencyLSB
   0x00,                                     // buzzerVolume  
   0x00,                                     // buzzerDurationMSB  
   0x00,                                     // buzzerDurationLSB  
   0x00,                                     // buzzerActive  
   0x00,                                     // saveSettings
-  kSfeQwiicBuzzerDefaultI2cAddress,         // i2cAddress
+  0x00,                                     // i2cAddress
 };
 
 /// @brief Set permissions on each register member (0=read-only, 1=read-write)
