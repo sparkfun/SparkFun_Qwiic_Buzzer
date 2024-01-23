@@ -57,6 +57,11 @@
 
 uint8_t sfeQwiicBuzzerOldI2cAddress;
 
+bool previousTriggerPinState = true; // used to detect transitions from high to low on trigger pin.
+uint8_t triggerPinLowCounter = 0; // debounce trigger pin status counter
+uint8_t triggerPinHighCounter = 0; // debounce trigger pin status counter
+#define kSfeQwiicBuzzerTriggerDebounceAmount 10 // the amount of digitalReads required to recognise a Trigger pin status
+
 //Hardware connections
 #if defined(__AVR_ATmega328P__)
 //For developement on an Uno
@@ -205,39 +210,47 @@ void loop(void)
     updateFlag = false; 
   }
 
-  // Check if user has connected Trigger pin to GND, and buzz!
-  if (digitalRead(triggerPin) == LOW)
+  // Check if TRIGGER has transitioned from high to low, and buzz!
+  if ((digitalRead(triggerPin) == LOW) && (previousTriggerPinState == true) )
   {
-    // Reset everything, the trigger pin has power over any I2C software 
-    // sent from the user's micro
-    buzzer.reset(&registerMap);
+    // debounce
+    triggerPinLowCounter += 1;
 
-    // set the map->buzzerActive register
-    // This will be "caught" in updateFromMap and actually turn on the buzzer
-    registerMap.buzzerActive = 0x01; 
-
-    // Update the buzzer variables and engage
-    buzzer.updateFromMap(&registerMap);
-
-    // If duration is set to non-zero, then we want to play that out
-    if(registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB)
+    if(triggerPinLowCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
     {
-      while(buzzer.checkDuration() == true)
-      {
-        delay(1);
-      }
-    }
-    else // duration is zero (forever), this means we are in "momentary" trigger mode
-    {
-      while(digitalRead(triggerPin) == LOW)
-      {
-        delay(1);
-      }
-    }
+      // Reset everything, the trigger pin has power over any I2C software 
+      // sent from the user's micro
+      buzzer.reset(&registerMap);
 
-    // User has released the Trigger GPIO, or duration has played out
-    // All done here, let's reset everything!
-    buzzer.reset(&registerMap);
+      // set the map->buzzerActive register
+      // This will be "caught" in updateFromMap and actually turn on the buzzer
+      registerMap.buzzerActive = 0x01; 
+
+      updateFlag = true; // this will cause an update in main loop
+      triggerPinLowCounter = 0; // reset debounce counter
+      previousTriggerPinState = false; // keep track of status
+    }
+  }
+  else if ((previousTriggerPinState == false) && (digitalRead(triggerPin) == HIGH)) // user has release trigger pin
+  {
+    // debounce
+    triggerPinHighCounter += 1;
+
+    if(triggerPinHighCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
+    {
+      // If duration is set to zero, then we want this transition from LOW to HIGH to stop buzzer
+      // Otherwise, duration will play out and stop the buzzer for us.
+      if(buzzer._duration == 0)
+        {
+          // Reset everything, the trigger pin has power over any I2C software 
+          // sent from the user's micro
+          buzzer.reset(&registerMap);
+
+          updateFlag = true; // this will cause an update in main loop
+        }
+      triggerPinHighCounter = 0; // reset debounce counter
+      previousTriggerPinState = true; // keep track of status
+    }
   }
   
   // Stop everything and go to sleep. Wake up if I2C event occurs.
