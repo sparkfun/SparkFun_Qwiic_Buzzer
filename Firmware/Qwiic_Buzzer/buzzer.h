@@ -124,6 +124,10 @@ class QwiicBuzzer
                 {
                     tone(_buzzerPin,_toneFrequency); 
                 }
+                else // User has changed frequency to 0, (aka the "rest" note).
+                {
+                    noTone();
+                }
 
                 // volume control
                 if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
