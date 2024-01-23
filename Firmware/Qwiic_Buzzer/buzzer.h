@@ -29,15 +29,15 @@ class QwiicBuzzer
 {
     public:
         // variables imported from registerMap, for use in this class
-        uint8_t _volume = 3;                 // Volume of buzzer
-        uint16_t _toneFrequency = 2730;      // Frequency of the buzzer
-        uint16_t _duration = 0;              // Milliseconds, zero = forever
-        unsigned long _buzzerStartTime = 0;  // Start time of a new buzz, only useful if duration is used
+        uint8_t _volume;                 // Volume of buzzer
+        uint16_t _toneFrequency;         // Frequency of the buzzer
+        uint16_t _duration;              // Milliseconds, zero = forever
+        unsigned long _buzzerStartTime;  // Start time of a new buzz, only useful if duration is used
         boolean _buzzerActiveFlag = false;   // actual local status of buzzer
-        uint8_t _volumePin0 = 0;
-        uint8_t _volumePin1 = 0;
-        uint8_t _volumePin2 = 0;
-        uint8_t _volumePin3 = 0;
+        uint8_t _volumePin0;
+        uint8_t _volumePin1;
+        uint8_t _volumePin2;
+        uint8_t _volumePin3;
         const uint8_t _statusLedPin = 0;
 
         /// @brief Set the GPIO pins used to control volume BJTs

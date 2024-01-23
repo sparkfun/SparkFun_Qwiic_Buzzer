@@ -53,6 +53,8 @@
 
 #define kSfeQwiicBuzzerDefaultI2cAddress 0x34
 
+#define kSfeQwiicBuzzerResonantFrequency 2730
+
 uint8_t sfeQwiicBuzzerOldI2cAddress;
 
 //Hardware connections
@@ -300,7 +302,7 @@ void readSystemSettings(memoryMap *map)
   EEPROM.get(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
   if (toneFrequency == 0xFFFF)
   {
-    toneFrequency = 2730; //Default to resonant frequency
+    toneFrequency = kSfeQwiicBuzzerResonantFrequency; //Default to resonant frequency (2.73KHz)
     EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
   }
   // extract MSB and LSB from complete uint16_t
