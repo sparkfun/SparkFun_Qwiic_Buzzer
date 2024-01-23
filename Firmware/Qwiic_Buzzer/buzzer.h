@@ -68,30 +68,34 @@ class QwiicBuzzer
         /// @param buzzerPin GPIO pin used to activate the on-board physical buzzer        
         void updateFromMap(struct memoryMap* map, uint8_t buzzerPin) 
         {
-            //check if any of the values are different
+            //check if any of the values are different, and update class variables
             bool different = false;
-            if(map->buzzerVolume != volume) different = true; 
+            if(map->buzzerVolume != volume) 
+            {
+                volume = map->buzzerVolume;
+                different = true;
+            }
 
             uint16_t mapToneFrequency = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
             uint8_t freqMSB = map->buzzerToneFrequencyMSB;
             uint8_t freqLSB = map->buzzerToneFrequencyLSB;
             mapToneFrequency |= freqLSB;
             mapToneFrequency |= (freqMSB << 8);
-            if(mapToneFrequency != toneFrequency) different = true; 
+            if(mapToneFrequency != toneFrequency)
+            {
+                toneFrequency = mapToneFrequency;
+                different = true; 
+            }
 
             uint16_t mapDuration_uint16 = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
             uint8_t durationMSB = map->buzzerDurationMSB;
             uint8_t durationLSB = map->buzzerDurationLSB;
             mapDuration_uint16 |= durationLSB;
             mapDuration_uint16 |= (durationMSB << 8);
-            if(mapDuration_uint16 != toneFrequency) different = true;     
-
-            //if they are different, update class variables
-            if(different) 
+            if(mapDuration_uint16 != toneFrequency)
             {
-                volume = map->buzzerVolume;
-                toneFrequency = mapToneFrequency;
                 duration = mapDuration_uint16;
+                different = true;
             }
 
             // if the previous statusFlag of the buzzer means it sitting "off",
