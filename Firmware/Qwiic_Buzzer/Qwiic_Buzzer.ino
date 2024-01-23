@@ -417,7 +417,11 @@ void receiveEvent(int numberOfBytesReceived)
       *(registerPointer + registerNumber + x) |= temp & *(protectionPointer + registerNumber + x); //Or in the user's request (clensed against protection bits)
     }
   }
-  updateFlag = true; //Update in the main loop
+
+  if (numberOfBytesReceived > 1) // only update if we received a valid amount
+  {
+    updateFlag = true; //Update in the main loop
+  }
 }
 
 /// @brief I2C interrupt, called when data has been requested by an I2C controller
