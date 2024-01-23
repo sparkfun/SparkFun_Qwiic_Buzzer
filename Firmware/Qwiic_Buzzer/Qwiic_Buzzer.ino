@@ -181,7 +181,7 @@ void loop(void)
   
   // If buzzer is active and there is duration set, checkDuration
   // This will keep the buzzer buzzing until duration has been completed
-  if ((buzzer.buzzerActiveFlag == true) && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+  if (buzzer.active() && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
   {
     if (buzzer.checkDuration() == false)
     {

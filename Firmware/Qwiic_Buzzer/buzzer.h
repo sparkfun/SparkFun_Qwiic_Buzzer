@@ -29,16 +29,16 @@ class QwiicBuzzer
 {
     public:
         // variables imported from registerMap, for use in this class
-        uint8_t volume = 3;                 // Volume of buzzer
-        uint16_t toneFrequency = 2730;      // Frequency of the buzzer
-        uint16_t duration = 0;              // Milliseconds, zero = forever
-        unsigned long buzzerStartTime = 0;  // Start time of a new buzz, only useful if duration is used
-        boolean buzzerActiveFlag = false;   // actual local status of buzzer
-        uint8_t volumePin0 = 0;
-        uint8_t volumePin1 = 0;
-        uint8_t volumePin2 = 0;
-        uint8_t volumePin3 = 0;
-        const uint8_t statusLedPin = 0;
+        uint8_t _volume = 3;                 // Volume of buzzer
+        uint16_t _toneFrequency = 2730;      // Frequency of the buzzer
+        uint16_t _duration = 0;              // Milliseconds, zero = forever
+        unsigned long _buzzerStartTime = 0;  // Start time of a new buzz, only useful if duration is used
+        boolean _buzzerActiveFlag = false;   // actual local status of buzzer
+        uint8_t _volumePin0 = 0;
+        uint8_t _volumePin1 = 0;
+        uint8_t _volumePin2 = 0;
+        uint8_t _volumePin3 = 0;
+        const uint8_t _statusLedPin = 0;
 
         /// @brief Set the GPIO pins used to control volume BJTs
         /// @param pin0 GPIO pin used to control BJT for lowest volume setting
@@ -47,20 +47,20 @@ class QwiicBuzzer
         /// @param pin3 GPIO pin used to control BJT for highest volume setting
         void setupVolumePins(uint8_t pin0, uint8_t pin1, uint8_t pin2, uint8_t pin3)
         {
-            volumePin0 = pin0;
-            volumePin1 = pin1;
-            volumePin2 = pin2;
-            volumePin3 = pin3;
+            _volumePin0 = pin0;
+            _volumePin1 = pin1;
+            _volumePin2 = pin2;
+            _volumePin3 = pin3;
 
             // all volume settings output low - OFF
-            pinMode(volumePin0, OUTPUT);
-            pinMode(volumePin1, OUTPUT);
-            pinMode(volumePin2, OUTPUT);
-            pinMode(volumePin3, OUTPUT);
-            digitalWrite(volumePin0, LOW);
-            digitalWrite(volumePin1, LOW);
-            digitalWrite(volumePin2, LOW);
-            digitalWrite(volumePin3, LOW);
+            pinMode(_volumePin0, OUTPUT);
+            pinMode(_volumePin1, OUTPUT);
+            pinMode(_volumePin2, OUTPUT);
+            pinMode(_volumePin3, OUTPUT);
+            digitalWrite(_volumePin0, LOW);
+            digitalWrite(_volumePin1, LOW);
+            digitalWrite(_volumePin2, LOW);
+            digitalWrite(_volumePin3, LOW);
         }
 
         /// @brief Updates all the QwiicBuzzer class variables, and resets if necessary
@@ -70,9 +70,9 @@ class QwiicBuzzer
         {
             //check if any of the values are different, and update class variables
             bool different = false;
-            if(map->buzzerVolume != volume) 
+            if(map->buzzerVolume != _volume) 
             {
-                volume = map->buzzerVolume;
+                _volume = map->buzzerVolume;
                 different = true;
             }
 
@@ -81,9 +81,9 @@ class QwiicBuzzer
             uint8_t freqLSB = map->buzzerToneFrequencyLSB;
             mapToneFrequency |= freqLSB;
             mapToneFrequency |= (freqMSB << 8);
-            if(mapToneFrequency != toneFrequency)
+            if(mapToneFrequency != _toneFrequency)
             {
-                toneFrequency = mapToneFrequency;
+                _toneFrequency = mapToneFrequency;
                 different = true; 
             }
 
@@ -92,9 +92,9 @@ class QwiicBuzzer
             uint8_t durationLSB = map->buzzerDurationLSB;
             mapDuration_uint16 |= durationLSB;
             mapDuration_uint16 |= (durationMSB << 8);
-            if(mapDuration_uint16 != toneFrequency)
+            if(mapDuration_uint16 != _duration)
             {
-                duration = mapDuration_uint16;
+                _duration = mapDuration_uint16;
                 different = true;
             }
 
@@ -103,56 +103,56 @@ class QwiicBuzzer
             // and then turn on the buzzer (but only once).
             uint8_t mapBuzzerActive = map->buzzerActive;
 
-            if ( (mapBuzzerActive == 0x01) && ( (buzzerActiveFlag == false) || (different == true) ) ) // this means we were off, and now the user wants to turn it on.
+            if ( (mapBuzzerActive == 0x01) && ( (_buzzerActiveFlag == false) || (different == true) ) ) // this means we were off, and now the user wants to turn it on.
             {
-                if(duration > 0)
+                if(_duration > 0)
                 {
-                    if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+                    if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                     {
-                        tone(buzzerPin,toneFrequency, duration); 
+                        tone(buzzerPin,_toneFrequency, _duration); 
                     }
-                    buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
+                    _buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
                 }
                 else
                 {
-                    if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+                    if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                     {
-                        tone(buzzerPin,toneFrequency); 
+                        tone(buzzerPin,_toneFrequency); 
                     }
                 }
 
                 // volume control
-                if(toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
+                if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                 {
                     // first, turn off all volumes, then turn on the only desired setting
-                    digitalWrite(volumePin0, LOW);
-                    digitalWrite(volumePin1, LOW);
-                    digitalWrite(volumePin2, LOW);
-                    digitalWrite(volumePin3, LOW);
-                    switch(volume) 
+                    digitalWrite(_volumePin0, LOW);
+                    digitalWrite(_volumePin1, LOW);
+                    digitalWrite(_volumePin2, LOW);
+                    digitalWrite(_volumePin3, LOW);
+                    switch(_volume) 
                     {
                         case 0: // off
                             // do nothing, they are already turned off above
                             break;
                         case 1: // setting 1 - aka "quietest" or "user"
-                            digitalWrite(volumePin3, HIGH);
+                            digitalWrite(_volumePin3, HIGH);
                             break;
                         case 2: // setting 2 - aka "mid-low"
-                            digitalWrite(volumePin2, HIGH);
+                            digitalWrite(_volumePin2, HIGH);
                             break;
                         case 3: // setting 3 - aka "mid-high"
-                            digitalWrite(volumePin1, HIGH);
+                            digitalWrite(_volumePin1, HIGH);
                             break;
                         case 4: // setting 4 - aka "loudest"
-                            digitalWrite(volumePin0, HIGH);
+                            digitalWrite(_volumePin0, HIGH);
                             break;                              
                     }
                 }
-                pinMode(statusLedPin, OUTPUT);
-                digitalWrite(statusLedPin, HIGH);
-                buzzerActiveFlag = true;
+                pinMode(_statusLedPin, OUTPUT);
+                digitalWrite(_statusLedPin, HIGH);
+                _buzzerActiveFlag = true;
             }
-            else if ( (mapBuzzerActive == 0x00) && (buzzerActiveFlag == true) ) // this means we are currently on, and the user wants to turn it off
+            else if ( (mapBuzzerActive == 0x00) && (_buzzerActiveFlag == true) ) // this means we are currently on, and the user wants to turn it off
             {
                 reset(map, buzzerPin);
             }
@@ -162,7 +162,7 @@ class QwiicBuzzer
         /// @return True if there still is duration left, false if we are done
         bool checkDuration()
         {
-            return (millis() - buzzerStartTime > duration); // we've surpassed duration, time to turn off
+            return (millis() - _buzzerStartTime > _duration); // we've surpassed duration, time to turn off
         }
 
         /// @brief Resets everything to an "off" state
@@ -175,21 +175,28 @@ class QwiicBuzzer
             noTone(buzzerPin);        
 
             // Disable GND side connections
-            digitalWrite(volumePin0, LOW);     
-            digitalWrite(volumePin1, LOW);
-            digitalWrite(volumePin2, LOW);
-            digitalWrite(volumePin3, LOW);
+            digitalWrite(_volumePin0, LOW);     
+            digitalWrite(_volumePin1, LOW);
+            digitalWrite(_volumePin2, LOW);
+            digitalWrite(_volumePin3, LOW);
 
             // Clear the map->buzzerActive register
             map->buzzerActive = 0x00; 
 
             // Turn off the status LED
-            digitalWrite(statusLedPin, LOW);
-            pinMode(statusLedPin, INPUT);
+            digitalWrite(_statusLedPin, LOW);
+            pinMode(_statusLedPin, INPUT);
 
-            // Update class variable of buzzerActiveFlag to reflect reality
-            buzzerActiveFlag = false;
+            // Update class variable of _buzzerActiveFlag to reflect reality
+            _buzzerActiveFlag = false;
         }
+
+        /// @brief A way to get the instance variable buzzerActiveFlag status
+        /// @return True if buzzer is active, false if it is not
+        bool active()
+        {
+            return _buzzerActiveFlag;
+        }        
 };
 
 
