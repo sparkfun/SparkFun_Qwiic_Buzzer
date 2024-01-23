@@ -115,20 +115,14 @@ class QwiicBuzzer
 
             if ( (mapBuzzerActive == 0x01) && ( (_buzzerActiveFlag == false) || (different == true) ) ) // this means we were off, and now the user wants to turn it on.
             {
-                if(_duration > 0)
+                if(_duration > 0) // Duration is used, and we're starting a new buzz, so need to reset _buzzerStartTime.
                 {
-                    if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
-                    {
-                        tone(_buzzerPin,_toneFrequency, _duration); 
-                    }
                     _buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
                 }
-                else
+
+                if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
                 {
-                    if(_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
-                    {
-                        tone(_buzzerPin,_toneFrequency); 
-                    }
+                    tone(_buzzerPin,_toneFrequency); 
                 }
 
                 // volume control
@@ -171,7 +165,7 @@ class QwiicBuzzer
         /// @return True if there still is duration left, false if we are done
         bool checkDuration()
         {
-            return (millis() - _buzzerStartTime > _duration); // we've surpassed duration, time to turn off
+            return (millis() - _buzzerStartTime < _duration); // we've surpassed duration, time to turn off
         }
 
         /// @brief Resets everything to an "off" state
