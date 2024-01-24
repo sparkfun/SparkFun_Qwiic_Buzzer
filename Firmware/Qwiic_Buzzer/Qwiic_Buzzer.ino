@@ -136,6 +136,28 @@ void setup(void)
   // GPIO with internal pullup, goes low when user connects to GND
   pinMode(triggerPin, INPUT_PULLUP); 
 
+
+
+  /// @brief Used to measure how long the trigger pin has been held low. Must be
+  /// held low for 1000ms to engage a factory reset
+  int factoryResetPinLowCounter = 0;
+
+  // Check for factory reset
+  // If the user connects the TRIGGER pin low on boot-up, and continues to hold
+  // it low for a full second, then perform a factory reset (write all settings 
+  // EEPROM to "fresh" values of 0xFF.
+  while(digitalRead(triggerPin) == LOW)
+  {
+    delay(1);
+    factoryResetPinLowCounter += 1;
+    if(factoryResetPinLowCounter > 1000)
+    {
+      factoryReset();
+      while(digitalRead(triggerPin) == LOW); // wait for trigger to go high
+      break;
+    }
+  }  
+
   // Disable ADC
   ADCSRA = 0;
 
@@ -433,4 +455,25 @@ void receiveEvent(int numberOfBytesReceived)
 void requestEvent() 
 {
   Wire.write((registerPointer + registerNumber), sizeof(memoryMap) - registerNumber);
+}
+
+/// @brief Perform a factory reset.
+/// This will write all values in settings EEPROM to a "fresh" values of 0xFF.
+
+void factoryReset()
+{
+  // write settings EEPROM locations to 0xFF
+  EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, 0xFF);
+  EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, 0xFFFF);
+  EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, 0xFF);
+  EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, 0xFFFF);
+  
+  // blink the status LED three times to indicate that factory reset has completed.
+  for(int i = 0 ; i < 3 ; i++)
+  {
+    digitalWrite(statusLedPin, HIGH);
+    delay(100);
+    digitalWrite(statusLedPin, LOW);
+    delay(100);
+  }
 }
