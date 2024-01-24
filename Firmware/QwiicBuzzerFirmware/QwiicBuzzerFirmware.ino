@@ -32,9 +32,7 @@
   Library Inclusion:
   Wire.h        Used for interfacing with the I2C hardware for responding to I2C events.
   EEPROM.h      Used for interfacing with the onboard EEPROM for storing and retrieving settings.
-  nvm.h         Used for defining the storage locations in non-volatile memory (EEPROM) to store and retrieve settings from.
-  registers.h   Used for defining a memoryMap object that serves as the register map for the device.
-  buzzer.h      Used for configuring the behavior of the onboard BUZZER
+  sfeQwiicBuzzerFirmware.h      Used for configuring the behavior of the onboard BUZZER
 
   avr/sleep.h             Needed for sleep_mode which saves power on the ATTiny
   avr/power.hardware      Needed for powering down peripherals such as the ADC/TWI and Timers on the ATTiny
@@ -42,7 +40,7 @@
 
 #include <Wire.h>
 #include <EEPROM.h>
-#include "buzzer.h"
+#include "sfeQwiicBuzzerFirmware.h"
 
 #include <avr/sleep.h> //Needed for sleep_mode
 #include <avr/power.h> //Needed for powering down perihperals such as the ADC/TWI and Timers
@@ -85,32 +83,32 @@ const uint8_t triggerPin = 5;
 
 /// @brief Initialize the Qwiic Buzzer register map with default values
 memoryMap registerMap{
-    kSfeQwiicBuzzerDeviceID,             // id
-    kSfeQwiicBuzzerFirmwareVersionMinor, // firmwareMinor
-    kSfeQwiicBuzzerFirmwareVersionMajor, // firmwareMajor
-    0x00,                                // buzzerToneFrequencyMSB
-    0x00,                                // buzzerToneFrequencyLSB
-    0x00,                                // buzzerVolume
-    0x00,                                // buzzerDurationMSB
-    0x00,                                // buzzerDurationLSB
-    0x00,                                // buzzerActive
-    0x00,                                // saveSettings
-    0x00,                                // i2cAddress
+  kSfeQwiicBuzzerDeviceID,             // id
+  kSfeQwiicBuzzerFirmwareVersionMinor, // firmwareMinor
+  kSfeQwiicBuzzerFirmwareVersionMajor, // firmwareMajor
+  0x00,                                // buzzerToneFrequencyMSB
+  0x00,                                // buzzerToneFrequencyLSB
+  0x00,                                // buzzerVolume
+  0x00,                                // buzzerDurationMSB
+  0x00,                                // buzzerDurationLSB
+  0x00,                                // buzzerActive
+  0x00,                                // saveSettings
+  0x00,                                // i2cAddress
 };
 
 /// @brief Set permissions on each register member (0=read-only, 1=read-write)
 memoryMap protectionMap = {
-    0x00, // id
-    0x00, // firmwareMinor
-    0x00, // firmwareMajor
-    0xFF, // buzzerToneFrequencyMSB
-    0xFF, // buzzerToneFrequencyLSB
-    0x07, // buzzerVolume
-    0xFF, // buzzerDurationMSB
-    0xFF, // buzzerDurationLSB
-    0x01, // buzzerActive
-    0x01, // saveSettings
-    0xFF, // i2cAddress
+  0x00, // id
+  0x00, // firmwareMinor
+  0x00, // firmwareMajor
+  0xFF, // buzzerToneFrequencyMSB
+  0xFF, // buzzerToneFrequencyLSB
+  0x07, // buzzerVolume
+  0xFF, // buzzerDurationMSB
+  0xFF, // buzzerDurationLSB
+  0x01, // buzzerActive
+  0x01, // saveSettings
+  0xFF, // i2cAddress
 };
 
 // Cast 32bit address of the object registerMap with uint8_t so we can increment the pointer
@@ -124,7 +122,7 @@ volatile uint8_t registerNumber;
 volatile boolean updateFlag = true;
 
 /// @brief Initialize the onboard Buzzer
-QwiicBuzzer buzzer;
+QwiicBuzzerFirmware buzzer;
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -457,8 +455,7 @@ void requestEvent()
 }
 
 /// @brief Perform a factory reset.
-/// This will write all values in settings EEPROM to a "fresh" values of 0xFF.
-
+/// This will write all values in settings EEPROM to "fresh" values of 0xFF.
 void factoryReset()
 {
   // write settings EEPROM locations to 0xFF
