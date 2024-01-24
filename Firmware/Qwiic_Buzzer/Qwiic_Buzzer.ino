@@ -48,7 +48,7 @@
 #include <avr/power.h> //Needed for powering down perihperals such as the ADC/TWI and Timers
 
 #define kSfeQwiicBuzzerDeviceID 0x5E
-#define kSfeQwiicBuzzerFirmwareVersionMajor 0x01 //Firmware Version. Helpful for tech support.
+#define kSfeQwiicBuzzerFirmwareVersionMajor 0x01 // Firmware Version. Helpful for tech support.
 #define kSfeQwiicBuzzerFirmwareVersionMinor 0x00
 
 #define kSfeQwiicBuzzerDefaultI2cAddress 0x34
@@ -57,19 +57,19 @@
 
 uint8_t sfeQwiicBuzzerOldI2cAddress;
 
-bool previousTriggerPinState = true; // used to detect transitions from high to low on trigger pin.
-uint8_t triggerPinLowCounter = 0; // debounce trigger pin status counter
-uint8_t triggerPinHighCounter = 0; // debounce trigger pin status counter
+bool previousTriggerPinState = true;            // used to detect transitions from high to low on trigger pin.
+uint8_t triggerPinLowCounter = 0;               // debounce trigger pin status counter
+uint8_t triggerPinHighCounter = 0;              // debounce trigger pin status counter
 #define kSfeQwiicBuzzerTriggerDebounceAmount 10 // the amount of digitalReads required to recognise a Trigger pin status
 
-//Hardware connections
+// Hardware connections
 #if defined(__AVR_ATmega328P__)
-//For developement on an Uno
+// For developement on an Uno
 const uint8_t volumePin0 = 3;
 const uint8_t volumePin1 = 4;
 const uint8_t volumePin2 = 5;
 const uint8_t volumePin3 = 6;
-const uint8_t buzzerPin = 9; //PWM
+const uint8_t buzzerPin = 9; // PWM
 const uint8_t statusLedPin = 8;
 const uint8_t triggerPin = 2;
 
@@ -84,36 +84,36 @@ const uint8_t triggerPin = 5;
 #endif
 
 /// @brief Initialize the Qwiic Buzzer register map with default values
-memoryMap registerMap {
-  kSfeQwiicBuzzerDeviceID,                  // id
-  kSfeQwiicBuzzerFirmwareVersionMinor,      // firmwareMinor
-  kSfeQwiicBuzzerFirmwareVersionMajor,      // firmwareMajor
-  0x00,                                     // buzzerToneFrequencyMSB
-  0x00,                                     // buzzerToneFrequencyLSB
-  0x00,                                     // buzzerVolume  
-  0x00,                                     // buzzerDurationMSB  
-  0x00,                                     // buzzerDurationLSB  
-  0x00,                                     // buzzerActive  
-  0x00,                                     // saveSettings
-  0x00,                                     // i2cAddress
+memoryMap registerMap{
+    kSfeQwiicBuzzerDeviceID,             // id
+    kSfeQwiicBuzzerFirmwareVersionMinor, // firmwareMinor
+    kSfeQwiicBuzzerFirmwareVersionMajor, // firmwareMajor
+    0x00,                                // buzzerToneFrequencyMSB
+    0x00,                                // buzzerToneFrequencyLSB
+    0x00,                                // buzzerVolume
+    0x00,                                // buzzerDurationMSB
+    0x00,                                // buzzerDurationLSB
+    0x00,                                // buzzerActive
+    0x00,                                // saveSettings
+    0x00,                                // i2cAddress
 };
 
 /// @brief Set permissions on each register member (0=read-only, 1=read-write)
 memoryMap protectionMap = {
-  0x00,                                     // id
-  0x00,                                     // firmwareMinor
-  0x00,                                     // firmwareMajor
-  0xFF,                                     // buzzerToneFrequencyMSB
-  0xFF,                                     // buzzerToneFrequencyLSB
-  0x07,                                     // buzzerVolume  
-  0xFF,                                     // buzzerDurationMSB  
-  0xFF,                                     // buzzerDurationLSB 
-  0x01,                                     // buzzerActive  
-  0x01,                                     // saveSettings
-  0xFF,                                     // i2cAddress
+    0x00, // id
+    0x00, // firmwareMinor
+    0x00, // firmwareMajor
+    0xFF, // buzzerToneFrequencyMSB
+    0xFF, // buzzerToneFrequencyLSB
+    0x07, // buzzerVolume
+    0xFF, // buzzerDurationMSB
+    0xFF, // buzzerDurationLSB
+    0x01, // buzzerActive
+    0x01, // saveSettings
+    0xFF, // i2cAddress
 };
 
-//Cast 32bit address of the object registerMap with uint8_t so we can increment the pointer
+// Cast 32bit address of the object registerMap with uint8_t so we can increment the pointer
 uint8_t *registerPointer = (uint8_t *)&registerMap;
 uint8_t *protectionPointer = (uint8_t *)&protectionMap;
 
@@ -134,9 +134,7 @@ void setup(void)
   buzzer.setupPins(volumePin0, volumePin1, volumePin2, volumePin3, statusLedPin, buzzerPin);
 
   // GPIO with internal pullup, goes low when user connects to GND
-  pinMode(triggerPin, INPUT_PULLUP); 
-
-
+  pinMode(triggerPin, INPUT_PULLUP);
 
   /// @brief Used to measure how long the trigger pin has been held low. Must be
   /// held low for 1000ms to engage a factory reset
@@ -144,19 +142,20 @@ void setup(void)
 
   // Check for factory reset
   // If the user connects the TRIGGER pin low on boot-up, and continues to hold
-  // it low for a full second, then perform a factory reset (write all settings 
+  // it low for a full second, then perform a factory reset (write all settings
   // EEPROM to "fresh" values of 0xFF.
-  while(digitalRead(triggerPin) == LOW)
+  while (digitalRead(triggerPin) == LOW)
   {
     delay(1);
     factoryResetPinLowCounter += 1;
-    if(factoryResetPinLowCounter > 1000)
+    if (factoryResetPinLowCounter > 1000)
     {
       factoryReset();
-      while(digitalRead(triggerPin) == LOW); // wait for trigger to go high
+      while (digitalRead(triggerPin) == LOW)
+        ; // wait for trigger to go high
       break;
     }
-  }  
+  }
 
   // Disable ADC
   ADCSRA = 0;
@@ -171,7 +170,8 @@ void setup(void)
 
 #if defined(__AVR_ATmega328P__)
 
-  for (int x = 0; x < 100; x++) {
+  for (int x = 0; x < 100; x++)
+  {
     EEPROM.put(x, 0xFF);
   }
   Serial.begin(115200);
@@ -184,12 +184,12 @@ void setup(void)
 #endif
 
   // Load all system settings from EEPROM
-  readSystemSettings(&registerMap); 
+  readSystemSettings(&registerMap);
 
   // Update Buzzer variables
-  buzzer.updateFromMap(&registerMap); 
+  buzzer.updateFromMap(&registerMap);
 
-  // Determine the I2C address we should be using 
+  // Determine the I2C address we should be using
   // and begin listening on I2C bus
   startI2C(&registerMap);
 
@@ -204,10 +204,10 @@ void loop(void)
   {
     sfeQwiicBuzzerOldI2cAddress = registerMap.i2cAddress;
   }
-  
+
   // If buzzer is active and there is duration set, checkDuration
   // This will keep the buzzer buzzing until duration has been completed
-  if (buzzer.active() && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB) )
+  if (buzzer.active() && (registerMap.buzzerDurationLSB || registerMap.buzzerDurationMSB))
   {
     if (buzzer.checkDuration() == false)
     {
@@ -229,26 +229,26 @@ void loop(void)
     buzzer.updateFromMap(&registerMap);
 
     // clear flag
-    updateFlag = false; 
+    updateFlag = false;
   }
 
   // Check if TRIGGER has transitioned from high to low, and buzz!
-  if ((digitalRead(triggerPin) == LOW) && (previousTriggerPinState == true) )
+  if ((digitalRead(triggerPin) == LOW) && (previousTriggerPinState == true))
   {
     // debounce
     triggerPinLowCounter += 1;
 
-    if(triggerPinLowCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
+    if (triggerPinLowCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
     {
       // Reset everything
       buzzer.reset(&registerMap);
 
       // set the map->buzzerActive register
       // This will be "caught" in updateFromMap and actually turn on the buzzer
-      registerMap.buzzerActive = 0x01; 
+      registerMap.buzzerActive = 0x01;
 
-      updateFlag = true; // this will cause an update in main loop
-      triggerPinLowCounter = 0; // reset debounce counter
+      updateFlag = true;               // this will cause an update in main loop
+      triggerPinLowCounter = 0;        // reset debounce counter
       previousTriggerPinState = false; // keep track of status
     }
   }
@@ -257,24 +257,24 @@ void loop(void)
     // debounce
     triggerPinHighCounter += 1;
 
-    if(triggerPinHighCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
+    if (triggerPinHighCounter > kSfeQwiicBuzzerTriggerDebounceAmount)
     {
       // If duration is set to zero, then we want this transition from LOW to HIGH to stop buzzer
       // Otherwise, duration will play out and stop the buzzer for us.
-      if(buzzer._duration == 0)
-        {
-          // Reset everything
-          buzzer.reset(&registerMap);
+      if (buzzer.duration() == 0)
+      {
+        // Reset everything
+        buzzer.reset(&registerMap);
 
-          updateFlag = true; // this will cause an update in main loop
-        }
-      triggerPinHighCounter = 0; // reset debounce counter
+        updateFlag = true; // this will cause an update in main loop
+      }
+      triggerPinHighCounter = 0;      // reset debounce counter
       previousTriggerPinState = true; // keep track of status
     }
   }
-  
+
   // Stop everything and go to sleep. Wake up if I2C event occurs.
-  sleep_mode();             
+  sleep_mode();
 }
 
 /// @brief Update slave I2C address to what's configured with registerMap.i2cAddress
@@ -283,23 +283,22 @@ void startI2C(memoryMap *map)
 {
   uint8_t address;
 
-    //if the value is legal, then set it
-    if (map->i2cAddress > 0x07 && map->i2cAddress < 0x78)
-      address = map->i2cAddress;
+  // if the value is legal, then set it
+  if (map->i2cAddress > 0x07 && map->i2cAddress < 0x78)
+    address = map->i2cAddress;
 
-    //if the value is illegal, default to the default I2C address for our platform
-    else
-      address = kSfeQwiicBuzzerDefaultI2cAddress;
-  
+  // if the value is illegal, default to the default I2C address for our platform
+  else
+    address = kSfeQwiicBuzzerDefaultI2cAddress;
 
-  //save new address to the register map
+  // save new address to the register map
   map->i2cAddress = address;
 
-  //reconfigure Wire instance
-  Wire.end();          //stop I2C on old address
-  Wire.begin(address); //rejoin the I2C bus on new address
+  // reconfigure Wire instance
+  Wire.end();          // stop I2C on old address
+  Wire.begin(address); // rejoin the I2C bus on new address
 
-  //The connections to the interrupts are severed when a Wire.begin occurs, so here we reattach them
+  // The connections to the interrupts are severed when a Wire.begin occurs, so here we reattach them
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
 }
@@ -309,61 +308,60 @@ void startI2C(memoryMap *map)
 /// @param map memoryMap struct containing all qwiic buzzer register data
 void readSystemSettings(memoryMap *map)
 {
-  //Read what I2C address we should use
+  // Read what I2C address we should use
   EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   if (map->i2cAddress == 255)
   {
-    map->i2cAddress = kSfeQwiicBuzzerDefaultI2cAddress; //By default, we listen for kSfeQwiicBuzzerDefaultI2cAddress
+    map->i2cAddress = kSfeQwiicBuzzerDefaultI2cAddress; // By default, we listen for kSfeQwiicBuzzerDefaultI2cAddress
     EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
-  //Error check I2C address we read from EEPROM
+  // Error check I2C address we read from EEPROM
   if (map->i2cAddress < 0x08 || map->i2cAddress > 0x77)
   {
-    //User has set the address out of range
-    //Go back to defaults
+    // User has set the address out of range
+    // Go back to defaults
     map->i2cAddress = kSfeQwiicBuzzerDefaultI2cAddress;
     EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, map->i2cAddress);
   }
 
   // Tone Frequency
-  uint16_t toneFrequency  = 0; //used to store temp complete uint16_t from maps high/low bytes.
+  uint16_t toneFrequency = 0; // used to store temp complete uint16_t from maps high/low bytes.
 
   EEPROM.get(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
   if (toneFrequency == 0xFFFF)
   {
-    toneFrequency = kSfeQwiicBuzzerResonantFrequency; //Default to resonant frequency (2.73KHz)
+    toneFrequency = kSfeQwiicBuzzerResonantFrequency; // Default to resonant frequency (2.73KHz)
     EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, toneFrequency);
   }
   // extract MSB and LSB from complete uint16_t
   // put it into the registerMap for use everywhere
-  uint8_t toneFrequencyMSB = ((toneFrequency & 0xFF00) >> 8 );
+  uint8_t toneFrequencyMSB = ((toneFrequency & 0xFF00) >> 8);
   uint8_t toneFrequencyLSB = (toneFrequency & 0x00FF);
   map->buzzerToneFrequencyMSB = toneFrequencyMSB;
   map->buzzerToneFrequencyLSB = toneFrequencyLSB;
 
-
   // Duration
-  uint16_t toneDuration = 0; //used to store temp complete uint16_t from maps high/low bytes.
+  uint16_t toneDuration = 0; // used to store temp complete uint16_t from maps high/low bytes.
 
   EEPROM.get(kSfeQwiicBuzzerEepromLocationDuration, toneDuration);
   if (toneDuration == 0xFFFF)
   {
-    toneDuration = 0; //Default to zero (forever)
+    toneDuration = 0; // Default to zero (forever)
     EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, toneDuration);
   }
   // extract MSB and LSB from complete uint16_t
   // put it into the registerMap for use everywhere
-  uint8_t toneDurationMSB = ((toneDuration & 0xFF00) >> 8 );
+  uint8_t toneDurationMSB = ((toneDuration & 0xFF00) >> 8);
   uint8_t toneDurationLSB = (toneDuration & 0x00FF);
   map->buzzerDurationMSB = toneDurationMSB;
-  map->buzzerDurationLSB = toneDurationLSB;  
+  map->buzzerDurationLSB = toneDurationLSB;
 
   // Volume
   EEPROM.get(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   if (map->buzzerVolume == 0xFF)
   {
-    map->buzzerVolume = 4; //Default to full
+    map->buzzerVolume = 4; // Default to full
     EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, map->buzzerVolume);
   }
 }
@@ -372,39 +370,39 @@ void readSystemSettings(memoryMap *map)
 /// @param map memoryMap struct containing all qwiic buzzer register data
 void recordSystemSettings(memoryMap *map)
 {
-  //I2C address is byte
+  // I2C address is byte
   byte i2cAddr;
 
-  //Error check the current I2C address
+  // Error check the current I2C address
   if (map->i2cAddress >= 0x08 && map->i2cAddress <= 0x77)
   {
-    //Address is valid
+    // Address is valid
 
-    //Read the value currently in EEPROM. If it's different from the memory map then record the memory map value to EEPROM.
+    // Read the value currently in EEPROM. If it's different from the memory map then record the memory map value to EEPROM.
     EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, i2cAddr);
     if (i2cAddr != map->i2cAddress)
     {
       EEPROM.put(kSfeQwiicBuzzerEepromLocationI2cAddress, (byte)map->i2cAddress);
-      startI2C(map); //Determine the I2C address we should be using and begin listening on I2C bus
+      startI2C(map); // Determine the I2C address we should be using and begin listening on I2C bus
     }
   }
   else
   {
     EEPROM.get(kSfeQwiicBuzzerEepromLocationI2cAddress, i2cAddr);
-    map->i2cAddress = i2cAddr; //Return to original address
+    map->i2cAddress = i2cAddr; // Return to original address
   }
 
   // if user has set bit 0 in the ""saveSettings" register, then record settings to EEPROM.
-  if(map->saveSettings == 1)
+  if (map->saveSettings == 1)
   {
-    uint16_t mapToneFrequency = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
+    uint16_t mapToneFrequency = 0x00;              // used to store temp complete uint16_t from maps high/low bytes.
     uint8_t freqMSB = map->buzzerToneFrequencyMSB; // get MSB from map
     uint8_t freqLSB = map->buzzerToneFrequencyLSB; // get MLB from map
-    mapToneFrequency |= freqLSB; // combine MSB/LSM into temp complete
-    mapToneFrequency |= (freqMSB << 8); // combine MSB/LSM into temp complete
+    mapToneFrequency |= freqLSB;                   // combine MSB/LSM into temp complete
+    mapToneFrequency |= (freqMSB << 8);            // combine MSB/LSM into temp complete
     EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, mapToneFrequency);
 
-    uint16_t mapDuration = 0x00; //used to store temp complete uint16_t from maps high/low bytes.
+    uint16_t mapDuration = 0x00;                  // used to store temp complete uint16_t from maps high/low bytes.
     uint8_t durationMSB = map->buzzerDurationMSB; // get MSB from map
     uint8_t durationLSB = map->buzzerDurationLSB; // get MLB from map
     mapDuration |= durationLSB;
@@ -420,29 +418,30 @@ void recordSystemSettings(memoryMap *map)
 
 /// @brief I2C interrupt, called when data has been received from an I2C controller
 /// @param numberOfBytesReceived The number of bytes that a I2C controller has sent
-void receiveEvent(int numberOfBytesReceived) 
+void receiveEvent(int numberOfBytesReceived)
 {
-  //Get the memory map offset from the user
-  registerNumber = Wire.read(); 
+  // Get the memory map offset from the user
+  registerNumber = Wire.read();
 
-  //Begin recording the following incoming bytes to the temp memory map
-  //starting at the registerNumber (the first byte received)
-  for (uint8_t registerOffset = 0 ; registerOffset < numberOfBytesReceived - 1 ; registerOffset++) 
+  // Begin recording the following incoming bytes to the temp memory map
+  // starting at the registerNumber (the first byte received)
+  for (uint8_t registerOffset = 0; registerOffset < numberOfBytesReceived - 1; registerOffset++)
   {
-    //We might record it, we might throw it away
-    uint8_t temp = Wire.read(); 
+    // We might record it, we might throw it away
+    uint8_t temp = Wire.read();
 
-    if ( (registerOffset + registerNumber) < sizeof(memoryMap)) {
-      //Clense the incoming byte against the read only protected bits
-      //Store the result into the register map
-      *(registerPointer + registerNumber + registerOffset) &= ~*(protectionPointer + registerNumber + registerOffset); //Clear this register if needed
-      *(registerPointer + registerNumber + registerOffset) |= temp & *(protectionPointer + registerNumber + registerOffset); //Or in the user's request (clensed against protection bits)
+    if ((registerOffset + registerNumber) < sizeof(memoryMap))
+    {
+      // Clense the incoming byte against the read only protected bits
+      // Store the result into the register map
+      *(registerPointer + registerNumber + registerOffset) &= ~*(protectionPointer + registerNumber + registerOffset);       // Clear this register if needed
+      *(registerPointer + registerNumber + registerOffset) |= temp & *(protectionPointer + registerNumber + registerOffset); // Or in the user's request (clensed against protection bits)
     }
   }
 
   if (numberOfBytesReceived > 1) // only update if we received a valid amount
   {
-    updateFlag = true; //Update in the main loop
+    updateFlag = true; // Update in the main loop
   }
 }
 
@@ -452,7 +451,7 @@ void receiveEvent(int numberOfBytesReceived)
 /// the register the user requested, and when it reaches the end the I2C-controller
 /// will read 0xFFs.
 /// @param numberOfBytesReceived The number of bytes that a I2C controller has sent
-void requestEvent() 
+void requestEvent()
 {
   Wire.write((registerPointer + registerNumber), sizeof(memoryMap) - registerNumber);
 }
@@ -467,9 +466,9 @@ void factoryReset()
   EEPROM.put(kSfeQwiicBuzzerEepromLocationToneFrequency, 0xFFFF);
   EEPROM.put(kSfeQwiicBuzzerEepromLocationVolume, 0xFF);
   EEPROM.put(kSfeQwiicBuzzerEepromLocationDuration, 0xFFFF);
-  
+
   // blink the status LED three times to indicate that factory reset has completed.
-  for(int i = 0 ; i < 3 ; i++)
+  for (int i = 0; i < 3; i++)
   {
     digitalWrite(statusLedPin, HIGH);
     delay(100);

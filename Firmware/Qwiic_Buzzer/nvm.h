@@ -21,10 +21,11 @@
 
 #pragma once
 
-//Location in EEPROM for each thing we want to store between power cycles
-enum eepromLocations {
-    kSfeQwiicBuzzerEepromLocationI2cAddress = 0x00,     // Device's address (uint8_t)
-    kSfeQwiicBuzzerEepromLocationToneFrequency = 0x01,  // (uint16_t)
-    kSfeQwiicBuzzerEepromLocationVolume = 0x03,         // (uint8_t)
-    kSfeQwiicBuzzerEepromLocationDuration = 0x04,       // (uint16_t)
+// Location in EEPROM for each thing we want to store between power cycles
+enum eepromLocations
+{
+  kSfeQwiicBuzzerEepromLocationI2cAddress = 0x00,    // Device's address (uint8_t)
+  kSfeQwiicBuzzerEepromLocationToneFrequency = 0x01, // (uint16_t)
+  kSfeQwiicBuzzerEepromLocationVolume = 0x03,        // (uint8_t)
+  kSfeQwiicBuzzerEepromLocationDuration = 0x04,      // (uint16_t)
 };
