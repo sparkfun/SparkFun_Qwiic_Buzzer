@@ -57,25 +57,17 @@ void QwiicBuzzerFirmware::updateFromMap(struct memoryMap *map)
         different = true;
     }
 
-    uint16_t mapToneFrequency = 0x00; // used to store temp complete uint16_t from maps high/low bytes.
-    uint8_t freqMSB = map->buzzerToneFrequencyMSB;
-    uint8_t freqLSB = map->buzzerToneFrequencyLSB;
-    mapToneFrequency |= freqLSB;
-    mapToneFrequency |= (freqMSB << 8);
+    uint16_t mapToneFrequency = map->buzzerToneFrequencyLSB | (map->buzzerToneFrequencyMSB << 8);
     if (mapToneFrequency != _toneFrequency)
     {
         _toneFrequency = mapToneFrequency;
         different = true;
     }
 
-    uint16_t mapDuration_uint16 = 0x00; // used to store temp complete uint16_t from maps high/low bytes.
-    uint8_t durationMSB = map->buzzerDurationMSB;
-    uint8_t durationLSB = map->buzzerDurationLSB;
-    mapDuration_uint16 |= durationLSB;
-    mapDuration_uint16 |= (durationMSB << 8);
-    if (mapDuration_uint16 != _duration)
+    uint16_t mapDuration = map->buzzerDurationLSB | (map->buzzerDurationMSB << 8);
+    if (mapDuration != _duration)
     {
-        _duration = mapDuration_uint16;
+        _duration = mapDuration;
         different = true;
     }
 
@@ -87,18 +79,12 @@ void QwiicBuzzerFirmware::updateFromMap(struct memoryMap *map)
     if ((mapBuzzerActive == 0x01) && ((_buzzerActiveFlag == false) || (different == true))) // this means we were off, and now the user wants to turn it on.
     {
         if (_duration > 0) // Duration is used, and we're starting a new buzz, so need to reset _buzzerStartTime.
-        {
             _buzzerStartTime = millis(); // used to know when to turn off the GND connection on the buzzer (aka the volume setting to zero).
-        }
 
         if (_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
-        {
             tone(_buzzerPin, _toneFrequency);
-        }
         else // User has changed frequency to 0, (aka the "rest" note).
-        {
             noTone(_buzzerPin);
-        }
 
         // volume control
         if (_toneFrequency != 0) // to avoid clicking sounds if the user wants to play a "rest" note (frequency set to 0)
@@ -127,13 +113,16 @@ void QwiicBuzzerFirmware::updateFromMap(struct memoryMap *map)
                 break;
             }
         }
-        digitalWrite(_statusLedPin, HIGH);
+
+        // status LED control
+        // only turn on when volume and frequency are both non-zero
+        if( (_volume != 0) && (_toneFrequency != 0) ) 
+            digitalWrite(_statusLedPin, HIGH);
+
         _buzzerActiveFlag = true;
     }
     else if ((mapBuzzerActive == 0x00) && (_buzzerActiveFlag == true)) // this means we are currently on, and the user wants to turn it off
-    {
         reset(map);
-    }
 }
 
 bool QwiicBuzzerFirmware::checkDuration()

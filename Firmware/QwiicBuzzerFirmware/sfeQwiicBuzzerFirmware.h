@@ -60,8 +60,8 @@ private:
     uint8_t _volume;                   // Volume of buzzer
     uint16_t _toneFrequency;           // Frequency of the buzzer
     uint16_t _duration;                // Milliseconds, zero = forever
-    unsigned long _buzzerStartTime;    // Start time of a new buzz, only useful if duration is used
-    boolean _buzzerActiveFlag = false; // actual local status of buzzer
+    uint32_t _buzzerStartTime;    // Start time of a new buzz, only useful if duration is used
+    bool _buzzerActiveFlag = false; // actual local status of buzzer
     uint8_t _volumePin0;
     uint8_t _volumePin1;
     uint8_t _volumePin2;
