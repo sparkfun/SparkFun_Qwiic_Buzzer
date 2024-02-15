@@ -1,5 +1,4 @@
 
-
 Beep-boop! The [SparkFun Qwiic Buzzer](https://www.sparkfun.com/products/24474) adds simple beeps and buzzes to your projects via I<sup>2</sup>C! Make some noises to alert you when something interesting (or terrible) happens. Simply connect a Qwiic cable and load up some pre-written code to an Arduino to start making noises! For those that want a simple buzz without an Arduino, you can also make noise by simply grounding the trigger pin!
 
 <center>
@@ -24,7 +23,9 @@ Beep-boop! The [SparkFun Qwiic Buzzer](https://www.sparkfun.com/products/24474) 
 </div>
 </center>
 
-
+<div style="text-align: center;">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/ZPUQdX44Tsk?si=XaIp89KXAH5x2qBd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 
 In this tutorial, we'll go over the hardware and how to hookup the breakout board. We will also go over the examples to get started!
 
@@ -107,12 +108,6 @@ To follow along with this tutorial, you will need the following materials. You m
 ### Tools &nbsp;_(Optional)_
 
 You will need a soldering iron, solder, and [general soldering accessories](https://www.sparkfun.com/categories/49) for a secure connection when using the plated through holes.
-
-* [PINECIL Soldering Iron Kit [KIT-24063]](https://www.sparkfun.com/products/24063)
-* [Solder Lead Free - 15-gram Tube [TOL-9163]](https://www.sparkfun.com/products/9163)
-* [Flush Cutters - Xcelite [TOL-14782]](https://www.sparkfun.com/products/14782)
-* [Hook-Up Wire - Assortment (Stranded, 22 AWG) [PRT-11375]](https://www.sparkfun.com/products/11375)
-* [Wire Stripper - 20-30 AWG Solid (22-32 AWG Stranded) [TOL-22263]](https://www.sparkfun.com/products/22263)
 
 <div class="grid cards hide col-4" markdown>
 

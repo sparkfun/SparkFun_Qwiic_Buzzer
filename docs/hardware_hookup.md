@@ -9,10 +9,10 @@ Insert a Qwiic cable between the Qwiic Buzzer and your Arduino microcontroller. 
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer</i></td>
     </tr>
   </table>
 </div>
@@ -22,10 +22,10 @@ With the Qwiic Buzzer, you can daisy chain more than one buzzer! Typically on an
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected Two Qwiic Buzzers"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected Two Qwiic Buzzers"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>RedBoard ATmega328P Programmed with Arduino Connected Two Qwiic Buzzers</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>RedBoard ATmega328P Programmed with Arduino Connected Two Qwiic Buzzers</i></td>
     </tr>
   </table>
 </div>
@@ -72,12 +72,12 @@ For the custom resistor, you will need to bend the resistor's terminals and inse
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-_Custom_Resistor_from_Bottom.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-_Custom_Resistor_from_Bottom.jpg" width="600px" height="600px" alt="Soldering Custom Resistor"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-_Cutting_Trace_User_Resistor.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-_Cutting_Trace_User_Resistor.jpg" width="600px" height="600px" alt="Cut JP1 Jumper"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-_Custom_Resistor_from_Bottom.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-_Custom_Resistor_from_Bottom.jpg" width="600px" height="600px" alt="Soldering Custom Resistor"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-_Cutting_Trace_User_Resistor.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-_Cutting_Trace_User_Resistor.jpg" width="600px" height="600px" alt="Cut JP1 Jumper"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Cut JP1 Jumper</i></td>
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Soldering Custom Resistor</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Cut JP1 Jumper</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Soldering Custom Resistor</i></td>
     </tr>
   </table>
 </div>
@@ -90,12 +90,12 @@ You can also carefully pull the two inner pins out of a 1x4 standard male header
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Solder_User_Breadboard_Header_Pins.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Solder_User_Breadboard_Header_Pins.jpg" width="600px" height="600px" alt="Soldering Custom Resistor"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg" width="600px" height="600px" alt="Cut JP1 Jumper"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Solder_User_Breadboard_Header_Pins.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Solder_User_Breadboard_Header_Pins.jpg" width="600px" height="600px" alt="Soldering Custom Resistor"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg" width="600px" height="600px" alt="Cut JP1 Jumper"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Soldering 1x4 Header Pins (with Center Pins Pulled Out)</i></td>
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Soldering Custom Resistor</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Soldering 1x4 Header Pins (with Center Pins Pulled Out)</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Soldering Custom Resistor</i></td>
     </tr>
   </table>
 </div>
@@ -149,10 +149,10 @@ For users that simply need to trigger a beeping noise, all you need to do is pow
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Stand_Alone_Trigger_3V3_Buck_Regulator.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Stand_Alone_Trigger_3V3_Buck_Regulator.jpg" width="600px" height="600px" alt="Buck Regulator Breakout - 3.3V (AP63203), Qwiic Buzzer, and Button"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Stand_Alone_Trigger_3V3_Buck_Regulator.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Stand_Alone_Trigger_3V3_Buck_Regulator.jpg" width="600px" height="600px" alt="Buck Regulator Breakout - 3.3V (AP63203), Qwiic Buzzer, and Button"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Toggling Trigger Pin with a Button</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Toggling Trigger Pin with a Button</i></td>
     </tr>
   </table>
 </div>
@@ -227,10 +227,10 @@ For users that simply need to trigger a beeping noise, all you need to do is pow
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg" width="600px" height="600px" alt="Buck Regulator Breakout - 3.3V (AP63203), Qwiic Buzzer, Button and 10kOhm Trimpot"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg"><img src="../assets/img/24474-Qwiic-Buzzer_Potentiometer_Stand_Alone.jpg" width="600px" height="600px" alt="Buck Regulator Breakout - 3.3V (AP63203), Qwiic Buzzer, Button and 10kOhm Trimpot"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Toggling Trigger Pin with a Button While Controlling Volume with 10k&ohm; Trimpot</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Toggling Trigger Pin with a Button While Controlling Volume with 10k&ohm; Trimpot</i></td>
     </tr>
   </table>
 </div>

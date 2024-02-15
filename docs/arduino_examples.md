@@ -11,7 +11,7 @@ Open the example by heading to: **File** > **Examples** > **Qwiic Buzzer** > **E
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_note_1.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_note_1.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with note"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_note_1.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_note_1.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with note"></a></td>
     </tr>
   </table>
 </div>
@@ -28,7 +28,7 @@ Open the example by heading to: **File** > **Examples** > **Qwiic Buzzer** > **E
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_2.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_2.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with notes"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_2.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_2.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with notes"></a></td>
     </tr>
   </table>
 </div>
@@ -50,7 +50,7 @@ Open the example by heading to: **File** > **Examples** > **Qwiic Buzzer** > **E
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_3.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_3.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with long note"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_3.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_3.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with long note"></a></td>
     </tr>
   </table>
 </div>
@@ -71,7 +71,7 @@ Open the example by heading to: **File** > **Examples** > **Qwiic Buzzer** > **E
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_4.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_4.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with small and big notes to denote volume"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_4.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_4.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with small and big notes to denote volume"></a></td>
     </tr>
   </table>
 </div>
@@ -94,7 +94,7 @@ After uploading code, open the [Arduino Serial Monitor](https://learn.sparkfun.c
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Change_I2C_Address.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Change_I2C_Address.JPG" width="600px" height="600px" alt="Changing I2C Address"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Change_I2C_Address.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Change_I2C_Address.JPG" width="600px" height="600px" alt="Changing I2C Address"></a></td>
     </tr>
   </table>
 </div>
@@ -104,7 +104,7 @@ Send a new [hexadecimal](https://learn.sparkfun.com/tutorials/hexadecimal/all) a
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Changed_I2C_Address.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Changed_I2C_Address.JPG" width="600px" height="600px" alt="Changed I2C Address"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Changed_I2C_Address.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Changed_I2C_Address.JPG" width="600px" height="600px" alt="Changed I2C Address"></a></td>
     </tr>
   </table>
 </div>
@@ -122,7 +122,7 @@ Open the example by heading to: **File** > **Examples** > **Qwiic Buzzer** > **E
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Save_Settings.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Save_Settings.JPG" width="600px" height="600px" alt="Save Settings"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Save_Settings.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Save_Settings.JPG" width="600px" height="600px" alt="Save Settings"></a></td>
     </tr>
   </table>
 </div>
@@ -145,7 +145,7 @@ After uploading code, you should hear the melody play one time.
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_5.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_5.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with melody"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_5.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_5.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with melody"></a></td>
     </tr>
   </table>
 </div>
@@ -163,7 +163,7 @@ In this example, we will play different sound effects once.
  <div style="text-align: center;">
    <table>
      <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_6.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_6.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with sound effects"></a></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_6.jpg"><img src="../assets/img/24474-Qwiic-Buzzer-RedBoard_Arduino_notes_6.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzer, with sound effects"></a></td>
      </tr>
    </table>
  </div>
@@ -182,7 +182,7 @@ After uploading code, open the [Arduino Serial Monitor](https://learn.sparkfun.c
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Firmware_Version.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Firmware_Version.JPG" width="600px" height="600px" alt="Qwiic Buzzer's Current Firmware Version"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/Arduino_Qwiic_Buzzer_Firmware_Version.JPG"><img src="../assets/img/Arduino_Qwiic_Buzzer_Firmware_Version.JPG" width="600px" height="600px" alt="Qwiic Buzzer's Current Firmware Version"></a></td>
     </tr>
   </table>
 </div>
@@ -200,8 +200,8 @@ In this example, we will show how to control two Qwiic Buzzers with different ad
  <div style="text-align: center;">
    <table>
      <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-1.jpg"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-1.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzers Daisy Chained and each playing a different tone"></a></td>
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-2.jpg"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-2.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzers Daisy Chained and each playing a different tone"></a></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-1.jpg"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-1.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzers Daisy Chained and each playing a different tone"></a></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-2.jpg"><img src="../assets/img/24474-Daisy-Chaining-Qwiic-Buzzer-RedBoard_Arduino_Notes-2.jpg" width="600px" height="600px" alt="RedBoard ATmega328P Programmed with Arduino Connected to Qwiic Buzzers Daisy Chained and each playing a different tone"></a></td>
      </tr>
    </table>
  </div>

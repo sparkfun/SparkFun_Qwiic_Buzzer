@@ -3,12 +3,12 @@ In this section, we will highlight the hardware and pins that are broken out on 
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Top_View.jpg" width="600px" height="600px" alt="Top View"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Bottom_View.jpg" width="600px" height="600px" alt="Bottom View"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Top_View.jpg" width="600px" height="600px" alt="Top View"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Bottom_View.jpg" width="600px" height="600px" alt="Bottom View"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Top View</i></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Bottom View</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Top View</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Bottom View</i></td>
     </tr>
   </table>
 </div>
@@ -25,12 +25,12 @@ There are a few power-related nets broken out to Qwiic connectors and through ho
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Top_View.jpg" width="600px" height="600px" alt="Power Nets Highlighted, Top View"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Bottom_View.jpg" width="600px" height="600px" alt="Power Nets Highlighted, Bottom View"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Top_View.jpg" width="600px" height="600px" alt="Power Nets Highlighted, Top View"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Power_Bottom_View.jpg" width="600px" height="600px" alt="Power Nets Highlighted, Bottom View"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Power Nets Highlighted<br />(Top View)</i></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Power Nets Highlighted<br />(Bottom View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Power Nets Highlighted<br />(Top View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Power Nets Highlighted<br />(Bottom View)</i></td>
     </tr>
   </table>
 </div>
@@ -50,10 +50,10 @@ The board would not be the Qwiic Buzzer without... a buzzer! The buzzer uses a s
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Buzzer_Transistor_Diode.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Buzzer_Transistor_Diode.jpg" width="600px" height="600px" alt="Buzzer Highlighted"></a></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Buzzer_Transistor_Diode.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Buzzer_Transistor_Diode.jpg" width="600px" height="600px" alt="Buzzer Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Buzzer Highlighted<br />(Top View)</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Buzzer Highlighted<br />(Top View)</i></td>
     </tr>
   </table>
 </div>
@@ -69,10 +69,10 @@ The brains of the Qwiic Buzzer users an ATtiny84. This IC comes pre-programmed w
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_ATtiny85_Microcontroller.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_ATtiny85_Microcontroller.jpg" width="600px" height="600px" alt="ATtiny84 microcontroller Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_ATtiny85_Microcontroller.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_ATtiny85_Microcontroller.jpg" width="600px" height="600px" alt="ATtiny84 microcontroller Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-      <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>ATTiny84 Highlighted<br />(Top View)</i></td>
+      <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>ATTiny84 Highlighted<br />(Top View)</i></td>
     </tr>
   </table>
 </div>
@@ -92,12 +92,12 @@ There are two PTHs labeled **SDA** and **SCL** on one side of the board. These i
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Top_View.jpg" width="600px" height="600px" alt="Qwiic Connectors and I2C Port Highlighted"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Bottom_View.jpg" width="600px" height="600px" alt="Qwiic Connectors and I2C Port Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Top_View.jpg" width="600px" height="600px" alt="Qwiic Connectors and I2C Port Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_I2C_Bottom_View.jpg" width="600px" height="600px" alt="Qwiic Connectors and I2C Port Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>I<sup>2</sup>C PTHs Highlighted<br />(Top View)</i></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Qwiic and I<sup>2</sup>C PTHs Highlighted<br />(Bottom View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>I<sup>2</sup>C PTHs Highlighted<br />(Top View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Qwiic and I<sup>2</sup>C PTHs Highlighted<br />(Bottom View)</i></td>
     </tr>
   </table>
 </div>
@@ -115,12 +115,12 @@ The default I<sup>2</sup>C address for the Qwiic buzzer is **0x34**. This can al
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Top_View.jpg" width="600px" height="600px" alt="Reset PTH Highlighted"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Bottom_View.jpg" width="600px" height="600px" alt="Reset PTH Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Top_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Top_View.jpg" width="600px" height="600px" alt="Reset PTH Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Bottom_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Interrupt_Reset_Bottom_View.jpg" width="600px" height="600px" alt="Reset PTH Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Trigger & Reset PTHs Highlighted<br />(Top View)</i></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Trigger & Reset PTHs Highlighted<br />(Bottom View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Trigger & Reset PTHs Highlighted<br />(Top View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Trigger & Reset PTHs Highlighted<br />(Bottom View)</i></td>
     </tr>
   </table>
 </div>
@@ -134,12 +134,12 @@ There is a footprint available for a PTH resistor. This is labeled as USER. For 
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Top_Volume_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Top_Volume_View.jpg" width="600px" height="600px" alt="USER PTH resistor footprint"></a></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Bottom_Volume_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Bottom_Volume_View.jpg" width="600px" height="600px" alt="USER PTH resistor footprint"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Top_Volume_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Top_Volume_View.jpg" width="600px" height="600px" alt="USER PTH resistor footprint"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Bottom_Volume_View.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_User_Resistor_Bottom_Volume_View.jpg" width="600px" height="600px" alt="USER PTH resistor footprint"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>User Resistor PTHs Highlighted<br />(Top View)</i></td>
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>User Resistor PTHs Highlighted<br />(Bottom View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>User Resistor PTHs Highlighted<br />(Top View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>User Resistor PTHs Highlighted<br />(Bottom View)</i></td>
     </tr>
   </table>
 </div>
@@ -156,10 +156,10 @@ The board includes the following status LEDs as indicated in the image below.
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_LEDs.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_LEDs.jpg" width="600px" height="600px" alt="LEDs Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_LEDs.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_LEDs.jpg" width="600px" height="600px" alt="LEDs Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>LEDs Highlighted<br />(Top View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>LEDs Highlighted<br />(Top View)</i></td>
     </tr>
   </table>
 </div>
@@ -181,10 +181,10 @@ If you flip the board over, you will notice a few jumper pads.
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Jumpers.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Jumpers.jpg" width="600px" height="600px" alt="Jumpers Highlighted"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer_Jumpers.jpg"><img src="../assets/img/BOB-24474-Qwiic-Buzzer_Jumpers.jpg" width="600px" height="600px" alt="Jumpers Highlighted"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Jumpers Highlighted<br />(Bottom View)</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Jumpers Highlighted<br />(Bottom View)</i></td>
     </tr>
   </table>
 </div>
@@ -199,10 +199,10 @@ The board uses the standard 1.0" x 1.0" (25.4mm x 25.4mm) Qwiic board. There are
 <div style="text-align: center;">
   <table>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer__Board_Dimensions.png"><img src="../assets/img/BOB-24474-Qwiic-Buzzer__Board_Dimensions.png" width="600px" height="600px" alt="Board Dimensions"></a></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><a href="../assets/img/BOB-24474-Qwiic-Buzzer__Board_Dimensions.png"><img src="../assets/img/BOB-24474-Qwiic-Buzzer__Board_Dimensions.png" width="600px" height="600px" alt="Board Dimensions"></a></td>
     </tr>
     <tr style="vertical-align:middle;">
-     <td style="text-align: center; border: solid 1px #cccccc;" vertical-align: middle;"><i>Board Dimensions</i></td>
+     <td style="text-align: center; border: solid 1px #cccccc; vertical-align: middle;"><i>Board Dimensions</i></td>
     </tr>
   </table>
 </div>
