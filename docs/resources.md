@@ -11,3 +11,23 @@ Now that you've successfully got your SparkFun Qwiic Buzzer up and running, it's
 * [ReadtheDocs: Qwiic Buzzer](https://qwiic-buzzer-py.readthedocs.io/en/latest/)
 * [Qwiic Buzzer Python Package](https://github.com/sparkfun/Qwiic_Buzzer_Py)
 * [GitHub Hardware Repo](https://github.com/sparkfun/SparkFun_Qwiic_Buzzer)
+
+
+
+Or check out this blog post for ideas.
+
+<div class="grid cards" style="width:500px;" markdown>
+<!-- ----------WHITE SPACE BETWEEN GRID CARDS---------- -->
+-   <a href="https://www.sparkfun.com/news/9910">
+      <figure markdown>
+        <img src="https://cdn.sparkfun.com//c/140-140/assets/home_page_posts/9/9/1/0/Buzzer-in-Weill-Recital-Hall.jpg" style="width:264px; height:148px; object-fit:contain;" alt="Raising your Buzzer Projects to the Next Level">
+      </figure>
+    </a>
+
+    ---
+
+    <a href="https://www.sparkfun.com/news/9910">
+      <b>Raising your Buzzer Projects to the Next Level</b>
+    </a>
+<!-- ----------WHITE SPACE BETWEEN GRID CARDS---------- -->
+</div>
