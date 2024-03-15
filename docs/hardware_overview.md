@@ -175,7 +175,7 @@ If you flip the board over, you will notice a few jumper pads.
 
 * **PWR_LED** &mdash; The power LED will illuminate when 3.3V is available either over the Qwiic bus or the 3V3 pin. By default, this jumper is closed. Cut this jumper to disable the LED.
 * **STAT** &mdash; The status LED will illuminate whenever the buzzer is making noise. By default, this jumper is closed. Cut this jumper to disable the LED.
-* **I2C** &mdash; This three way jumper labeled **I2C** is connected to two pull-up resistors to the I<sup>2</sup>C data and clock lines. For users that have multiple Qwiic-enabled devices with pull-up resistors enabled, the parallel equivalent resistance will create too strong of a pull-up for the bus to operate correctly. As a general rule of thumb, [disable all but one pair of pull-up resistors](https://learn.sparkfun.com/tutorials/i2c/all#i2c-at-the-hardware-level) if multiple devices are connected to the bus.
+* **I2C** &mdash; This three way jumper labeled **I2C** is connected to two pull-up resistors on the I<sup>2</sup>C data and clock lines. For users that have multiple Qwiic-enabled devices with pull-up resistors enabled, the parallel equivalent resistance will create too strong of a pull-up for the bus to operate correctly. As a general rule of thumb, [disable all but one pair of pull-up resistors](https://learn.sparkfun.com/tutorials/i2c/all#i2c-at-the-hardware-level) if multiple devices are connected to the bus.
 * **JP1** &mdash; This jumper pad is available for users that want include a custom resistor to control the loudness of the buzzer. Cut this jumper to disconnect resistor R15. You will need to have a resistor populated for the USER PTH resistor.
 
 <div style="text-align: center;">
